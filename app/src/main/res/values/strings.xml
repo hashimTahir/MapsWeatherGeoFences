@@ -1,0 +1,218 @@
+<resources>
+    <string name="app_name">Maps, Live GPS Navigation: Find Driving Directions</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="test_string">Test</string>
+    <string name="atms">Atms</string>
+    <string name="banks">Banks</string>
+    <string name="cafe">Cafes</string>
+    <string name="restraunts">Restraunts</string>
+    <string name="service_stations">Service Stations</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="about_us">About Us</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <array name="search_strings">
+        <item>atm</item>
+        <item>bank</item>
+        <item>hospital</item>
+        <item>mosque</item>
+        <item>doctor</item>
+        <item>train_station</item>
+        <item>parking</item>
+        <item>park</item>
+        <item>cafe</item>
+        <item>restaurant</item>
+        <item>gas_station</item>
+        <item>police</item>
+        <item>book_store</item>
+        <item>bus_station</item>
+        <item>pharmacy</item>
+        <item>clothing_store</item>
+        <item>school</item>
+        <item>supermarket</item>
+    </array>
+    <string name="police_staions">Police Stations</string>
+    <string name="bus_staions">Bus Stations</string>
+    <array name="place_strings">
+        <item>Atms</item>
+        <item>Banks</item>
+        <item>Hospitals</item>
+        <item>Mosques</item>
+        <item>Doctors</item>
+        <item>Train Stations</item>
+        <item>Parking Spots</item>
+        <item>Parks</item>
+        <item>Cafes</item>
+        <item>Restraunts</item>
+        <item>Gas Stations</item>
+        <item>@string/police_staions</item>
+        <item>Book Stores</item>
+        <item>@string/bus_staions</item>
+        <item>Pharmacys</item>
+        <item>Clothing Stores</item>
+        <item>Schools</item>
+        <item>Supermarkets</item>
+    </array>
+    <array name="maps_type_array">
+        <item>Normal</item>
+        <item>Satellite</item>
+        <item>Terrain</item>
+        <item>Hybrid</item>
+        <item>Enable Traffic</item>
+    </array>
+    <string name="title_activity_about_us">AboutUsActivity</string>
+    <string name="get_directions">Get Directions</string>
+    <string name="gas_stations">Gas Stations</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="purchase_the_app">Purchase the app to remove ads</string>
+    <string name="purchase">Purchase</string>
+    <string name="cancel">Cancel</string>
+    <string name="rate_us_1">Rate us</string>
+    <string name="rate_us_on_playstore">Thanks for your support &amp; FeedBack</string>
+    <string name="about">About</string>
+    <string name="title_activity_splash">SplashActivity</string>
+
+    <string name="ad_mob_id">ca-app-pub-1553263417351965/5752730536</string>
+    <!--<string name="ad_mob_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <!--<string name="ad_mob_id">hashim</string>-->
+    <string name="share_body">Download this free app to navigate.</string>
+    <string name="app_link">https://play.google.com/store/apps/detasdf</string>
+    <string name="app_version">Version 1.0</string>
+
+    <string name="share_location">Hi! Check my location</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="channel_name">hashim_channel</string>
+    <string name="channel_description">channel_description</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_contacts">Contacts Activity</string>
+    <string name="find_route">Find Route</string>
+    <string name="current_location">Current Location</string>
+    <string name="you_are_here">You are Here</string>
+    <string name="destination">Destination</string>
+    <string name="move_along_highlighted">Move along highlighted path to reach destination</string>
+    <string name="share_location_fb">Share Location</string>
+    <string name="info">Info</string>
+    <string name="mosque">Mosque</string>
+    <string name="hospitals">Hospitals</string>
+    <string name="view_all">View all</string>
+    <string name="view">View</string>
+    <string name="select_a_map_type">Select a Map Type</string>
+    <string name="current_location_details">Current Location </string>
+    <string name="dismiss">Dismiss</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="calculate">Calculate</string>
+    <string name="no_saved_contacts">No Saved Contacts</string>
+    <string name="location_settings">Location Settings</string>
+    <string name="distance_unit">Distance unit</string>
+    <string name="language_settings">Language Settings</string>
+    <string name="select_language">Select Language</string>
+    <string name="enable_disable">Enable/Disable</string>
+    <string name="change_radius_km">Change Radius(Km)</string>
+    <string name="share_this_app">Share this App</string>
+    <string name="more_apps">More Apps</string>
+    <string name="nearby_places">Nearby Places</string>
+    <string name="normal">Normal</string>
+    <string name="satellite">Satellite</string>
+    <string name="_3dots">…</string>
+    <string name="places_nearby">Places Nearby</string>
+    <string name="emergency_text">Emergency Text</string>
+    <string name="contact_us">Contact us</string>
+    <string name="share_app">Share App</string>
+    <string name="settings">Settings</string>
+    <string name="delete">Delete</string>
+    <string-array name="unit_spinner_array">
+        <item>Km</item>
+        <item>miles</item>
+    </string-array>
+    <string-array name="language_spinner_array">
+        <item>English</item>
+    </string-array>
+    <string-array name="temprature_spinner_array">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+        <item>Kelvin</item>
+    </string-array>
+    <string name="title_activity_bottom">BottomActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="track_me">track_me</string>
+    <string name="if_you_like"><![CDATA[If you Like using this application, Would you mind taking a momet to give feedback, it wont take more than a minute. Thanks for your support & FeedBack]]></string>
+    <string name="compass">compass</string>
+    <string name="share_my_loction">Share Location</string>
+    <string name="follow_us_twitter">Follow on Twitter</string>
+    <string name="follow_us_facebook">Follow on Facebook</string>
+    <string name="follow_us_instagram">Follow on Instagram</string>
+    <string name="counter_is">counter is :</string>
+    <string name="give_feedback">Give feedback</string>
+    <string name="no_thanks">No Thanks</string>
+    <string name="remind_me_later">Remind me later</string>
+    <string name="degree_symbol">\u2103</string>
+    <string name="farenheit_symbol">\u2109</string>
+    <string name="kelvin_symbol">&#176;&#8490;</string>
+    <string name="cubic_meter">&#13221;</string>
+    <string name="temperature">Temprature Settings</string>
+    <string name="select_temprature">Select Temprature</string>
+    <string name="drive_tab">Drive</string>
+    <string name="cycling_tab">Cycling</string>
+    <string name="walking_tab">Walking</string>
+    <string name="please_install_maps_app">Please install a maps application</string>
+    <string name="enter_a_destination_first">Enter a destination first</string>
+    <string name="not_available">not available</string>
+    <string name="miles">miles</string>
+    <string name="explore_nearby_places">Explore Nearby Places</string>
+    <string name="weather">Weather</string>
+    <string name="selected_contacts_saved">Selected contacts saved</string>
+    <string name="contacts_selected">&#160;&#160;Contacts Selected</string>
+    <string name="time">Time:</string>
+    <string name="navigate">Navigate</string>
+    <string name="heading_0_0">Heading: 0.0</string>
+    <string name="save_contacts">Save Contacts</string>
+    <string name="today_s_weather">Today\'s Weather</string>
+    <string name="weekly_weather">Weekly Weather</string>
+    <string name="textview">TextView</string>
+    <string name="route">Route</string>
+    <string name="emergency_contacts">Emergency Contacts</string>
+    <array name="default_templates_array">
+        <item>Template 1</item>
+        <item>Template 2</item>
+        <item>Template 3</item>
+        <item>Template 4</item>
+        <item>Template 5</item>
+    </array>
+    <string name="default_templates">Default Templates</string>
+    <string name="custom_templates">Custom Templates</string>
+    <string name="add_template">Add Template</string>
+    <string name="send_text">Send Text to %1$s</string>
+    <string name="enter_message">Enter Message</string>
+    <string name="track_me_settings">Track Me Settings</string>
+    <string name="add_remove_contacts">Add/Remove Contacts</string>
+    <string name="add_locations">Add Locations</string>
+    <string name="save_location">Save Location</string>
+    <string name="select_all">Select All</string>
+    <string name="number">Number</string>
+    <string name="location">Location</string>
+    <string name="emergency_contacts_settings">Emergency Contacts Settings</string>
+    <string name="emergency_contact_message">Hey Listen! I am running into some trouble. I couldn’t contact you because of some reason. Kindly look into my location! .  %1$s.</string>
+    <string name="enable_disable_detail">Allows to monitor your locatinon after specific interval of time.</string>
+    <string name="add_remove_contacts_details">Select &amp; save your desired contacts to whom you\'ll notify.</string>
+    <string name="edit_message_details">Modify or remove notification message details and add desired information which you want to send.</string>
+    <string name="test_notificaiton_details">Check weather message is successfully sent to desired numbers or not.</string>
+    <string name="add_remove_locations">Add/Remove Locations</string>
+    <string name="add_remove_location_details">Add locations to send emergency alerts based on location</string>
+    <string name="add_new_location">Add New Location</string>
+    <string name="no_saved_contacts_plz">No Saved Contacts, plz click add/remove contacts.</string>
+    <string name="no_saved_message">No Saved message, plz click edit message.</string>
+    <string name="unable_to_send_text_message">Unable to Send text messages, plz try again.</string>
+    <string name="text_message_sent_to_following">Text Message Sent to Following</string>
+
+    <string name="in_radius_message">Hi! I am entering into the radius of (Integar value jo save ke ho ge) of my (work, home , office, etc…jo b name hua is ka). See my location!</string>
+    <string name="out_radius_message">Hi! I am exiting out of the radius of (Integar value jo save ke ho ge) of my (work, home , office, etc…jo b name hua is ka). See my location!</string>
+    <string name="voice_navigation">Voice Navigation</string>
+    <string name="speech_prompt">"Say something&#8230;</string>
+
+
+</resources>

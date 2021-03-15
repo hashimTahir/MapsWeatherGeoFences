@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorAccent">@color/colorPrimary</color>
+    <color name="appbar_color">#20283E</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="light_gray">#D3D3D3</color>
+
+    <color name="share_loc_color">#11A597</color>
+    <color name="find_route_color">#FF9800</color>
+    <color name="red">#E13F3F</color>
+    <color name="info_color">#49e0e6</color>
+    <color name="fab5">#5C646B</color>
+    <color name="fab6">#858B90</color>
+    <color name="fab7">#FF2A4370</color>
+    <color name="compass_color">#FF4500</color>
+
+
+    <color name="lite_gray">#787878</color>
+
+
+
+    <color name="gradient_end">#462F7B</color>
+    <color name="gradient_start">#567EC5</color>
+    <!--<color name="line_color">#ebebeb</color>-->
+    <color name="line_color">@color/light_gray</color>
+
+
+    <color name="colorActionMode">#009362</color>
+    <color name="colorControlActivated">#50FF4081</color>
+
+
+
+    <color name="atm_color">#7ce2f8</color>
+    <color name="bank_color">#5b91fd</color>
+    <color name="hospital_color">#26f7cd</color>
+    <color name="mosque_color">#81b60e</color>
+    <color name="e">#7BF672</color>
+    <color name="f">#00FF06</color>
+    <color name="g">@color/gradient_start</color>
+    <color name="h">#00D8FF</color>
+    <color name="cafe_color">#26f7cd</color>
+    <color name="j">#FFFC00</color>
+    <color name="k">#FEA905</color>
+    <color name="police_color">#4902ff</color>
+    <color name="m">#0D7A95</color>
+    <color name="bus_station_color">#e30200</color>
+    <color name="o">#0C0C0C</color>
+    <color name="p">#387D51</color>
+    <color name="q">#FF008A</color>
+    <color name="r">#BE58F2</color>
+    <color name="view_all_color">#ccb408</color>
+
+    <color name="weather_button_color">#1a3574</color>
+
+
+
+
+
+
+    <color name="new_color">#2ECD71</color>
+    <color name="text_color">#FF3BCF68</color>
+
+
+    <color name="weather_gradiet_end">#1e5e99</color>
+    <color name="weather_gradiet_start">#1FA2FC</color>
+    <color name="settings_color">#4950e6</color>
+    <color name="rate_color">#e45252</color>
+
+
+</resources>

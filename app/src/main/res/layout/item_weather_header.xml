@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hCurrentWeatherLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/weather_gradient"
+    android:elevation="@dimen/_8dp"
+    app:layout_constraintCircleRadius="@dimen/_8dp"
+    tools:showIn="@layout/activity_weather">
+
+    <TextView
+        android:id="@+id/hCurrrentTempTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/test_string"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hCurrentTimeTv"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/hCurrrentDateTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/test_string"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sp"
+        app:layout_constraintStart_toStartOf="@+id/hCurrrentTempTv"
+        app:layout_constraintTop_toBottomOf="@+id/hCurrrentTempTv" />
+
+    <TextView
+        android:id="@+id/hCurrrentCityTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/test_string"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/hCurrrentTempTv"
+        app:layout_constraintTop_toBottomOf="@+id/hCurrrentDateTv" />
+
+    <TextView
+        android:id="@+id/hCurrentTimeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/test_string"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/hCurrentWeatherIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/hCurrentTimeTv"
+        app:layout_constraintTop_toBottomOf="@+id/hCurrentTimeTv"
+        tools:ignore="ContentDescription" />
+
+
+    <TextView
+        android:id="@+id/hCurrentWeatherDetailTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/test_string"
+        android:textSize="@dimen/_18sp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintStart_toEndOf="@+id/hCurrentWeatherIcon"
+        app:layout_constraintTop_toTopOf="@+id/hCurrentWeatherIcon" />
+
+
+    <TextView
+        android:id="@+id/hPressureDetailTv"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp" android:visibility="gone"
+        android:text="@string/test_string"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/hCurrentWeatherDetailTv"
+        app:layout_constraintTop_toBottomOf="@+id/hCurrentWeatherDetailTv" />
+
+
+    <TextView
+        android:id="@+id/hHumidityTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/test_string"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/hPressureDetailTv"
+        app:layout_constraintTop_toBottomOf="@+id/hPressureDetailTv" />
+</androidx.constraintlayout.widget.ConstraintLayout>

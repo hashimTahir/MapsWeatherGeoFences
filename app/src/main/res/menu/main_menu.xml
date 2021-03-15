@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group
+        android:id="@+id/remove_ads_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/remove_ads_menu"
+            android:icon="@drawable/ic_removeads"
+            android:title="@string/remove_ads" />
+
+
+    </group>
+
+    <group
+        android:id="@+id/basics_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_currentLocationInfo"
+            android:icon="@drawable/ic_currentlocation"
+            android:title="@string/current_location" />
+        <item
+            android:id="@+id/nav_nearbyPlaces"
+            android:icon="@drawable/ic_nearbyplaces"
+            android:title="@string/places_nearby" />
+        <item
+            android:id="@+id/nav_share_location"
+            android:icon="@drawable/nav_places_nearby"
+            android:title="@string/share_my_loction" />
+
+    </group>
+
+
+    <group
+        android:id="@+id/advanced_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_findRoute"
+            android:icon="@drawable/ic_findroute"
+            android:title="@string/find_route" />
+
+        <item
+            android:id="@+id/nav_weather"
+            android:icon="@drawable/weather"
+            android:title="@string/weather" />
+        <item
+            android:id="@+id/nav_compass"
+            android:icon="@drawable/compass"
+            android:title="@string/compass" />
+        <!--<item-->
+        <!--android:id="@+id/nav_TrackMe"-->
+        <!--android:icon="@drawable/nav_track_me"-->
+        <!--android:title="@string/track_me" />-->
+        <!--<item-->
+        <!--android:id="@+id/nav_EmergencyText"-->
+        <!--android:icon="@drawable/nav_emergency_text"-->
+        <!--android:title="@string/emergency_text" />-->
+
+
+    </group>
+    <group
+        android:id="@+id/settings_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings" />
+    </group>
+
+    <group
+        android:id="@+id/reach_group"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_ContactUs"
+            android:icon="@drawable/ic_contactus"
+            android:title="@string/contact_us" />
+        <item
+            android:id="@+id/rate_us_menu"
+            android:icon="@drawable/ic_rateus"
+            android:title="@string/rate_us" />
+        <item
+            android:id="@+id/share_app"
+            android:icon="@drawable/ic_shareapp"
+            android:title="@string/share_app" />
+        <item
+            android:id="@+id/menu_privacy_policy"
+            android:icon="@drawable/ic_privacypolicy"
+            android:title="@string/privacy_policy" />
+
+    </group>
+    <group
+        android:id="@+id/share_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_facebook"
+            android:icon="@drawable/ic_facebook"
+            android:title="@string/follow_us_facebook" />
+        <item
+            android:id="@+id/nav_twitter"
+            android:icon="@drawable/ic_twitter"
+            android:title="@string/follow_us_twitter" />
+
+        <item
+            android:id="@+id/nav_insta"
+            android:icon="@drawable/ic_instagram"
+            android:title="@string/follow_us_instagram" />
+
+    </group>
+
+</menu>

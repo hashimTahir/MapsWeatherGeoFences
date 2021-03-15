@@ -1,0 +1,571 @@
+package com.hashim.mapswithgeofencing.Activities;
+
+import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.net.Uri;
+import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.material.tabs.TabLayout;
+import com.hashim.mapswithgeofencing.DirectionsApi.DirectionFinder;
+import com.hashim.mapswithgeofencing.DirectionsApi.DirectionFinderListener;
+import com.hashim.mapswithgeofencing.DirectionsApi.Route;
+import com.hashim.mapswithgeofencing.Helper.AnimHelper;
+import com.hashim.mapswithgeofencing.Helper.Constants;
+import com.hashim.mapswithgeofencing.Helper.LogToastSnackHelper;
+import com.hashim.mapswithgeofencing.Helper.MarkerUtils;
+import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
+import com.hashim.mapswithgeofencing.Helper.UIHelper;
+import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
+import com.hashim.mapswithgeofencing.R;
+
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+
+public class CalculateActivity extends AppCompatActivity implements
+        TabLayout.BaseOnTabSelectedListener, OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        DirectionFinderListener, PlaceSelectionListener {
+
+    @BindView(R.id.hFromTV)
+    TextView hFromTv;
+
+    @BindView(R.id.hToTV)
+    TextView hToTv;
+
+    @BindView(R.id.toolbar_title)
+    TextView hToolbarTitle;
+    @BindView(R.id.hAcrAppBar)
+    Toolbar hToolbar;
+    @BindView(R.id.hTabs)
+    TabLayout hTabLayout;
+    @BindView(R.id.hFragmentContainer)
+    FrameLayout hFragmentContainer;
+    @BindView(R.id.hDistanceTv)
+    TextView hDistanceTv;
+    @BindView(R.id.hTimeTv)
+    TextView hTimeTv;
+    @BindView(R.id.place_autocomplete_card)
+    CardView hPlaceAutocompleteCard;
+    @BindView(R.id.hBottomCardView)
+    CardView hBottomCardView;
+    @BindView(R.id.hGetDirectionsB)
+    Button hGetDirectionsB;
+
+
+    @BindView(R.id.hIconSwitch)
+    ImageView hIconSwitch;
+
+
+    @BindView(R.id.hEtaTV)
+    TextView hEtaTV;
+
+    private LatLng hCurrentLatLng;
+    private LatLng hDestLatLng;
+
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+
+    FragmentManager hFragmentManager;
+    private GoogleMap hGoogleMap;
+    private FusedLocationProviderClient hFusedLocationProviderClient;
+    private GoogleApiClient hGoogleApiClient;
+    private List<Marker> hOriginMarkers = new ArrayList<>();
+    private List<Marker> hDestinationMarkers = new ArrayList<>();
+    private List<Polyline> hPolylinePaths = new ArrayList<>();
+    private PlaceAutocompleteFragment hPlaceAutocompleteFragment;
+    private String hDestName;
+    private boolean hIsFromSearch;
+    private String hMode;
+    private boolean hIsSwitced = false;
+    private String hCurrentLocationName;
+    private boolean hIsVoiceCommand;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.acitivity_calculate_route);
+        ButterKnife.bind(this);
+
+        UIHelper.hOreoOrientationCheck(this);
+
+        ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
+        hToolBarHelper.hSetToolbar(hToolbar);
+        hToolBarHelper.hSetToolbarTitle(hToolbarTitle, getString(R.string.find_route));
+
+        hGetIntentData();
+        hMode = DirectionFinder.H_DRIVING_MODE;
+        h_interstetialAdd = new H_InterstetialAdd(this);
+
+        hInitView();
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_settings, menu);
+        return true;
+
+    }
+
+    private void hInitView() {
+        hTabLayout.addTab(hTabLayout.newTab().setText(getString(R.string.drive_tab)).setIcon(R.drawable.car));
+        hTabLayout.addTab(hTabLayout.newTab().setText(getString(R.string.cycling_tab)).setIcon(R.drawable.cycle));
+        hTabLayout.addTab(hTabLayout.newTab().setText(getString(R.string.walking_tab)).setIcon(R.drawable.walking));
+        hTabLayout.addOnTabSelectedListener(this);
+
+
+        hTabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.share_loc_color), PorterDuff.Mode.SRC_IN);
+        hTabLayout.getTabAt(1).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        hTabLayout.getTabAt(2).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+
+
+        hPlaceAutocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        hPlaceAutocompleteFragment.setOnPlaceSelectedListener(this);
+
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.hMap);
+        mapFragment.getMapAsync(this);
+
+        hGetDirectionsB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, (R.color.share_loc_color))));
+    }
+
+    private void hGetIntentData() {
+
+        Bundle hBundle = getIntent().getExtras();
+        if (hBundle != null) {
+            hIsFromSearch = hBundle.getBoolean(Constants.H_FROM_SEARCH_IC);
+            if (hIsFromSearch) {
+                hDestName = hBundle.getString(Constants.H_LOC_NAME);
+
+                hDestLatLng = new LatLng(hBundle.getDouble(Constants.H_DEST_LAT), hBundle.getDouble(Constants.H_DEST_LNG));
+                hCurrentLocationName = hBundle.getString(Constants.H_CURRENT_LOCATION_NAME);
+
+            } else {
+                if (hBundle.containsKey(Constants.H_VOICE_COMMAD)) {
+                    hDestName = hBundle.getString(Constants.H_LOC_NAME);
+                    hIsVoiceCommand = hBundle.getBoolean(Constants.H_VOICE_COMMAD);
+
+                    hDestLatLng = new LatLng(hBundle.getDouble(Constants.H_DEST_LAT), hBundle.getDouble(Constants.H_DEST_LNG));
+
+                }
+            }
+            hCurrentLatLng = new LatLng(hBundle.getDouble(Constants.H_LATITUDE), hBundle.getDouble(Constants.H_LONGITUDE));
+        }
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        if (item.getItemId() == R.id.settings) {
+            Intent hIntent = new Intent(this, SettingsActivity.class);
+            startActivity(hIntent);
+            h_interstetialAdd.hShowInterstitial();
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        h_interstetialAdd.hShowInterstitial();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        UIHelper.hOreoOrientationCheck(this);
+
+        UIHelper.hSetTextToTextView(hFromTv, getString(R.string.current_location));
+
+        h_interstetialAdd.hLoadAd();
+        if (hDestName != null) {
+            UIHelper.hSetTextToTextView(hToTv, hDestName);
+
+            try {
+                hFindDirections(hMode);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+
+
+    @OnClick({R.id.hToTV, R.id.hGetDirectionsB})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.hToTV:
+//                UIHelper.hMakeVisibleInVisible(hPlaceAutocompleteCard, Constants.H_VISIBLE);
+                final View root = hPlaceAutocompleteCard.getRootView();
+                root.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        root.findViewById(R.id.place_autocomplete_search_input)
+                                .performClick();
+                    }
+                });
+                break;
+            case R.id.hGetDirectionsB:
+
+                hLaunchGoogleMaps();
+                break;
+
+
+        }
+    }
+
+    private void hLaunchGoogleMaps() {
+
+        Uri gmmIntentUri1 = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" +
+                hCurrentLatLng.latitude + "," + hCurrentLatLng.longitude
+                + "&destination=" + hDestLatLng.latitude + "," + hDestLatLng.longitude);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri1);
+        intent.setPackage("com.google.android.apps.maps");
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            try {
+                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri1);
+                startActivity(unrestrictedIntent);
+            } catch (ActivityNotFoundException innerEx) {
+                Toast.makeText(this, getString(R.string.please_install_maps_app), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        tab.getIcon().setColorFilter(ContextCompat.getColor(this, R.color.share_loc_color), PorterDuff.Mode.SRC_IN);
+
+
+        if (hCurrentLatLng != null && hDestLatLng != null) {
+            switch (tab.getPosition()) {
+                case 0:
+
+                    try {
+                        hMode = DirectionFinder.H_DRIVING_MODE;
+                        hFindDirections(hMode);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 1:
+                    try {
+                        hMode = DirectionFinder.H_CYCLING_MODE;
+                        hFindDirections(hMode);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 2:
+                    try {
+                        hMode = DirectionFinder.H_WALKING_MODE;
+                        hFindDirections(hMode);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+            }
+        } else {
+            LogToastSnackHelper.hMakeLongToast(this, getString(R.string.enter_a_destination_first));
+        }
+
+    }
+
+    //Todo: change color of eta also its size
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+        tab.getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        hGoogleMap = googleMap;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(this);
+        hGoogleMap.setMapType(hSettingsPrefrences.hGetMapsType());
+        hGoogleMap.setMyLocationEnabled(true);
+        hGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        hGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hCurrentLatLng, 12.0f));
+
+        hBuildGoogleApiClient();
+
+
+    }
+
+    protected synchronized void hBuildGoogleApiClient() {
+        hFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        hGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        hGoogleApiClient.connect();
+    }
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+
+    @Override
+    public void onDirectionFinderStart() {
+        if (hOriginMarkers != null) {
+            for (Marker marker : hOriginMarkers) {
+                marker.remove();
+            }
+        }
+
+        if (hDestinationMarkers != null) {
+            for (Marker marker : hDestinationMarkers) {
+                marker.remove();
+            }
+        }
+
+        if (hPolylinePaths != null) {
+            for (Polyline polyline : hPolylinePaths) {
+                polyline.remove();
+            }
+        }
+    }
+
+    @Override
+    public void onDirectionFinderSuccess(List<Route> route) {
+        if (route.size() > 0) {
+            //        progressDialog.dismiss();
+            hPolylinePaths = new ArrayList<>();
+            hOriginMarkers = new ArrayList<>();
+            hDestinationMarkers = new ArrayList<>();
+
+            hUpdatePolyLine(route);
+            hCreateMarker(new LatLng(hCurrentLatLng.latitude, hCurrentLatLng.longitude),
+                    new LatLng(hDestLatLng.latitude, hDestLatLng.longitude));
+//        hHideLoader();
+
+
+        } else {
+            LogToastSnackHelper.hMakeLongToast(this, hMode.concat(getString(R.string.not_available)));
+            AnimHelper.hAnimateBottomDown(this, hBottomCardView);
+            UIHelper.hMakeVisibleInVisible(hBottomCardView, Constants.H_INVISIBLE);
+        }
+
+
+    }
+
+    private void hCreateMarker(LatLng currentLatLng, LatLng destLatLng) {
+        MarkerOptions hMarkerOptions = new MarkerOptions();
+        hMarkerOptions.position(currentLatLng).icon(BitmapDescriptorFactory.
+                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER))));
+
+        MarkerOptions hMarkerOptions1 = new MarkerOptions();
+        hMarkerOptions1.position(destLatLng).icon(BitmapDescriptorFactory.
+                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER))));
+
+
+        hGoogleMap.addMarker(hMarkerOptions).showInfoWindow();
+        hGoogleMap.addMarker(hMarkerOptions1).showInfoWindow();
+
+    }
+
+    private void hUpdatePolyLine(List<Route> routes) {
+
+        if (routes.size() > 0) {
+            hGoogleMap.clear();
+            String hDist = null;
+            String hDuration = null;
+            for (Route route : routes) {
+
+                PolylineOptions polylineOptions = new PolylineOptions().geodesic(true).
+                        color(ContextCompat.getColor(this, R.color.colorPrimary)).width(10);
+
+                for (int i = 0; i < route.points.size(); i++) {
+                    polylineOptions.add(route.points.get(i));
+
+
+                }
+                hPolylinePaths.add(hGoogleMap.addPolyline(polylineOptions));
+
+            }
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+
+            hDist = String.valueOf(routes.get(0).distance.text);
+            int dis = routes.get(0).distance.value;
+            hDuration = String.valueOf(routes.get(0).duration.text);
+
+            SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(this);
+
+            if (hSettingsPrefrences.hGetDistanceUnit() == Constants.H_MILES_DIS) {
+                dis = dis / 1600;
+
+                UIHelper.hSetTextToTextView(hDistanceTv, String.valueOf(dis) + getString(R.string.miles));
+                UIHelper.hSetTextToTextView(hEtaTV, "  (".concat(hDuration) + ")");
+            } else {
+
+                UIHelper.hSetTextToTextView(hDistanceTv, hDist);
+                UIHelper.hSetTextToTextView(hEtaTV, "  (".concat(hDuration) + ")");
+            }
+
+
+//        hGoogleMap.setMyLocationEnabled(false);
+
+
+            UIHelper.hSetTextToTextView(hTimeTv, hDestName);
+            AnimHelper.hAnimateBottomUp(this, hBottomCardView);
+
+        }
+
+    }
+
+    @Override
+    public void onPlaceSelected(Place place) {
+
+        String hPlaceName = (String) place.getName();
+        hDestLatLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+        hDestName = hPlaceName;
+        UIHelper.hSetTextToTextView(hToTv, hPlaceName);
+
+        try {
+            hFindDirections(hMode);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void hFindDirections(String mode) throws UnsupportedEncodingException {
+        String origin = String.valueOf(hCurrentLatLng.latitude).concat(",").concat(String.valueOf(hCurrentLatLng.longitude));
+        String destination = String.valueOf(hDestLatLng.latitude).concat(",").concat(String.valueOf(hDestLatLng.longitude));
+
+        switch (mode) {
+            case DirectionFinder.H_CYCLING_MODE:
+                new DirectionFinder(this, origin, destination, DirectionFinder.H_CYCLING_MODE).execute();
+                break;
+            case DirectionFinder.H_DRIVING_MODE:
+                new DirectionFinder(this, origin, destination, DirectionFinder.H_DRIVING_MODE).execute();
+                break;
+            case DirectionFinder.H_WALKING_MODE:
+                new DirectionFinder(this, origin, destination, DirectionFinder.H_WALKING_MODE).execute();
+                break;
+        }
+
+
+    }
+
+    @Override
+    public void onError(Status status) {
+
+    }
+
+
+    @OnClick(R.id.hIconSwitch)
+    public void onViewClicked() {
+        if (!hIsSwitced) {
+            UIHelper.hSetTextToTextView(hToTv, getString(R.string.current_location));
+            UIHelper.hSetTextToTextView(hFromTv, hDestName);
+
+
+            LatLng hTempLatLng = hCurrentLatLng;
+            hCurrentLatLng = hDestLatLng;
+            hDestLatLng = hTempLatLng;
+            hIsSwitced = true;
+        } else {
+            UIHelper.hSetTextToTextView(hToTv, hDestName);
+            UIHelper.hSetTextToTextView(hFromTv, getString(R.string.current_location));
+
+
+            LatLng hTempLatLng = hCurrentLatLng;
+            hCurrentLatLng = hDestLatLng;
+            hDestLatLng = hTempLatLng;
+
+            hIsSwitced = false;
+        }
+    }
+}

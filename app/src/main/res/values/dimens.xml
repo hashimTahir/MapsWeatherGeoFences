@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="_5dp">5dp</dimen>
+    <dimen name="_25sp">25sp</dimen>
+    <dimen name="_30dp">30dp</dimen>
+    <dimen name="_120dp">120dp</dimen>
+    <dimen name="_40dp">40dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
+    <dimen name="_24dp">20dp</dimen>
+    <dimen name="_250dp">250dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <integer name="toast_offset">80</integer>
+    <dimen name="activity_horizontal_margin">2dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="_20sp">20sp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+    <dimen name="_48dp">48dp</dimen>
+    <dimen name="_15sp">15sp</dimen>
+    <dimen name="_2dp">2dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="search_view_inset">10dp</dimen>
+
+    <dimen name="list_item_height">48dp</dimen>
+    <dimen name="horizontal_margin">16dp</dimen>
+    <dimen name="list_item_left_margin">72dp</dimen>
+    <dimen name="_140dp">140dp</dimen>
+    <dimen name="_127dp">127dp</dimen>
+    <dimen name="_23dp">23dp</dimen>
+    <dimen name="_256dp">256dp</dimen>
+    <dimen name="_69dp">69dp</dimen>
+    <dimen name="_18sp">18sp</dimen>
+    <dimen name="_35sp">35sp</dimen>
+    <dimen name="_150dp">150dp</dimen>
+    <dimen name="_12sp">12sp</dimen>
+    <dimen name="_14sp">14sp</dimen>
+    <dimen name="_16dp">16dp</dimen>
+
+</resources>
