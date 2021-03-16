@@ -3,7 +3,6 @@ package com.hashim.mapswithgeofencing.Adapters;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SectionIndexer;
 
@@ -16,6 +15,7 @@ import com.hashim.mapswithgeofencing.Interfaces.OnItemClickListener;
 import com.hashim.mapswithgeofencing.Interfaces.RecyclerInterface;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.ViewHolders.ContactsVH;
+import com.hashim.mapswithgeofencing.databinding.ItemRecyclerContactsBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +40,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_recycler_contacts, parent, false);
-        return new ContactsVH(view);
+        return new ContactsVH(
+                ItemRecyclerContactsBinding.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        parent,
+                        false
+                )
+        );
     }
 
     @Override
@@ -52,19 +56,19 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void hBindTodaysVh(ContactsVH hContactsVH, int position) {
-        hContactsVH.rootView.setOnLongClickListener(v -> {
+        hContactsVH.hItemRecyclerContactsBinding.rootView.setOnLongClickListener(v -> {
             hOnItemClickListener.onItemLongClick(v, position);
             return false;
         });
-        hContactsVH.title.setText(hNewList.get(position).getName());
-        UIHelper.hSetTextToTextView(hContactsVH.hNumberTv, hNewList.get(position).getNumber());
+        hContactsVH.hItemRecyclerContactsBinding.title.setText(hNewList.get(position).getName());
+        UIHelper.hSetTextToTextView(hContactsVH.hItemRecyclerContactsBinding.numberTextView, hNewList.get(position).getNumber());
         int id = hNewList.get(position).getContactsId();
 
         if (selectedIds.contains(id)) {
-            hContactsVH.rootView.setForeground(new ColorDrawable(ContextCompat.getColor(context,
+            hContactsVH.hItemRecyclerContactsBinding.rootView.setForeground(new ColorDrawable(ContextCompat.getColor(context,
                     R.color.colorControlActivated)));
         } else {
-            hContactsVH.rootView.setForeground(new ColorDrawable(ContextCompat.getColor(context,
+            hContactsVH.hItemRecyclerContactsBinding.rootView.setForeground(new ColorDrawable(ContextCompat.getColor(context,
                     android.R.color.transparent)));
         }
 

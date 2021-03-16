@@ -9,9 +9,6 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -20,10 +17,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,17 +45,12 @@ import com.hashim.mapswithgeofencing.Interfaces.OnFragmentInteractionListener;
 import com.hashim.mapswithgeofencing.Models.HLatLngModel;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
-import com.xw.repo.BubbleSeekBar;
+import com.hashim.mapswithgeofencing.databinding.FragmentAddLocationBinding;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -68,31 +60,6 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     //        DeleteCallBack, OnItemClickListener, onActionModeListener
     private static final String H_LOCATION_ID = "H_LOCATION_ID";
 
-    Unbinder unbinder;
-
-    @BindView(R.id.hRadiusSeekBar)
-    BubbleSeekBar hRadiusSeekBar;
-
-
-    @BindView(R.id.hSaveContactsB)
-    Button hSaveContactsB;
-
-    @BindView(R.id.hTitleTv)
-    TextView hTitleTv;
-
-    @BindView(R.id.hEditTv)
-    EditText hEditTv;
-
-    @BindView(R.id.hTitleLayout)
-    ConstraintLayout hTitleLayout;
-
-
-    @BindView(R.id.hAddLocationLayout)
-    ConstraintLayout hAddLocationLayout;
-    @BindView(R.id.hContactsTv)
-    TextView hContactsTv;
-    @BindView(R.id.hViewTv)
-    TextView hViewTv;
 
     private String hLocationId;
     private OnFragmentInteractionListener hOnFragmentInteractionListener;
@@ -118,6 +85,7 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     }.getType();
     private String hLocationName;
     private LatLng hGeoLatLng;
+    private FragmentAddLocationBinding hFragmentAddLocationBinding;
 
     public AddLocationFragment() {
 
@@ -176,7 +144,9 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_location, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        hFragmentAddLocationBinding = FragmentAddLocationBinding.inflate(
+                inflater, container, false
+        );
         setHasOptionsMenu(true);
         hInitView();
         return view;
@@ -192,10 +162,10 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
             mapFragment.getMapAsync(this);
         }
 
-        hViewTv.setPaintFlags(hViewTv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        UIHelper.hSetTextToTextView(hViewTv, getString(R.string.view));
+        hFragmentAddLocationBinding.hViewTv.setPaintFlags(hFragmentAddLocationBinding.hViewTv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        UIHelper.hSetTextToTextView(hFragmentAddLocationBinding.hViewTv, getString(R.string.view));
 
-        hEditTv.addTextChangedListener(this);
+        hFragmentAddLocationBinding.hEditTv.addTextChangedListener(this);
 
     }
 
@@ -229,7 +199,6 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @SuppressLint("MissingPermission")
@@ -281,36 +250,36 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     public void onResume() {
         super.onResume();
         if (hLocationEntitiy == null) {
-            hRadiusSeekBar.setProgress(0);
-            UIHelper.hSetTextToTextView(hTitleTv, getString(R.string.add_new_location));
+            hFragmentAddLocationBinding.hRadiusSeekBar.setProgress(0);
+            UIHelper.hSetTextToTextView(hFragmentAddLocationBinding.hTitleTv, getString(R.string.add_new_location));
 
-            hLocationName = UIHelper.hGetTextFromTextView(hEditTv);
+            hLocationName = UIHelper.hGetTextFromTextView(hFragmentAddLocationBinding.hEditTv);
             if (!hLocationName.isEmpty()) {
                 if (hSavedContactsList != null) {
-                    UIHelper.hSetTextToTextView(hContactsTv,
+                    UIHelper.hSetTextToTextView(hFragmentAddLocationBinding.hContactsTv,
                             String.valueOf(hSavedContactsList.size()).concat(" contacts associated with ").concat(hLocationName));
                 } else {
-                    UIHelper.hSetTextToTextView(hContactsTv, "No contacts associated with ".concat(hLocationName));
+                    UIHelper.hSetTextToTextView(hFragmentAddLocationBinding.hContactsTv, "No contacts associated with ".concat(hLocationName));
                 }
             } else {
                 if (hSavedContactsList != null) {
-                    UIHelper.hSetTextToTextView(hContactsTv,
+                    UIHelper.hSetTextToTextView(hFragmentAddLocationBinding.hContactsTv,
                             String.valueOf(hSavedContactsList.size()).concat(" contacts associated with this location"));
                 } else {
-                    UIHelper.hSetTextToTextView(hContactsTv, "No contacts associated with this location");
+                    UIHelper.hSetTextToTextView(hFragmentAddLocationBinding.hContactsTv, "No contacts associated with this location");
 
                 }
 
             }
 
         } else {
-            hRadiusSeekBar.setProgress(hLocationEntitiy.getRadius());
-            UIHelper.hSetTextToTextView(hEditTv, hLocationEntitiy.getLocationName());
-            UIHelper.hSetTextToTextView(hTitleTv, hLocationEntitiy.getLocationName());
+            hFragmentAddLocationBinding.hRadiusSeekBar.setProgress(hLocationEntitiy.getRadius());
+            UIHelper.hSetTextToTextView(hFragmentAddLocationBinding.hEditTv, hLocationEntitiy.getLocationName());
+            UIHelper.hSetTextToTextView(hFragmentAddLocationBinding.hTitleTv, hLocationEntitiy.getLocationName());
             if (hSavedContactsList != null) {
-                UIHelper.hSetTextToTextView(hContactsTv, String.valueOf(hSavedContactsList.size()).concat(" contacts associated with ").concat(hLocationEntitiy.getLocationName()));
+                UIHelper.hSetTextToTextView(hFragmentAddLocationBinding.hContactsTv, String.valueOf(hSavedContactsList.size()).concat(" contacts associated with ").concat(hLocationEntitiy.getLocationName()));
             } else {
-                UIHelper.hSetTextToTextView(hContactsTv, "no contacts associated with ".concat(hLocationEntitiy.getLocationName()));
+                UIHelper.hSetTextToTextView(hFragmentAddLocationBinding.hContactsTv, "no contacts associated with ".concat(hLocationEntitiy.getLocationName()));
             }
         }
     }
@@ -341,20 +310,21 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-
-    @OnClick({R.id.hViewTv, R.id.hSaveContactsB})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.hViewTv:
-                hAddRemoveContacts();
-                break;
-            case R.id.hSaveContactsB:
-                hCheckIds(hIsAddNewLocation);
-
-
-                break;
-        }
-    }
+//
+//    @OnClick({R.id.hViewTv, R.id.hSaveContactsB})
+//    public void hSetupListeners(View view) {
+//        switch (view.getId()) {
+//
+//            case R.id.hViewTv:
+//                hAddRemoveContacts();
+//                break;
+//            case R.id.hSaveContactsB:
+//                hCheckIds(hIsAddNewLocation);
+//
+//
+//                break;
+//        }
+//    }
 
     private void hCheckIds(boolean bool) {
         StringBuilder hStringBuilder = new StringBuilder();
@@ -373,7 +343,7 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
             List<Integer> hLocationIds = hAppRepository.hGetAllLocationIds();
             int hNewLocationId = hGenerateNewId(hLocationIds);
             hLocationEntitiy = new LocationEntitiy(hNewLocationId, hGeoLatLng.latitude, hGeoLatLng.latitude,
-                    hLocationName, hRadiusSeekBar.getProgress());
+                    hLocationName, hFragmentAddLocationBinding.hRadiusSeekBar.getProgress());
             hAppRepository.hAddLocation(hLocationEntitiy);
 
             for (ContactsEntity contactsEntity : hSavedContactsList) {
@@ -385,7 +355,7 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
         } else {
             LogToastSnackHelper.hLogField(hTag, String.valueOf("Entitiy Id  " + hLocationEntitiy.getLid()));
             hLocationEntitiy.setLocationName(hLocationName);
-            hLocationEntitiy.setRadius(hRadiusSeekBar.getProgress());
+            hLocationEntitiy.setRadius(hFragmentAddLocationBinding.hRadiusSeekBar.getProgress());
             hLocationEntitiy.setLatitude(hGeoLatLng.latitude);
             hLocationEntitiy.setLongitude(hGeoLatLng.latitude);
             hAppRepository.hAddLocation(hLocationEntitiy);

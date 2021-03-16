@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true" android:id="@+id/buttonLayou"
-    android:focusable="true"
-    android:orientation="vertical"
-    tools:showIn="@layout/bottom_layout">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/FloatingActionButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/buttonLayou"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:clickable="false"
-        android:tint="@color/white"
-        app:backgroundTint="@color/fab5" />
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        tools:showIn="@layout/bottom_layout">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/ButtonTexts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:clickable="false"
-        android:lines="2"
-        android:padding="@dimen/_5dp"
-        android:text="@string/test_string"
-        android:textSize="10sp" />
-</LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/hFloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:tint="@color/white"
+            app:backgroundTint="@color/fab5" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/hButtonTexts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="false"
+            android:lines="2"
+            android:padding="@dimen/_5dp"
+            android:text="@string/test_string"
+            android:textSize="10sp" />
+    </LinearLayout>
+</layout>

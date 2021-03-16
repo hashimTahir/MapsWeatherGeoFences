@@ -1,12 +1,11 @@
 package com.hashim.mapswithgeofencing.Adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.hashim.mapswithgeofencing.Helper.Constants;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
@@ -16,6 +15,8 @@ import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.ViewHolders.TodaysWeatherVH;
 import com.hashim.mapswithgeofencing.ViewHolders.WeeklyWeatherVH;
+import com.hashim.mapswithgeofencing.databinding.ItemRecyclerWeather1Binding;
+import com.hashim.mapswithgeofencing.databinding.ItemRecyclerWeatherBinding;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -50,8 +51,13 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private RecyclerView.ViewHolder hGetWeeklyWeatherVH(ViewGroup parent) {
-        View hView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_weather1, parent, false);
-        return new WeeklyWeatherVH(hView);
+        return new WeeklyWeatherVH(
+                ItemRecyclerWeather1Binding.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        parent,
+                        false
+                )
+        );
     }
 
     @Override
@@ -76,28 +82,28 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         String hTime = hWeatherModelToShow.gethTime();
         String hdate = hWeatherModelToShow.getHdate();
         String hDescription = hWeatherModelToShow.gethDescription();
-        UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hDayTv, hdate);
+        UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1DayTv, hdate);
         switch (hTempUnit) {
             case Constants.H_CELCIUS_UNIT:
-                UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hMaxTempTv,
+                UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1MaxTempTv,
                         "Temp:\n" + hMaxTemp + hContext.getString(R.string.degree_symbol));
                 break;
             case Constants.H_FARENHEIT_UNIT:
-                UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hMaxTempTv,
+                UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1MaxTempTv,
                         "Temp:\n" + hMaxTemp + hContext.getString(R.string.farenheit_symbol));
                 break;
             case Constants.H_KELVIL_UNIT:
-                UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hMaxTempTv,
+                UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1MaxTempTv,
                         "Temp:\n" + hMaxTemp + hContext.getString(R.string.kelvin_symbol));
                 break;
         }
-        UIHelper.hMakeVisibleInVisible(hWeeklyWeatherVH.hTimeTv, Constants.H_INVISIBLE);
-        UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hDescriptionTv, hDescription);
+        UIHelper.hMakeVisibleInVisible(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1TimeTv, Constants.H_INVISIBLE);
+        UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1DescriptionTv, hDescription);
         Picasso.get()
                 .load(Constants.H_ICON_URL + hIcon + ".png")
                 .resize(200, 200)
                 .centerCrop()
-                .into(hWeeklyWeatherVH.hImageTv);
+                .into(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1ImageV);
     }
 
     private void hBindTodaysVh(TodaysWeatherVH todaysWeatherVh, final int position) {
@@ -106,19 +112,19 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         String hIcon = hWeatherModelToShow.gethIcon();
         String hTime = hWeatherModelToShow.gethTime();
         String hDescription = hWeatherModelToShow.gethDescription();
-        UIHelper.hSetTextToTextView(todaysWeatherVh.hIrwTimeTv, hTime);
-        UIHelper.hSetTextToTextView(todaysWeatherVh.hDescriptionTv, hDescription);
+        UIHelper.hSetTextToTextView(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwTimeTv, hTime);
+        UIHelper.hSetTextToTextView(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwDescriptionTv, hDescription);
         switch (hTempUnit) {
             case Constants.H_CELCIUS_UNIT:
-                UIHelper.hSetTextToTextView(todaysWeatherVh.hIrwTemp,
+                UIHelper.hSetTextToTextView(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwTempTv,
                         "Temp:\n" + hTemp.concat(hContext.getString(R.string.degree_symbol)));
                 break;
             case Constants.H_FARENHEIT_UNIT:
-                UIHelper.hSetTextToTextView(todaysWeatherVh.hIrwTemp,
+                UIHelper.hSetTextToTextView(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwTempTv,
                         "Temp:\n" + hTemp.concat(hContext.getString(R.string.farenheit_symbol)));
                 break;
             case Constants.H_KELVIL_UNIT:
-                UIHelper.hSetTextToTextView(todaysWeatherVh.hIrwTemp,
+                UIHelper.hSetTextToTextView(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwTempTv,
                         "Temp:\n" + hTemp.concat(hContext.getString(R.string.kelvin_symbol)));
                 break;
         }
@@ -126,7 +132,7 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 .load(Constants.H_ICON_URL + hIcon + ".png")
                 .resize(200, 200)
                 .centerCrop()
-                .into(todaysWeatherVh.hIrwIv);
+                .into(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwImageV);
     }
 
 
@@ -138,7 +144,12 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @NonNull
     private RecyclerView.ViewHolder hGetTodaysWeatherVH(ViewGroup parent) {
-        View hView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_weather, parent, false);
-        return new TodaysWeatherVH(hView);
+        return new TodaysWeatherVH(
+                ItemRecyclerWeatherBinding.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        parent,
+                        false
+                )
+        );
     }
 }

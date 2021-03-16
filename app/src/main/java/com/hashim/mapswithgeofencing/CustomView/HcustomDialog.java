@@ -1,27 +1,21 @@
 package com.hashim.mapswithgeofencing.CustomView;
-import android.annotation.SuppressLint;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
+import androidx.fragment.app.DialogFragment;
 
 import com.hashim.mapswithgeofencing.Helper.Constants;
 import com.hashim.mapswithgeofencing.Helper.LogToastSnackHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.DialogResponseInterface;
 import com.hashim.mapswithgeofencing.R;
+import com.hashim.mapswithgeofencing.databinding.CustomInputDialogBinding;
 
 import java.util.Objects;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class HcustomDialog extends DialogFragment {
     private static final String H_TITLE = "hTitle";
@@ -35,23 +29,10 @@ public class HcustomDialog extends DialogFragment {
     private String hMessage;
     private int hColor;
     private int hIcon;
-    Unbinder unbinder;
 
-    @BindView(R.id.hDialogTitle)
-    TextView hDialogTitleTv;
 
-    @BindView(R.id.hNameNumberTv)
-    EditText hNameNumberTv;
-
-    @BindView(R.id.hTextTv)
-    EditText hMessageTv;
-
-    @BindView(R.id.hOkB)
-    Button hOkB;
-
-    @BindView(R.id.hCancelB)
-    Button hCancelB;
     private boolean hIsSendToAll;
+    private CustomInputDialogBinding hCustomInputDialogBinding;
 
 
     public HcustomDialog() {
@@ -59,9 +40,9 @@ public class HcustomDialog extends DialogFragment {
     }
 
     private void hSetListners() {
-        hOkB.setOnClickListener(view -> {
-            String hNameNumber = UIHelper.hGetTextFromTextView(hNameNumberTv).replaceAll("\\(.*?\\)", "");
-            String hMessage = UIHelper.hGetTextFromTextView(hMessageTv);
+        hCustomInputDialogBinding.hOkB.setOnClickListener(view -> {
+            String hNameNumber = UIHelper.hGetTextFromTextView(hCustomInputDialogBinding.hNameNumberTv).replaceAll("\\(.*?\\)", "");
+            String hMessage = UIHelper.hGetTextFromTextView(hCustomInputDialogBinding.hTextTv);
             if (hIsSendToAll) {
 
                 if (hMessage != null && !hMessage.equals("")) {
@@ -82,7 +63,7 @@ public class HcustomDialog extends DialogFragment {
             }
 
         });
-        hCancelB.setOnClickListener(view -> hDialogResponseInterface.hSubmitNegativeResponse(HcustomDialog.this));
+        hCustomInputDialogBinding.hCancelB.setOnClickListener(view -> hDialogResponseInterface.hSubmitNegativeResponse(HcustomDialog.this));
     }
 
     @Override
@@ -117,22 +98,22 @@ public class HcustomDialog extends DialogFragment {
     private Dialog hTypeFaceDialog() {
         AlertDialog.Builder hBuilder = new AlertDialog.Builder(getActivity());
 
+        hCustomInputDialogBinding = CustomInputDialogBinding.inflate(getLayoutInflater());
         final LayoutInflater hDialogLayoutInflater = getActivity().getLayoutInflater();
-        @SuppressLint("InflateParams") View hDilaogView = hDialogLayoutInflater.inflate(R.layout.custom_input_dialog, null);
-        unbinder = ButterKnife.bind(this, hDilaogView);
+        View hDilaogView = hDialogLayoutInflater.inflate(R.layout.custom_input_dialog, null);
 
         String[] fields = hTitle.split(Constants.H_CHECK_STRING);
         String name = fields[0];
 
         if (fields.length > 1) {
             String hNumber = fields[1];
-            UIHelper.hSetTextToTextView(hNameNumberTv, hNumber.concat(" (").concat(name).concat(")"));
+            UIHelper.hSetTextToTextView(hCustomInputDialogBinding.hNameNumberTv, hNumber.concat(" (").concat(name).concat(")"));
         } else {
-            UIHelper.hMakeVisibleInVisible(hNameNumberTv, Constants.H_INVISIBLE);
+            UIHelper.hMakeVisibleInVisible(hCustomInputDialogBinding.hNameNumberTv, Constants.H_INVISIBLE);
         }
 
         String title = String.format(getString(R.string.send_text), name);
-        UIHelper.hSetTextToTextView(hDialogTitleTv, title);
+        UIHelper.hSetTextToTextView(hCustomInputDialogBinding.hDialogTitle, title);
         hSetListners();
 
         hBuilder.setView(hDilaogView);
@@ -142,7 +123,6 @@ public class HcustomDialog extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     public static HcustomDialog newInstance(String param1, boolean hIsAllSendingClicked) {

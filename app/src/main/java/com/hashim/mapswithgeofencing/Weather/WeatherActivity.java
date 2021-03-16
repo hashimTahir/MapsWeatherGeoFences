@@ -5,17 +5,13 @@ import android.graphics.Paint;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.hashim.mapswithgeofencing.Activities.SettingsActivity;
 import com.hashim.mapswithgeofencing.Adapters.WeatherRecyclerAdapter;
@@ -30,6 +26,7 @@ import com.hashim.mapswithgeofencing.Models.WeatherModel.ListWeatherModel.Weathe
 import com.hashim.mapswithgeofencing.Models.WeatherModel.WeatherModelToShow;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
+import com.hashim.mapswithgeofencing.databinding.ActivityWeatherBinding;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -40,56 +37,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class WeatherActivity extends AppCompatActivity implements
         WeatherAysncCallBack, RecyclerInterface {
-    @BindView(R.id.toolbar_title)
-    TextView hToolbarTitle;
-
-    @BindView(R.id.hAwAppbar)
-    Toolbar hToolbar;
-
-    @BindView(R.id.hTodaysRv)
-    RecyclerView hTodaysRv;
-
-    @BindView(R.id.hWeeklyRv)
-    RecyclerView hWeeklyRv;
-
-    @BindView(R.id.hCurrrentTempTv)
-    TextView hCurrrentTempTv;
-
-    @BindView(R.id.hCurrrentDateTv)
-    TextView hCurrrentDateTv;
-
-    @BindView(R.id.hCurrrentCityTv)
-    TextView hCurrrentCityTv;
-
-    @BindView(R.id.hCurrentTimeTv)
-    TextView hCurrentTimeTv;
-
-    @BindView(R.id.hCurrentWeatherIcon)
-    ImageView hCurrentWeatherIcon;
-
-    @BindView(R.id.hCurrentWeatherDetailTv)
-    TextView hCurrentWeatherDetailTv;
-
-
-    @BindView(R.id.hWeatherHeader)
-    ConstraintLayout hCurrentWeatherLayout;
-
-    @BindView(R.id.hTodayWeatherTv)
-    TextView hTodayWeatherTv;
-
-    @BindView(R.id.hWeekWeatherTv)
-    TextView hWeekWeatherTv;
-
-    @BindView(R.id.hPressureDetailTv)
-    TextView hPressureDetailTv;
-
-    @BindView(R.id.hHumidityTv)
-    TextView hHumidityTv;
 
     private Double hLat;
     private Double hLng;
@@ -101,19 +50,21 @@ public class WeatherActivity extends AppCompatActivity implements
     private final String hDayNameMonthDate = "EEEE, MMMM d";
     private final String hHrsMinTime = " h:mm aa";
     private String hLastDayName;
+    ActivityWeatherBinding hActivityWeatherBinding;
 
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-        ButterKnife.bind(this);
+        hActivityWeatherBinding = ActivityWeatherBinding.inflate(getLayoutInflater());
+        setContentView(hActivityWeatherBinding.getRoot());
 
         UIHelper.hOreoOrientationCheck(this);
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
-        hToolBarHelper.hSetToolbar(hToolbar);
-        hToolBarHelper.hSetToolbarTitle(hToolbarTitle, "Weather Updates");
+        hToolBarHelper.hSetToolbar(hActivityWeatherBinding.hAwAppbar.toolbar);
+        hToolBarHelper.hSetToolbarTitle(hActivityWeatherBinding.hAwAppbar.toolbarTitle, "Weather Updates");
 
 
         hGetIntentData();
@@ -156,7 +107,7 @@ public class WeatherActivity extends AppCompatActivity implements
 //                    String knownName = addresses.get(0).getFeatureName(); // On
 //                    Address returnAddress = addresses.get(0);
 
-                    UIHelper.hSetTextToTextView(hCurrrentCityTv, city + ", " + country);
+                    UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrrentCityTv, city + ", " + country);
                 }
             }
         } catch (IOException e) {
@@ -180,16 +131,16 @@ public class WeatherActivity extends AppCompatActivity implements
                         LinearLayoutManager.HORIZONTAL, false);
                 WeatherRecyclerAdapter weatherRecyclerAdapter = new WeatherRecyclerAdapter(this,
                         hWeatherModelToShowList, Constants.H_TODAYS_RECYCLER);
-                hTodaysRv.setLayoutManager(layoutManager);
-                hTodaysRv.setAdapter(weatherRecyclerAdapter);
+              hActivityWeatherBinding.  hTodaysRv.setLayoutManager(layoutManager);
+                hActivityWeatherBinding.    hTodaysRv.setAdapter(weatherRecyclerAdapter);
                 break;
             case Constants.H_WEEKLY_RECYCLER:
                 LinearLayoutManager layoutManager1 = new LinearLayoutManager(this,
                         LinearLayoutManager.HORIZONTAL, false);
                 WeatherRecyclerAdapter weatherRecyclerAdapter1 = new WeatherRecyclerAdapter(this,
                         hWeatherModelToShowList, Constants.H_WEEKLY_RECYCLER);
-                hWeeklyRv.setLayoutManager(layoutManager1);
-                hWeeklyRv.setAdapter(weatherRecyclerAdapter1);
+                hActivityWeatherBinding.   hWeeklyRv.setLayoutManager(layoutManager1);
+                hActivityWeatherBinding.   hWeeklyRv.setAdapter(weatherRecyclerAdapter1);
                 break;
         }
 
@@ -261,7 +212,7 @@ public class WeatherActivity extends AppCompatActivity implements
                 String hTime = hTimeFormatter.format(hCalendar.getTime());
                 String hIcon = weatherList.getWeather().get(0).getIcon();
                 String hMaxTemp = String.valueOf(weatherList.getMain().getTempMax().intValue());
-                hTodaysList.add(new WeatherModelToShow(hdate1, hTime, hIcon, hMaxTemp,hDescription));
+                hTodaysList.add(new WeatherModelToShow(hdate1, hTime, hIcon, hMaxTemp, hDescription));
 
             } else {
                 String hDayName = hNameDayFormatter.format(hCalendar.getTime());
@@ -275,7 +226,7 @@ public class WeatherActivity extends AppCompatActivity implements
                     String hIcon = weatherList.getWeather().get(0).getIcon();
                     String hMinTemp = String.valueOf(weatherList.getMain().getTempMin().intValue());
                     String hMaxTemp = String.valueOf(weatherList.getMain().getTempMax().intValue());
-                    hWeeklyList.add(new WeatherModelToShow(hDayName, hTime, hIcon, hMaxTemp, hMinTemp,hDescription));
+                    hWeeklyList.add(new WeatherModelToShow(hDayName, hTime, hIcon, hMaxTemp, hMinTemp, hDescription));
                 }
                 hLastDayName = hDayName;
             }
@@ -298,11 +249,11 @@ public class WeatherActivity extends AppCompatActivity implements
         Calendar hCalendar = Calendar.getInstance();
 
 
-        hTodayWeatherTv.setPaintFlags(hTodayWeatherTv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        hWeekWeatherTv.setPaintFlags(hTodayWeatherTv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        hActivityWeatherBinding.  hTodayWeatherTv.setPaintFlags(   hActivityWeatherBinding.hTodayWeatherTv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        hActivityWeatherBinding.  hWeekWeatherTv.setPaintFlags(   hActivityWeatherBinding.hTodayWeatherTv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        UIHelper.hSetTextToTextView(hTodayWeatherTv, getString(R.string.today_s_weather));
-        UIHelper.hSetTextToTextView(hWeekWeatherTv, getString(R.string.weekly_weather));
+        UIHelper.hSetTextToTextView(   hActivityWeatherBinding.hTodayWeatherTv, getString(R.string.today_s_weather));
+        UIHelper.hSetTextToTextView(   hActivityWeatherBinding.hWeekWeatherTv, getString(R.string.weekly_weather));
 
 
         SimpleDateFormat hDayMonthSimpleDateFormat = new SimpleDateFormat(hDayNameMonthDate, Locale.getDefault());
@@ -315,34 +266,34 @@ public class WeatherActivity extends AppCompatActivity implements
 
         String hPressure = String.valueOf(hLatLonReturnModel.getMain().getPressure());
         String hHumidity = String.valueOf(hLatLonReturnModel.getMain().getHumidity());
-        UIHelper.hSetTextToTextView(hPressureDetailTv, hPressure + " Pa");
-        UIHelper.hSetTextToTextView(hHumidityTv, hHumidity + "g/" + getString(R.string.cubic_meter));
+        UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hPressureDetailTv, hPressure + " Pa");
+        UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hHumidityTv, hHumidity + "g/" + getString(R.string.cubic_meter));
 
-        UIHelper.hSetTextToTextView(hCurrrentDateTv, hDayMonthString);
-        UIHelper.hSetTextToTextView(hCurrentTimeTv, hTimeString);
-        UIHelper.hSetTextToTextView(hCurrentWeatherDetailTv,
+        UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrrentDateTv, hDayMonthString);
+        UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrentTimeTv, hTimeString);
+        UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrentWeatherDetailTv,
                 hLatLonReturnModel.getWeather().get(0).getDescription());
         SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(this);
         switch (hSettingsPrefrences.hGetTempUnit()) {
             case Constants.H_FARENHEIT_UNIT:
-                UIHelper.hSetTextToTextView(hCurrrentTempTv,
+                UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrrentTempTv,
                         String.valueOf(hLatLonReturnModel.getMain().getTemp().intValue()).
                                 concat(getString(R.string.farenheit_symbol)));
                 break;
             case Constants.H_CELCIUS_UNIT:
-                UIHelper.hSetTextToTextView(hCurrrentTempTv,
+                UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrrentTempTv,
                         String.valueOf(hLatLonReturnModel.getMain().getTemp().intValue()).
                                 concat(getString(R.string.degree_symbol)));
                 break;
             case Constants.H_KELVIL_UNIT:
-                UIHelper.hSetTextToTextView(hCurrrentTempTv,
+                UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrrentTempTv,
                         String.valueOf(hLatLonReturnModel.getMain().getTemp().intValue()).
                                 concat(getString(R.string.kelvin_symbol)));
                 break;
         }
         Picasso.get().load(Constants.H_ICON_URL + hIcon + ".png")
                 .resize(200, 200).centerCrop()
-                .into(hCurrentWeatherIcon);
+                .into(hActivityWeatherBinding.hWeatherHeader.hCurrentWeatherIcon);
 
     }
 

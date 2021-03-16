@@ -1,246 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bottom_sheet"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:orientation="vertical"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="140dp"
-    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
-    tools:ignore="Overdraw">
+    xmlns:tools="http://schemas.android.com/tools">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/MCLayoutBottom"
+    <LinearLayout
+        android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_10dp">
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="140dp"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+        tools:ignore="Overdraw">
 
-        <LinearLayout
-            android:id="@+id/LButtonLayout1"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/MCLayoutBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:baselineAligned="false"
-            android:clickable="false"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:padding="@dimen/_10dp">
 
-            <include
-                android:id="@+id/fButtonLayout1"
-                layout="@layout/item_buttons"
+            <LinearLayout
+                android:id="@+id/LButtonLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:baselineAligned="false"
+                android:clickable="false"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <include
+                    android:id="@+id/fButtonLayout1"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/fButtonLayout2"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/fButtonLayout3"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/fButtonLayout4"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/LImageayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:baselineAligned="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/LButtonLayout1">
+
+                <include
+                    android:id="@+id/hEmergentTextLayout"
+                    layout="@layout/item_image"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    tools:ignore="InefficientWeight" />
+
+                <include
+                    android:id="@+id/hCompassLayout"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_marginEnd="@dimen/_10dp" />
+
+                <include
+                    android:id="@+id/hSettingsLayout"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_marginEnd="@dimen/_10dp" />
+
+
+                <include
+                    android:id="@+id/hRateAppLayout"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_marginEnd="@dimen/_10dp" />
+
+                <include
+                    android:id="@+id/hContactsLayout"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_marginEnd="@dimen/_10dp" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/nearByPlacesTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:padding="@dimen/_5dp"
+                android:text="@string/nearby_places"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="@dimen/_25sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/LImageayout" />
 
-                android:layout_weight="1" />
 
-            <include
-                android:id="@+id/fButtonLayout2"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/LButtonLayout2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:baselineAligned="false"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nearByPlacesTextView">
 
-            <include
-                android:id="@+id/fButtonLayout3"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
+                <include
+                    android:id="@+id/fButtonLayout5"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/fButtonLayout6"
+                    layout="@layout/item_buttons"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/fButtonLayout7"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <include
+                    android:id="@+id/fButtonLayout8"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_weight="1" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/LButtonLayout3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_marginStart="8dp"
 
-            <include
-                android:id="@+id/fButtonLayout4"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:baselineAligned="false"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/LButtonLayout2">
 
+                <include
+                    android:id="@+id/fButtonLayout9"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-        </LinearLayout>
+                    android:layout_weight="1" />
 
+                <include
+                    android:id="@+id/fButtonLayout10"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-        <LinearLayout
-            android:id="@+id/LImageayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:baselineAligned="false"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/LButtonLayout1">
-
-            <include
-                android:id="@+id/hEmergentTextLayout"
-                layout="@layout/item_image"
-                android:layout_width="100dp"
-                android:layout_height="80dp"
-                android:layout_margin="@dimen/_5dp"
-                android:layout_weight="1"
-                android:visibility="gone"
-                tools:ignore="InefficientWeight" />
-
-            <include
-                android:id="@+id/hCompassLayout"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5dp"
-                android:layout_marginEnd="@dimen/_10dp" />
-
-            <include
-                android:id="@+id/hSettingsLayout"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5dp"
-                android:layout_marginEnd="@dimen/_10dp" />
+                    android:layout_weight="1" />
 
 
-            <include
-                android:id="@+id/hRateAppLayout"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5dp"
-                android:layout_marginEnd="@dimen/_10dp" />
+                <include
+                    android:id="@+id/fButtonLayout11"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            <include
-                android:id="@+id/hContactsLayout"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5dp"
-                android:layout_marginEnd="@dimen/_10dp" />
+                    android:layout_weight="1" />
 
-        </LinearLayout>
+                <include
+                    android:id="@+id/fButtonLayout12"
+                    layout="@layout/item_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_weight="1" />
 
 
-        <TextView
-            android:id="@+id/nearByPlacesTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:padding="@dimen/_5dp"
-            android:text="@string/nearby_places"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="@dimen/_25sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/LImageayout" />
+            </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/LButtonLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:baselineAligned="false"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nearByPlacesTextView">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <include
-                android:id="@+id/fButtonLayout5"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+    </LinearLayout>
 
-            <include
-                android:id="@+id/fButtonLayout6"
-                layout="@layout/item_buttons"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <include
-                android:id="@+id/fButtonLayout7"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <include
-                android:id="@+id/fButtonLayout8"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="1" />
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/LButtonLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:baselineAligned="false"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/LButtonLayout2">
-
-            <include
-                android:id="@+id/fButtonLayout9"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="1" />
-
-            <include
-                android:id="@+id/fButtonLayout10"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="1" />
-
-
-            <include
-                android:id="@+id/fButtonLayout11"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="1" />
-
-            <include
-                android:id="@+id/fButtonLayout12"
-                layout="@layout/item_buttons"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="1" />
-
-
-        </LinearLayout>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</layout>

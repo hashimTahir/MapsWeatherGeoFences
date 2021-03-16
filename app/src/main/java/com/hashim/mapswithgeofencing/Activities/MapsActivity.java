@@ -16,15 +16,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -68,6 +64,7 @@ import com.hashim.mapswithgeofencing.MapsModels.Result;
 import com.hashim.mapswithgeofencing.MarkerAnimation.LatLngInterpolator;
 import com.hashim.mapswithgeofencing.MarkerAnimation.MarkerAnimation;
 import com.hashim.mapswithgeofencing.R;
+import com.hashim.mapswithgeofencing.databinding.ActivityMapsBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,10 +77,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import butterknife.BindArray;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dmax.dialog.SpotsDialog;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -101,23 +94,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         PlaceSelectionListener {
 
 
-    @BindView(R.id.shareLocation)
-    AppCompatButton hShareLocation;
-    @BindView(R.id.adressHere)
-    AppCompatTextView hAddresshere;
     private GoogleMap hGoogleMap;
     private Location hCurrentLocation;
     private List<Marker> hOriginMarkers = new ArrayList<>();
     private List<Marker> hDestinationMarkers = new ArrayList<>();
     private List<Polyline> hPolylinePaths = new ArrayList<>();
 
-    @BindView(R.id.toolbar_title)
-    TextView hToolbarTitle;
 
-    @BindView(R.id.toolbar)
-    Toolbar hToolbar;
-
-    @BindArray(R.array.search_strings)
+    /*Todo : initilize R.array.search_strings*/
     String[] hSearchStrings;
 
     private SpotsDialog hAlertDialog;
@@ -200,14 +184,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Double hLng;
     private GeoFenceUtil hGeoFenceUtil;
     private boolean hIsCircleDrawn = false;
+    private ActivityMapsBinding hActivityMapsBinding;
 
     //meters
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        ButterKnife.bind(this);
+        hActivityMapsBinding = ActivityMapsBinding.inflate(getLayoutInflater());
+        setContentView(hActivityMapsBinding.getRoot());
 
         UIHelper.hOreoOrientationCheck(this);
 
@@ -215,7 +200,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
-        hToolBarHelper.hSetToolbar(hToolbar);
+        hToolBarHelper.hSetToolbar(hActivityMapsBinding.toolbar.toolbar);
 
 //        hSetUpNavigationView();
         hGetIntentData();
@@ -416,7 +401,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 //                    Address returnAddress = addresses.get(0);
 
-                    UIHelper.hSetTextToTextView(hAddresshere, address);
+                    UIHelper.hSetTextToTextView(hActivityMapsBinding.adressHere, address);
 
 
 //                    String zipcode = returnAddress.getPostalCode();
@@ -836,14 +821,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    @OnClick(R.id.shareLocation)
-    public void onViewClicked() {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("*/*");
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_location) + "\n" + hCurrentLocation.getLatitude() + " , " + hCurrentLocation.getLongitude());
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivity(Intent.createChooser(shareIntent, "Share via"));
+    /*Todo: Call Method*/
+    public void hSetupLiseners() {
+        hActivityMapsBinding.shareLocation.setOnClickListener(
+                v -> {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("*/*");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_location) + "\n" + hCurrentLocation.getLatitude() + " , " + hCurrentLocation.getLongitude());
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(Intent.createChooser(shareIntent, "Share via"));
+                }
+        );
+
 
     }
 

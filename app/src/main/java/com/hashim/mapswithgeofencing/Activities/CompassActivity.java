@@ -5,34 +5,20 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
-import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
-import com.hashim.mapswithgeofencing.R;
+import com.hashim.mapswithgeofencing.databinding.ActivityCompassBinding;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class CompassActivity extends AppCompatActivity implements SensorEventListener {
 
-    @BindView(R.id.tvHeading)
-    TextView hTvHeading;
-    @BindView(R.id.imageViewCompass)
-    ImageView hImageViewCompass;
 
-    private SensorManager hSensorManager;
-    @BindView(R.id.toolbar_title)
-    TextView hToolbarTitle;
-    @BindView(R.id.hACappBar)
-    Toolbar hToolbar;
     private Sensor hAccelerometerSensor;
     private Sensor hMagnetometerSensor;
 
@@ -44,20 +30,23 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     private float[] mOrientation = new float[3];
     private float mCurrentDegree = 0f;
     private long hLastUpdate;
+    private ActivityCompassBinding hActivityCompassBinding;
 
+    private SensorManager hSensorManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compass);
-        ButterKnife.bind(this);
+
+        hActivityCompassBinding = ActivityCompassBinding.inflate(getLayoutInflater());
+        setContentView(hActivityCompassBinding.getRoot());
 
         UIHelper.hOreoOrientationCheck(this);
 
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
-        hToolBarHelper.hSetToolbar(hToolbar);
-        hToolBarHelper.hSetToolbarTitle(hToolbarTitle, "Compass");
+        hToolBarHelper.hSetToolbar(hActivityCompassBinding.hACappBar.toolbar);
+        hToolBarHelper.hSetToolbarTitle(hActivityCompassBinding.hACappBar.toolbarTitle, "Compass");
 
 
         hSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -121,14 +110,14 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
             ra.setFillAfter(true);
 
-            hImageViewCompass.startAnimation(ra);
+            hActivityCompassBinding.imageViewCompass.startAnimation(ra);
             mCurrentDegree = -azimuthInDegress;
 
 
             long hCurrentTime = System.currentTimeMillis();
             if ((hCurrentTime - hLastUpdate) > 1000) {
                 hLastUpdate = hCurrentTime;
-                UIHelper.hSetTextToTextView(hTvHeading, "Value : " + String.valueOf((int) mCurrentDegree));
+                UIHelper.hSetTextToTextView(hActivityCompassBinding.tvHeading, "Value : " + String.valueOf((int) mCurrentDegree));
 
             }
         }

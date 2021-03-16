@@ -24,29 +24,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-
-ext {
-
-    playServicesVersion = '18.0.0'
-    supportLibraryVersion = '28.0.0'
-    constraintlayoutVersion = '2.0.4'
-    butterKnifeVersion = '10.2.3'
-    adMobVersion = '19.7.0'
-    okHttpVersion = '5.0.0-alpha.2'
-    gSonLibraryVersion = '2.8.1'
-    gSonConverterVersion = '2.1.0'
-
-
-    gSonLibraryVersion = '2.8.6'
-    gSonConverterVersion = '2.9.0'
-    circleImageVersion = '3.1.0'
-    glideVersion = '4.8.0'
-    picassoVersion = '2.71828'
-    easyPermissionsVersion = '2.0.0'
-    fastScrollRecyclerViewVersion = '1.0.92'
-    bubbleSeekbarVersion = '3.16-lite'
-    roomVersion = "1.1.1"
-
-
-}

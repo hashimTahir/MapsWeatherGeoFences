@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Maps, Live GPS Navigation: Find Driving Directions</string>
+    <string name="app_name">Maps, Weather and Geo Fences</string>
     <string name="title_activity_maps">Map</string>
     <string name="test_string">Test</string>
     <string name="atms">Atms</string>
@@ -72,10 +72,6 @@
     <string name="rate_us_on_playstore">Thanks for your support &amp; FeedBack</string>
     <string name="about">About</string>
     <string name="title_activity_splash">SplashActivity</string>
-
-    <string name="ad_mob_id">ca-app-pub-1553263417351965/5752730536</string>
-    <!--<string name="ad_mob_id">ca-app-pub-3940256099942544/6300978111</string>-->
-    <!--<string name="ad_mob_id">hashim</string>-->
     <string name="share_body">Download this free app to navigate.</string>
     <string name="app_link">https://play.google.com/store/apps/detasdf</string>
     <string name="app_version">Version 1.0</string>

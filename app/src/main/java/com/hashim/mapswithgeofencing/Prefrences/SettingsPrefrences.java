@@ -34,6 +34,7 @@ public class SettingsPrefrences {
     private final String H_APP_COUNTER = "H_APP_COUNTER";
     private final String H_PERMISSIONS_CHECK = "H_PERMISSIONS_CHECK";
     private final String H_TEMPRATURE_UNIT = "H_TEMP_UNIT";
+    private final String PREF_NAME="com.hashim.mapswithgeofencing.Prefrences";
     private SharedPreferences.Editor hEditor;
     private SharedPreferences hProfilePrefrences;
     private final String H_CONTACTS_DATA = "H_SAVED_CONTACTS";
@@ -48,7 +49,7 @@ public class SettingsPrefrences {
     public SettingsPrefrences(Context context) {
         this.hContext = context;
         int PRIVATE_MODE = Context.MODE_PRIVATE;
-//        hProfilePrefrences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        hProfilePrefrences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         hEditor = hProfilePrefrences.edit();
     }
 

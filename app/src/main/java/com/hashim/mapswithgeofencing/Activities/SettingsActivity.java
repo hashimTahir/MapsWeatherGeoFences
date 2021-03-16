@@ -7,14 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.DialogFragment;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +14,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 
 import com.hashim.mapswithgeofencing.Contacts.ContactsModelWithIds;
 import com.hashim.mapswithgeofencing.CustomView.HcustomDialog1;
@@ -39,14 +35,12 @@ import com.hashim.mapswithgeofencing.Models.HLatLngModel;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.TrackMe.TrackMeActivity;
+import com.hashim.mapswithgeofencing.databinding.ActivitySettingsBinding;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
@@ -54,59 +48,6 @@ public class SettingsActivity extends AppCompatActivity implements
         AdapterView.OnItemSelectedListener, DialogResponseInterface,
         SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener {
 
-
-    @BindView(R.id.toolbar_title)
-    TextView hToolbarTitle;
-
-    @BindView(R.id.hSAppBar)
-    Toolbar hToolbar;
-
-    @BindView(R.id.hDistanceSpinner)
-    Spinner hDistanceSpinner;
-
-    @BindView(R.id.hLanguageSpinner)
-    Spinner hLanguageSpinner;
-
-    @BindView(R.id.hSelectTempratureTv)
-    TextView hSelectTempratureTv;
-
-    @BindView(R.id.hTempratureSpinner)
-    Spinner hTempratureSpinner;
-
-    @BindView(R.id.hEnableDisableSwitch)
-    Switch hEnableDisableSwitchE;
-
-    @BindView(R.id.hAddRemoveContactsTv)
-    TextView hAddRemoveContactsTv;
-
-    @BindView(R.id.hEditMessageTv)
-    TextView hEditMessageTv;
-
-    @BindView(R.id.hTestNotificationTv)
-    TextView hTestNotificationTv;
-
-
-
-    @BindView(R.id.hAddRemoveContactsELayout)
-    ConstraintLayout hAddRemoveContactsLayout;
-
-    @BindView(R.id.hEditMessageELayout)
-    ConstraintLayout hEditMessageLayout;
-
-    @BindView(R.id.hTestNotificationELayout)
-    ConstraintLayout hTestNotificationLayout;
-
-    @BindView(R.id.hAddRemoveLocationsTLayout)
-    ConstraintLayout hAddRemoveLocationsTLayout;
-
-    @BindView(R.id.hEditMessageTLayout)
-    ConstraintLayout hEditMessageTLayout;
-
-    @BindView(R.id.hTestNotificationTLayout)
-    ConstraintLayout hTestNotificationTLayout;
-
-    @BindView(R.id.hEnableDisableTLayout)
-    ConstraintLayout hEnableDisableTLayout;
 
     private boolean hIsFromTrackMe = false;
     private int hCounter = 1;
@@ -117,7 +58,6 @@ public class SettingsActivity extends AppCompatActivity implements
     private String CHANNEL_ID = "Hashim_channel";
     private static final int H_NOTIFICATION_ID = 1100;
     private final int H_CONTACTS_PERMISSION_CODE = 222;
-    private Switch hEnableDisableSwitchT;
     private TextView hAddRemoveLocationsTTv;
     private TextView hEditMessageTTv;
     private TextView hTestNotificationTTv;
@@ -136,25 +76,25 @@ public class SettingsActivity extends AppCompatActivity implements
 
         }
     };
+    private ActivitySettingsBinding hActivitySettingsBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        ButterKnife.bind(this);
+        hActivitySettingsBinding = ActivitySettingsBinding.inflate(getLayoutInflater());
 
+        setContentView(hActivitySettingsBinding.getRoot());
         UIHelper.hOreoOrientationCheck(this);
 
         hSettingsPrefrences = new SettingsPrefrences(this);
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
-        hToolBarHelper.hSetToolbar(hToolbar);
-        hToolBarHelper.hSetToolbarTitle(hToolbarTitle, "Settings");
+        hToolBarHelper.hSetToolbar(hActivitySettingsBinding.hSAppBar.toolbar);
+        hToolBarHelper.hSetToolbarTitle(hActivitySettingsBinding.hSAppBar.toolbarTitle, "Settings");
 
         hGetIntentData();
 
         hInitView();
-
 
 
     }
@@ -181,46 +121,42 @@ public class SettingsActivity extends AppCompatActivity implements
     private void hInitView() {
 
         //spinner listeners
-        hDistanceSpinner.setOnItemSelectedListener(this);
-        hLanguageSpinner.setOnItemSelectedListener(this);
-        hTempratureSpinner.setOnItemSelectedListener(this);
+        hActivitySettingsBinding.hDistanceSpinner.setOnItemSelectedListener(this);
+        hActivitySettingsBinding.hLanguageSpinner.setOnItemSelectedListener(this);
+        hActivitySettingsBinding.hTempratureSpinner.setOnItemSelectedListener(this);
 
 
         ArrayAdapter<CharSequence> hDistanceAdapter = ArrayAdapter.createFromResource(this,
                 R.array.unit_spinner_array, android.R.layout.simple_spinner_item);
         hDistanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        hDistanceSpinner.setAdapter(hDistanceAdapter);
-        hDistanceSpinner.setSelection(hSettingsPrefrences.hGetDistanceUnit());
+        hActivitySettingsBinding.hDistanceSpinner.setAdapter(hDistanceAdapter);
+        hActivitySettingsBinding.hDistanceSpinner.setSelection(hSettingsPrefrences.hGetDistanceUnit());
 
         ArrayAdapter<CharSequence> hLanguageAdapter = ArrayAdapter.createFromResource(this,
                 R.array.language_spinner_array, android.R.layout.simple_spinner_item);
         hLanguageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        hLanguageSpinner.setAdapter(hLanguageAdapter);
+        hActivitySettingsBinding.hLanguageSpinner.setAdapter(hLanguageAdapter);
 
         ArrayAdapter<CharSequence> hTempAdapter = ArrayAdapter.createFromResource(this,
                 R.array.temprature_spinner_array, android.R.layout.simple_spinner_item);
         hTempAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        hTempratureSpinner.setAdapter(hTempAdapter);
-        hTempratureSpinner.setSelection(hSettingsPrefrences.hGetTempUnit());
+        hActivitySettingsBinding.hTempratureSpinner.setAdapter(hTempAdapter);
+        hActivitySettingsBinding.hTempratureSpinner.setSelection(hSettingsPrefrences.hGetTempUnit());
 
         //Emergency Settings
         hIsEnableDisableEmergencySettings = hSettingsPrefrences.hGetEnableDisableEmergencySettings();
-        hEnableDisableSwitchE.setChecked(hIsEnableDisableEmergencySettings);
+        hActivitySettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setChecked(hIsEnableDisableEmergencySettings);
         hEnableDisableButtons(hIsEnableDisableEmergencySettings, Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
 
         //Track Me Settings
         hIsEnableDisableTrackMeSettings = hSettingsPrefrences.hGetEnableDisableTrackMeSettings();
 
-        hEnableDisableSwitchT = hEnableDisableTLayout.findViewById(R.id.hEnableDisableSwitch);
-        hAddRemoveLocationsTTv = hAddRemoveLocationsTLayout.findViewById(R.id.hAddRemoveLocationsTV);
-        hEditMessageTTv = hEditMessageTLayout.findViewById(R.id.hEditMessageTv);
-        hTestNotificationTTv = hTestNotificationTLayout.findViewById(R.id.hTestNotificationTv);
-
-        hEnableDisableSwitchT.setChecked(hIsEnableDisableTrackMeSettings);
-        hEnableDisableSwitchT.setOnClickListener(v -> {
-            hEnableDisableTrackMeSettings();
-
-        });
+//
+//        hEnableDisableSwitchT.setChecked(hIsEnableDisableTrackMeSettings);
+//        hEnableDisableSwitchT.setOnClickListener(v -> {
+//            hEnableDisableTrackMeSettings();
+//
+//        });
 
 
         hEnableDisableButtons(hIsEnableDisableTrackMeSettings, Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
@@ -230,7 +166,7 @@ public class SettingsActivity extends AppCompatActivity implements
 
     private void hEnableDisableTrackMeSettings() {
         if (EasyPermissions.hasPermissions(this, Constants.H_CONTACTS_PERMISSION)) {
-            hIsEnableDisableTrackMeSettings = hEnableDisableSwitchT.isChecked();
+            hIsEnableDisableTrackMeSettings = hActivitySettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked();
             hSettingsPrefrences.hSetEnableDisableTrackMeSettings(hIsEnableDisableTrackMeSettings);
             hEnableDisableButtons(hIsEnableDisableTrackMeSettings, Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
         } else {
@@ -246,7 +182,7 @@ public class SettingsActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        
+
         super.onBackPressed();
     }
 
@@ -319,53 +255,42 @@ public class SettingsActivity extends AppCompatActivity implements
     }
 
 
-    @OnClick({R.id.hEnableDisableSwitch, R.id.hAddRemoveContactsELayout, R.id.hEditMessageELayout,
-            R.id.hTestNotificationELayout, R.id.hAddRemoveLocationsTLayout, R.id.hEditMessageTLayout,
-            R.id.hTestNotificationTLayout})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.hEnableDisableSwitch:
-                hEnableDisableEmergencySettings();
+    public void hSetupListeners(View view) {
+        hActivitySettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setOnClickListener(v -> {
+            hEnableDisableEmergencySettings();
+        });
+        hActivitySettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout.setOnClickListener(v -> {
+            startActivity(new Intent(SettingsActivity.this, TrackMeActivity.class));
+        });
+        hActivitySettingsBinding.hEditMessageELayout.hEditMessageELayout.setOnClickListener(v -> {
+            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
+        });
+        hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationELayout.setOnClickListener(v -> {
+            if (!hIsTimerRunning) {
+                hCountDownTimer.start();
+                hSendMessageAndNotification();
 
-                break;
-            case R.id.hAddRemoveContactsELayout:
-                startActivity(new Intent(SettingsActivity.this, TrackMeActivity.class));
-                
-                break;
-            case R.id.hEditMessageELayout:
-                hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
-                break;
-            case R.id.hTestNotificationELayout:
-                if (!hIsTimerRunning) {
-                    hCountDownTimer.start();
-                    hSendMessageAndNotification();
+            } else {
+                String hTimeRemaing = String.format(Locale.getDefault(), "%d min, %d sec",
+                        TimeUnit.MILLISECONDS.toMinutes(hTimeRemaining),
+                        TimeUnit.MILLISECONDS.toSeconds(hTimeRemaining) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(hTimeRemaining))
+                );
+                LogToastSnackHelper.hMakeShortToast(this,
+                        "Text can be sent again after ".concat(hTimeRemaing));
 
-                } else {
-                    String hTimeRemaing = String.format(Locale.getDefault(), "%d min, %d sec",
-                            TimeUnit.MILLISECONDS.toMinutes(hTimeRemaining),
-                            TimeUnit.MILLISECONDS.toSeconds(hTimeRemaining) -
-                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(hTimeRemaining))
-                    );
-                    LogToastSnackHelper.hMakeShortToast(this,
-                            "Text can be sent again after ".concat(hTimeRemaing));
+            }
+        });
+        hActivitySettingsBinding.hEditMessageTLayout.hEditMessageELayout.setOnClickListener(v -> {
+            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
+        });
+        hActivitySettingsBinding.hTestNotificationTLayout.hTestNotificationELayout.setOnClickListener(v -> {
+            LogToastSnackHelper.hLogField(hTag, "Test Message T");
+        });
+        hActivitySettingsBinding.hAddRemoveLocationsTLayout.setOnClickListener(v -> {
+            startActivity(new Intent(this, EmergencyContactsActivity.class));
+        });
 
-                }
-                break;
-
-            case R.id.hAddRemoveLocationsTLayout:
-                startActivity(new Intent(this, EmergencyContactsActivity.class));
-                
-
-                break;
-            case R.id.hEditMessageTLayout:
-                hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
-                break;
-            case R.id.hTestNotificationTLayout:
-                LogToastSnackHelper.hLogField(hTag, "Test Message T");
-                break;
-
-
-        }
     }
 
     private void hSendMessageAndNotification() {
@@ -461,7 +386,7 @@ public class SettingsActivity extends AppCompatActivity implements
 
     private void hEnableDisableEmergencySettings() {
         if (EasyPermissions.hasPermissions(this, Constants.H_CONTACTS_PERMISSION)) {
-            hIsEnableDisableEmergencySettings = hEnableDisableSwitchE.isChecked();
+            hIsEnableDisableEmergencySettings = hActivitySettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked();
             hSettingsPrefrences.hSetEnableDisableEmergencySettings(hIsEnableDisableEmergencySettings);
             hEnableDisableButtons(hIsEnableDisableEmergencySettings, Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
         } else {
@@ -479,20 +404,22 @@ public class SettingsActivity extends AppCompatActivity implements
         switch (hEnableDisableTrackMeSettings) {
             case Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS:
 
-                hAddRemoveContactsTv.setEnabled(hEnableDisableSettings);
-                hEditMessageTv.setEnabled(hEnableDisableSettings);
-                hTestNotificationTv.setEnabled(hEnableDisableSettings);
+                hActivitySettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsTv.setEnabled(hEnableDisableSettings);
+                hActivitySettingsBinding.hEditMessageELayout.hEditMessageTv.setEnabled(hEnableDisableSettings);
+                hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationTv.setEnabled(hEnableDisableSettings);
 
-                hAddRemoveContactsLayout.setEnabled(hEnableDisableSettings);
-                hEditMessageLayout.setEnabled(hEnableDisableSettings);
-                hTestNotificationLayout.setEnabled(hEnableDisableSettings);
+                hActivitySettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout.setEnabled(hEnableDisableSettings);
+                hActivitySettingsBinding.hEditMessageELayout.hEditMessageTv.setEnabled(hEnableDisableSettings);
+                hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationELayout.setEnabled(hEnableDisableSettings);
 
                 if (hEnableDisableSettings) {
                     UIHelper.hChangeColor(ContextCompat.getColor(this, R.color.black),
-                            hAddRemoveContactsTv, hEditMessageTv, hTestNotificationTv);
+                            hActivitySettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout, hActivitySettingsBinding.hEditMessageELayout.hEditMessageTv,
+                            hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationELayout);
                 } else {
                     UIHelper.hChangeColor(ContextCompat.getColor(this, R.color.light_gray),
-                            hAddRemoveContactsTv, hEditMessageTv, hTestNotificationTv);
+                            hActivitySettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout, hActivitySettingsBinding.hEditMessageELayout.hEditMessageTv,
+                            hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationELayout);
                 }
 
                 break;
@@ -502,9 +429,9 @@ public class SettingsActivity extends AppCompatActivity implements
                 hEditMessageTTv.setEnabled(hEnableDisableSettings);
                 hTestNotificationTTv.setEnabled(hEnableDisableSettings);
 
-                hAddRemoveLocationsTLayout.setEnabled(hEnableDisableSettings);
-                hEditMessageTLayout.setEnabled(hEnableDisableSettings);
-                hTestNotificationTLayout.setEnabled(hEnableDisableSettings);
+                hActivitySettingsBinding.hAddRemoveLocationsTLayout.setEnabled(hEnableDisableSettings);
+                hActivitySettingsBinding.hEditMessageTLayout.hEditMessageELayout.setEnabled(hEnableDisableSettings);
+                hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationELayout.setEnabled(hEnableDisableSettings);
 
                 if (hEnableDisableSettings) {
                     UIHelper.hChangeColor(ContextCompat.getColor(this, R.color.black),
@@ -554,7 +481,5 @@ public class SettingsActivity extends AppCompatActivity implements
 
     }
 
-    @OnClick(R.id.hEnableDisableSwitch)
-    public void onViewClicked() {
-    }
+
 }

@@ -4,16 +4,15 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 
 import com.hashim.mapswithgeofencing.DataBase.LocationEntitiy;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
@@ -22,6 +21,9 @@ import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.ViewHolders.TemplatesVH;
 import com.hashim.mapswithgeofencing.ViewHolders.TrackMeVH;
 import com.hashim.mapswithgeofencing.ViewHolders.ViewAllVH;
+import com.hashim.mapswithgeofencing.databinding.ItemButtonsBinding;
+import com.hashim.mapswithgeofencing.databinding.ItemRecyclerTemplatesBinding;
+import com.hashim.mapswithgeofencing.databinding.ItemRecyclerTrackMeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,14 +90,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private RecyclerView.ViewHolder hGetTrackMeVH(ViewGroup parent) {
-        View hView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_track_me, parent, false);
-        return new TrackMeVH(hView);
+        return new TrackMeVH(
+                ItemRecyclerTrackMeBinding.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        parent,
+                        false
+                )
+        );
     }
 
     @NonNull
     private RecyclerView.ViewHolder hGetTemplatesVH(ViewGroup parent) {
-        View hView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_templates, parent, false);
-        return new TemplatesVH(hView);
+        return new TemplatesVH(
+                ItemRecyclerTemplatesBinding.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        parent,
+                        false
+                )
+        );
     }
 
     @Override
@@ -119,26 +131,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private void hBindTrackMeVH(TrackMeVH hTrackMeVH, int position) {
         LocationEntitiy hLocationEntitiy = hLocationEntitiys.get(position);
-        UIHelper.hSetTextToTextView(hTrackMeVH.hTitleTv, hLocationEntitiy.getLocationName());
+        UIHelper.hSetTextToTextView(hTrackMeVH.hItemRecyclerTrackMeBinding.hTitleTV, hLocationEntitiy.getLocationName());
 
         SpannableString hSpannableString = new SpannableString("Edit");
         hSpannableString.setSpan(new UnderlineSpan(), 0, hSpannableString.length(), 0);
 
-        UIHelper.hSetTextToTextView(hTrackMeVH.hEditTv, hSpannableString);
-        UIHelper.hSetTextToTextView(hTrackMeVH.hDetailTv, "ID  ".concat(String.valueOf(hLocationEntitiy.getLid())).concat(" latitude "
+        UIHelper.hSetTextToTextView(hTrackMeVH.hItemRecyclerTrackMeBinding.hEditTv, hSpannableString);
+        UIHelper.hSetTextToTextView(hTrackMeVH.hItemRecyclerTrackMeBinding.hDetailTV, "ID  ".concat(String.valueOf(hLocationEntitiy.getLid())).concat((" " +
+                "latitude ")
                 .concat(hLocationEntitiy.getLatitude().toString()
                         .concat(" longitude ").concat(hLocationEntitiy.getLongitude().toString()
                                 .concat(" Radius ")).concat(String.valueOf(hLocationEntitiy.getRadius())))));
 
-        hTrackMeVH.hEditTv.setOnClickListener(v -> {
+        hTrackMeVH.hItemRecyclerTrackMeBinding.hEditTv.setOnClickListener(v -> {
             hRecyclerInterface.hOnClickListener(v, hLocationEntitiy.getLid());
         });
     }
 
     private void hBindTemplatesVH(TemplatesVH hTemplatesVH, int position) {
         String hText = hPlaceStrings.get(position);
-        UIHelper.hSetTextToTextView(hTemplatesVH.hTextV, hText);
-        hTemplatesVH.hTempCL.setOnClickListener(v -> hRecyclerInterface.hOnClickListener(v, position, hText));
+        UIHelper.hSetTextToTextView(hTemplatesVH.hItemRecyclerTemplatesBinding.irtTV, hText);
+        hTemplatesVH.hItemRecyclerTemplatesBinding.hTemplateCl.setOnClickListener(v -> hRecyclerInterface.hOnClickListener(v, position, hText));
     }
 
     private void hBindViewAllVH(ViewAllVH viewAllVH, final int position) {
@@ -147,16 +160,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         Drawable myFabSrc = ResourcesCompat.getDrawable(hContext.getResources(), hImages[position], hContext.getTheme());
         Drawable willBeWhite = myFabSrc.getConstantState().newDrawable();
         willBeWhite.mutate().setColorFilter(hColors[position], PorterDuff.Mode.SRC_ATOP);
-        viewAllVH.hFloatingActionButton.setImageDrawable(willBeWhite);
-        viewAllVH.hFloatingActionButton.setBackgroundTintList
+        viewAllVH.hItemButtonsBinding.hFloatingActionButton.setImageDrawable(willBeWhite);
+        viewAllVH.hItemButtonsBinding.hFloatingActionButton.setBackgroundTintList
                 (ColorStateList.valueOf(ContextCompat.getColor(hContext, (R.color.white))));
-        UIHelper.hSetTextToTextView(viewAllVH.hAppCompatTextView, hPlaceStrings.get(position));
-        viewAllVH.hLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hRecyclerInterface.hOnClickListener(v, position);
-            }
-        });
+        UIHelper.hSetTextToTextView(viewAllVH.hItemButtonsBinding.hButtonTexts, hPlaceStrings.get(position));
+        viewAllVH.hItemButtonsBinding.buttonLayou.setOnClickListener(v -> hRecyclerInterface.hOnClickListener(v, position));
     }
 
 
@@ -171,8 +179,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @NonNull
     private RecyclerView.ViewHolder hGetViewAllVH(ViewGroup parent) {
-        View hView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_buttons, parent, false);
-        return new ViewAllVH(hView);
+        return new ViewAllVH(
+                ItemButtonsBinding.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        parent,
+                        false
+                )
+        );
     }
 
     public Context getContext() {

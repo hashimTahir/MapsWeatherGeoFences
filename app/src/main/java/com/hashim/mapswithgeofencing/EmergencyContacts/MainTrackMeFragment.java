@@ -3,8 +3,15 @@ package com.hashim.mapswithgeofencing.EmergencyContacts;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.hashim.mapswithgeofencing.Adapters.RecyclerAdapter;
 import com.hashim.mapswithgeofencing.DataBase.AppRepository;
 import com.hashim.mapswithgeofencing.DataBase.ContactsEntity;
@@ -16,37 +23,16 @@ import com.hashim.mapswithgeofencing.Interfaces.DeleteCallBack;
 import com.hashim.mapswithgeofencing.Interfaces.HDialogResponseInterface;
 import com.hashim.mapswithgeofencing.Interfaces.OnFragmentInteractionListener;
 import com.hashim.mapswithgeofencing.Interfaces.RecyclerInterface;
-import com.hashim.mapswithgeofencing.R;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.hashim.mapswithgeofencing.databinding.FragmentMainTrackMeBinding;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 
 public class MainTrackMeFragment extends Fragment implements RecyclerInterface, DeleteCallBack, HDialogResponseInterface {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    @BindView(R.id.hAddLoactionFb)
-    FloatingActionButton hAddLoactionFb;
-
-    @BindView(R.id.hContactsRV)
-    RecyclerView hContactsRV;
-
-    Unbinder unbinder;
 
     private String mParam1;
     private String mParam2;
@@ -58,6 +44,7 @@ public class MainTrackMeFragment extends Fragment implements RecyclerInterface, 
     private AppRepository hAppRepository;
     private List<LocationEntitiy> hLocationEntitiys;
     private LocationEntitiy hLocationEntitiy;
+    private FragmentMainTrackMeBinding hFragmentMainTrackMeBinding;
 
     public MainTrackMeFragment() {
 
@@ -89,11 +76,14 @@ public class MainTrackMeFragment extends Fragment implements RecyclerInterface, 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_track_me, container, false);
-        unbinder = ButterKnife.bind(this, view);
+
+        hFragmentMainTrackMeBinding = FragmentMainTrackMeBinding.inflate(
+                inflater, container, false
+        );
+
         setHasOptionsMenu(true);
         hInitView();
-        return view;
+        return hFragmentMainTrackMeBinding.getRoot();
     }
 
     private void hInitView() {
@@ -109,10 +99,10 @@ public class MainTrackMeFragment extends Fragment implements RecyclerInterface, 
                     RecyclerAdapter.H_TRACK_ME_ADAPTER, this);
 
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback1(hRecyclerAdapter, this));
-            itemTouchHelper.attachToRecyclerView(hContactsRV);
+            itemTouchHelper.attachToRecyclerView(hFragmentMainTrackMeBinding.hContactsRV);
 
-            hContactsRV.setLayoutManager(layoutManager);
-            hContactsRV.setAdapter(hRecyclerAdapter);
+            hFragmentMainTrackMeBinding.hContactsRV.setLayoutManager(layoutManager);
+            hFragmentMainTrackMeBinding.hContactsRV.setAdapter(hRecyclerAdapter);
         }
     }
 
@@ -137,12 +127,12 @@ public class MainTrackMeFragment extends Fragment implements RecyclerInterface, 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
-    @OnClick(R.id.hAddLoactionFb)
-    public void onViewClicked() {
-        hOnFragmentInteractionListener.onFragmentInteraction(Constants.H_LOCATION_FRAGMENT);
+    public void hSetupListeners() {
+        hFragmentMainTrackMeBinding.hAddLoactionFb.setOnClickListener(v -> {
+            hOnFragmentInteractionListener.onFragmentInteraction(Constants.H_LOCATION_FRAGMENT);
+        });
     }
 
     @Override

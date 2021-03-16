@@ -6,7 +6,16 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.telephony.SmsManager;
+import android.view.MenuItem;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.hashim.mapswithgeofencing.Contacts.ContactsModelWithIds;
 import com.hashim.mapswithgeofencing.Contacts.Hcomparator1;
 import com.hashim.mapswithgeofencing.Contacts.RecyclerItemClickListener;
@@ -22,50 +31,16 @@ import com.hashim.mapswithgeofencing.Interfaces.OnItemClickListener;
 import com.hashim.mapswithgeofencing.Interfaces.onActionModeListener;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
-
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import android.telephony.SmsManager;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
+import com.hashim.mapswithgeofencing.databinding.ActivityTrackMeBinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class TrackMeActivity extends AppCompatActivity implements
         OnItemClickListener, DialogResponseInterface, DeleteCallBack, onActionModeListener {
 
-    @BindView(R.id.toolbar_title)
-    TextView hToolbarTitle;
-
-    @BindView(R.id.hATmAppBar)
-    Toolbar hToolbar;
-
-    @BindView(R.id.hTrackMeRV)
-    RecyclerView hTrackMeRV;
-
-    @BindView(R.id.hAddContactsFB)
-    FloatingActionButton hAddContactsFB;
-
-    @BindView(R.id.hAlertTextView)
-    AppCompatTextView hAlertTextView;
-
-    @BindView(R.id.hSendMessage)
-    Button hSendMessage;
 
     private ContactsAdapter1 hContactsAdapter;
     private List<ContactsModelWithIds> hSavedContacatsList;
@@ -86,19 +61,20 @@ public class TrackMeActivity extends AppCompatActivity implements
     private boolean hIsAllSendingClicked = false;
     private boolean hIsSelectedList = false;
     public static final int MENU_ITEM_MESSAGE = 34;
+    ActivityTrackMeBinding hActivityTrackMeBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_track_me);
-        ButterKnife.bind(this);
+        hActivityTrackMeBinding = ActivityTrackMeBinding.inflate(getLayoutInflater());
+        setContentView(hActivityTrackMeBinding.getRoot());
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
-        hToolBarHelper.hSetToolbar(hToolbar);
-        hToolBarHelper.hSetToolbarTitle(hToolbarTitle, getString(R.string.add_remove_contacts));
+        hToolBarHelper.hSetToolbar(hActivityTrackMeBinding.hATmAppBar.toolbar);
+        hToolBarHelper.hSetToolbarTitle(hActivityTrackMeBinding.hATmAppBar.toolbarTitle, getString(R.string.add_remove_contacts));
 
         String title = String.format(getString(R.string.send_text), "All");
-        UIHelper.hSetTextToTextView(hSendMessage, title);
+        UIHelper.hSetTextToTextView(hActivityTrackMeBinding.hSendMessage, title);
 
         hSettingsPrefrences = new SettingsPrefrences(this);
 
@@ -113,24 +89,21 @@ public class TrackMeActivity extends AppCompatActivity implements
 
     }
 
-    @OnClick({R.id.hAddContactsFB, R.id.hSendMessage})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.hAddContactsFB:
-                if (hContactsRetrieved) {
-                    Collections.sort(hAllContactsList, new Hcomparator1());
-                    hSetupRecyclerView(hAllContactsList, H_ALL_LIST);
-                    hShowLayout(H_SHOW_RECYCLER_LAYOUT, false);
-                }
-                break;
-            case R.id.hSendMessage:
-                hIsAllSendingClicked = true;
-                String hName = "All".
-                        concat(Constants.H_CHECK_STRING);
-                HcustomDialog hcustomDialog = HcustomDialog.newInstance(hName, hIsAllSendingClicked);
-                hcustomDialog.show(getSupportFragmentManager(), "H_Dialog");
-                break;
-        }
+    public void hSetupListeners(View view) {
+        hActivityTrackMeBinding.hAddContactsFB.setOnClickListener(v -> {
+            if (hContactsRetrieved) {
+                Collections.sort(hAllContactsList, new Hcomparator1());
+                hSetupRecyclerView(hAllContactsList, H_ALL_LIST);
+                hShowLayout(H_SHOW_RECYCLER_LAYOUT, false);
+            }
+        });
+        hActivityTrackMeBinding.hSendMessage.setOnClickListener(v -> {
+            hIsAllSendingClicked = true;
+            String hName = "All".
+                    concat(Constants.H_CHECK_STRING);
+            HcustomDialog hcustomDialog = HcustomDialog.newInstance(hName, hIsAllSendingClicked);
+            hcustomDialog.show(getSupportFragmentManager(), "H_Dialog");
+        });
     }
 
 
@@ -148,7 +121,6 @@ public class TrackMeActivity extends AppCompatActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     @SuppressWarnings("unused")
@@ -227,11 +199,11 @@ public class TrackMeActivity extends AppCompatActivity implements
         if (hContactsAdapter == null) {
             hContactsAdapter = new ContactsAdapter1(this, hList);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback1(hContactsAdapter, TrackMeActivity.this));
-            itemTouchHelper.attachToRecyclerView(hTrackMeRV);
+            itemTouchHelper.attachToRecyclerView(hActivityTrackMeBinding.hTrackMeRV);
 
-            hTrackMeRV.setLayoutManager(new LinearLayoutManager(this));
-            hTrackMeRV.addOnItemTouchListener(new RecyclerItemClickListener(this, hTrackMeRV, this));
-            hTrackMeRV.setAdapter(hContactsAdapter);
+            hActivityTrackMeBinding.hTrackMeRV.setLayoutManager(new LinearLayoutManager(this));
+            hActivityTrackMeBinding.hTrackMeRV.addOnItemTouchListener(new RecyclerItemClickListener(this, hActivityTrackMeBinding.hTrackMeRV, this));
+            hActivityTrackMeBinding.hTrackMeRV.setAdapter(hContactsAdapter);
 
 //            hSetSideScroller();
 
@@ -257,26 +229,26 @@ public class TrackMeActivity extends AppCompatActivity implements
     private void hShowLayout(int layout, boolean hIsShown) {
         switch (layout) {
             case H_SHOW_RECYCLER_LAYOUT:
-                UIHelper.hMakeVisibleInVisible(hTrackMeRV, Constants.H_VISIBLE);
-                UIHelper.hMakeVisibleInVisible(hAlertTextView, Constants.H_INVISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hTrackMeRV, Constants.H_VISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hAlertTextView, Constants.H_INVISIBLE);
                 if (hWhatLoaded == H_ALL_LIST) {
-                    UIHelper.hMakeVisibleInVisible(hAddContactsFB, Constants.H_INVISIBLE);
-                    UIHelper.hMakeVisibleInVisible(hSendMessage, Constants.H_INVISIBLE);
+                    UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hAddContactsFB, Constants.H_INVISIBLE);
+                    UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hSendMessage, Constants.H_INVISIBLE);
                 } else {
-                    UIHelper.hMakeVisibleInVisible(hAddContactsFB, Constants.H_VISIBLE);
+                    UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hAddContactsFB, Constants.H_VISIBLE);
                     if (hSavedContacatsList != null && hSavedContacatsList.size() == 0) {
-                        UIHelper.hMakeVisibleInVisible(hSendMessage, Constants.H_INVISIBLE);
+                        UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hSendMessage, Constants.H_INVISIBLE);
 
                     } else {
-                        UIHelper.hMakeVisibleInVisible(hSendMessage, Constants.H_VISIBLE);
+                        UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hSendMessage, Constants.H_VISIBLE);
                     }
                 }
                 break;
             case H_SHOW_ALERT_LAYOUT:
-                UIHelper.hMakeVisibleInVisible(hTrackMeRV, Constants.H_INVISIBLE);
-                UIHelper.hMakeVisibleInVisible(hSendMessage, Constants.H_INVISIBLE);
-                UIHelper.hMakeVisibleInVisible(hAlertTextView, Constants.H_VISIBLE);
-                UIHelper.hMakeVisibleInVisible(hAddContactsFB, Constants.H_VISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hTrackMeRV, Constants.H_INVISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hSendMessage, Constants.H_INVISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hAlertTextView, Constants.H_VISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityTrackMeBinding.hAddContactsFB, Constants.H_VISIBLE);
                 break;
             case H_SHOW_SAVE_CONTACTS_LAYOUT:
                 if (hIsShown) {

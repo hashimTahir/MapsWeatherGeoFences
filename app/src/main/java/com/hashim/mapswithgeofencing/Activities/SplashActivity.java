@@ -2,28 +2,23 @@ package com.hashim.mapswithgeofencing.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
-import com.hashim.mapswithgeofencing.R;
+import com.hashim.mapswithgeofencing.databinding.ActivitySplashBinding;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SplashActivity extends AppCompatActivity {
 
 
-    @BindView(R.id.hLetsGoIv)
-    ImageView hLetsGoIv;
+    private ActivitySplashBinding hActivitySplashBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
+        hActivitySplashBinding = ActivitySplashBinding.inflate(getLayoutInflater());
+        setContentView(hActivitySplashBinding.getRoot());
         UIHelper.hOreoOrientationCheck(this);
 
     }
@@ -59,8 +54,10 @@ public class SplashActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    @OnClick(R.id.hLetsGoIv)
-    public void onViewClicked() {
-        hLetsGo();
+
+    public void hSetListeners() {
+        hActivitySplashBinding.hLetsGoIv.setOnClickListener(v -> {
+            hLetsGo();
+        });
     }
 }

@@ -22,16 +22,13 @@ import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
@@ -56,7 +53,6 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -79,6 +75,7 @@ import com.hashim.mapswithgeofencing.Models.VoiceReturnModel.VoiceReturnModel;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.Weather.WeatherActivity;
+import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,9 +91,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dmax.dialog.SpotsDialog;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -116,104 +110,6 @@ public class MainActivity extends AppCompatActivity implements
         DirectionFinderListener, HDialogResponseInterface, PlaceSelectionListener,
         GoogleMap.OnMapClickListener {
 
-
-    @BindView(R.id.bottom_sheet)
-    LinearLayout hBottomSheet;
-
-    @BindView(R.id.ct_navgationView)
-    NavigationView hNavigationView;
-
-    @BindView(R.id.ct_drawerLayout)
-    DrawerLayout hDrawerLayout;
-
-    @BindView(R.id.fButtonLayout1)
-    LinearLayout hShareLocationLayout;
-
-    @BindView(R.id.fButtonLayout2)
-    LinearLayout hFindRouteLayout;
-
-    @BindView(R.id.fButtonLayout3)
-    LinearLayout hTrackMeLayout;
-
-    @BindView(R.id.fButtonLayout4)
-    LinearLayout hInfoLayout;
-
-    @BindView(R.id.fButtonLayout5)
-    LinearLayout hAtmsLayout;
-
-    @BindView(R.id.fButtonLayout6)
-    LinearLayout hBanksLayout;
-
-    @BindView(R.id.fButtonLayout7)
-    LinearLayout hPoliceLayout;
-
-    @BindView(R.id.fButtonLayout8)
-    LinearLayout hMosqueLayout;
-
-    @BindView(R.id.fButtonLayout9)
-    LinearLayout hBusStationLayout;
-
-    @BindView(R.id.fButtonLayout10)
-    LinearLayout hHospitalsLayout;
-
-    @BindView(R.id.fButtonLayout11)
-    LinearLayout hCafesLayout;
-
-    @BindView(R.id.fButtonLayout12)
-    LinearLayout hViewAllLayout;
-
-
-    @BindView(R.id.hEmergentTextLayout)
-    CardView hEmergencyTextLayout;
-
-    @BindView(R.id.hRateAppLayout)
-    LinearLayout hRateAppLayout;
-
-    @BindView(R.id.hSettingsLayout)
-    LinearLayout hSettingsLayout;
-
-
-    @BindView(R.id.hCompassLayout)
-    LinearLayout hCompassLayout;
-
-    @BindView(R.id.hNormalChip)
-    Chip hNormalChip;
-
-    @BindView(R.id.hSatelliteChip)
-    Chip hSatelliteChip;
-
-    @BindView(R.id.hMoreChip)
-    Chip hMoreChip;
-
-    @BindView(R.id.hGoToLocation)
-    FloatingActionButton hGoToLoaction;
-
-    @BindView(R.id.hGoToMyLoaction)
-    FloatingActionButton hGotoMyLoaction;
-
-    @BindView(R.id.place_autocomplete_card)
-    CardView hPlaceAutocompleteCard;
-
-    @BindView(R.id.hRateUsFb)
-    FloatingActionButton hRateUsFb;
-
-    @BindView(R.id.hRefreshImageView)
-    ImageView hRefreshImageView;
-
-    @BindView(R.id.hDetailCardView)
-    CardView hDetailCardView;
-
-    @BindView(R.id.hNameTv)
-    TextView hNameTv;
-
-    @BindView(R.id.hAddressTv)
-    TextView hAddressTv;
-
-    @BindView(R.id.hGetDirectionsB)
-    Button hGetDirectionsB;
-
-    @BindView(R.id.hContactsLayout)
-    LinearLayout hContactsLayout;
 
     private GoogleMap hGoogleMap;
     private Location hCurrentLocation;
@@ -248,12 +144,13 @@ public class MainActivity extends AppCompatActivity implements
     private boolean hIsVoiceCommad = false;
     private static final String hTag = LogToastSnackHelper.hMakeTag(MainActivity.class);
     private VoiceReturnModel hVoiceReturnModel;
+    private ActivityMainBinding hActivityMainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        hActivityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(hActivityMainBinding.getRoot());
 
         UIHelper.hOreoOrientationCheck(this);
 
@@ -346,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         } else {
             LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location, Refresh");
-            UIHelper.hMakeVisibleInVisible(hRefreshImageView, Constants.H_VISIBLE);
+            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
         }
     }
 
@@ -394,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void hRunCore() {
-        UIHelper.hMakeVisibleInVisible(hRefreshImageView, Constants.H_INVISIBLE);
+        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_INVISIBLE);
 
         //initilize map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -436,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements
                         hPlaceAutocompleteFragment.setText("");
                     }
                     if (!hIsPlaceSelected) {
-                        UIHelper.hMakeVisibleInVisible(hRefreshImageView, Constants.H_INVISIBLE);
+                        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_INVISIBLE);
                         if (hCurrentLocation != null) {
                             hGoogleMap.clear();
                             Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
@@ -447,15 +344,15 @@ public class MainActivity extends AppCompatActivity implements
                                     .title(getString(R.string.current_location))
                                     .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)));
                             hCurrentMarker.showInfoWindow();
-                            UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_VISIBLE);
-                            UIHelper.hMakeVisibleInVisible(hDetailCardView, Constants.H_INVISIBLE);
+                            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_VISIBLE);
+                            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hDetailCardView, Constants.H_INVISIBLE);
 
                         }
                     }
                 }
 
                 if (hDrawerIsOpened) {
-                    UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_INVISIBLE);
+                    UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_INVISIBLE);
                 } else {
 
                     hBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -469,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 }
                 if (!hIsPlaceSelected) {
-                    UIHelper.hMakeVisibleInVisible(hRefreshImageView, Constants.H_INVISIBLE);
+                    UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_INVISIBLE);
                     if (hCurrentLocation != null) {
                         hGoogleMap.clear();
                         Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
@@ -480,8 +377,8 @@ public class MainActivity extends AppCompatActivity implements
                                 .title(getString(R.string.current_location))
                                 .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)));
                         hCurrentMarker.showInfoWindow();
-                        UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_VISIBLE);
-                        UIHelper.hMakeVisibleInVisible(hDetailCardView, Constants.H_INVISIBLE);
+                        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_VISIBLE);
+                        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hDetailCardView, Constants.H_INVISIBLE);
 
 
                     }
@@ -490,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
             if (hDrawerIsOpened) {
-                UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_INVISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_INVISIBLE);
             } else {
 
                 hBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -544,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
         }
 
-        hDrawerLayout.closeDrawer(GravityCompat.START);
+        hActivityMainBinding.ctDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -700,7 +597,7 @@ public class MainActivity extends AppCompatActivity implements
                 hSendRequest(new LatLng(hCurrentLocation.getLatitude(), hCurrentLocation.getLongitude()), marker.getPosition());
             } else {
                 LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location, Refresh");
-                UIHelper.hMakeVisibleInVisible(hRefreshImageView, Constants.H_VISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
             }
         }
         return true;
@@ -816,7 +713,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void hInitView() {
 
-        hGetDirectionsB.setBackgroundTintList
+        hActivityMainBinding.hGetDirectionsB.setBackgroundTintList
                 (ColorStateList.valueOf(ContextCompat.getColor(this, R.color.share_loc_color)));
 
         //setup autocomplete fragment
@@ -830,8 +727,8 @@ public class MainActivity extends AppCompatActivity implements
         hCancelSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.hMakeVisibleInVisible(hDetailCardView, Constants.H_INVISIBLE);
-                UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_VISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hDetailCardView, Constants.H_INVISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_VISIBLE);
                 hPlaceAutocompleteFragment.setText("");
 
                 if (hCurrentLocation != null) {
@@ -848,10 +745,10 @@ public class MainActivity extends AppCompatActivity implements
         });
 
         hHamburerIcon.setOnClickListener(v -> {
-            if (hDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-                hDrawerLayout.closeDrawer(GravityCompat.START);
+            if (hActivityMainBinding.ctDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                hActivityMainBinding.ctDrawerLayout.closeDrawer(GravityCompat.START);
             } else {
-                hDrawerLayout.openDrawer(GravityCompat.START);
+                hActivityMainBinding.ctDrawerLayout.openDrawer(GravityCompat.START);
 
             }
         });
@@ -866,11 +763,11 @@ public class MainActivity extends AppCompatActivity implements
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        hDrawerLayout.addDrawerListener(this);
+        hActivityMainBinding.ctDrawerLayout.addDrawerListener(this);
 
-        hNavigationView.setItemIconTintList(null);
-        hNavigationView.setNavigationItemSelectedListener(this);
-        hBottomSheetBehavior = BottomSheetBehavior.from(hBottomSheet);
+        hActivityMainBinding.ctNavgationView.setItemIconTintList(null);
+        hActivityMainBinding.ctNavgationView.setNavigationItemSelectedListener(this);
+        hBottomSheetBehavior = BottomSheetBehavior.from(hActivityMainBinding.hBoottomSheet.bottomSheet);
         hBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -883,40 +780,41 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
         });
-        FloatingActionButton hShareLoactionFb = hShareLocationLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hFindRouteFb = hFindRouteLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hTrackMeFb = hTrackMeLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hInfoFb = hInfoLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hAtmsFb = hAtmsLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hBanksFb = hBanksLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hPoliceFb = hPoliceLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hMosqueFB = hMosqueLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hBusStationFb = hBusStationLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hHospitalFb = hHospitalsLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hCafeFb = hCafesLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hViewAllFb = hViewAllLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hSettingsFB = hSettingsLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hCompassFB = hCompassLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hRateUsFb = hRateAppLayout.findViewById(R.id.FloatingActionButton);
-        FloatingActionButton hVoiceCommandFB = hContactsLayout.findViewById(R.id
-                .FloatingActionButton);
+        FloatingActionButton hShareLoactionFb =
+                hActivityMainBinding.hBoottomSheet.fButtonLayout1.hFloatingActionButton;
+        FloatingActionButton hFindRouteFb = hActivityMainBinding.hBoottomSheet.fButtonLayout2.hFloatingActionButton;
+        FloatingActionButton hTrackMeFb = hActivityMainBinding.hBoottomSheet.fButtonLayout3.hFloatingActionButton;
+        FloatingActionButton hInfoFb = hActivityMainBinding.hBoottomSheet.fButtonLayout4.hFloatingActionButton;
+        FloatingActionButton hAtmsFb = hActivityMainBinding.hBoottomSheet.fButtonLayout5.hFloatingActionButton;
+        FloatingActionButton hBanksFb = hActivityMainBinding.hBoottomSheet.fButtonLayout6.hFloatingActionButton;
+        FloatingActionButton hPoliceFb = hActivityMainBinding.hBoottomSheet.fButtonLayout7.hFloatingActionButton;
+        FloatingActionButton hMosqueFB = hActivityMainBinding.hBoottomSheet.fButtonLayout8.hFloatingActionButton;
+        FloatingActionButton hBusStationFb = hActivityMainBinding.hBoottomSheet.fButtonLayout9.hFloatingActionButton;
+        FloatingActionButton hHospitalFb = hActivityMainBinding.hBoottomSheet.fButtonLayout10.hFloatingActionButton;
+        FloatingActionButton hCafeFb = hActivityMainBinding.hBoottomSheet.fButtonLayout11.hFloatingActionButton;
+        FloatingActionButton hViewAllFb = hActivityMainBinding.hBoottomSheet.fButtonLayout12.hFloatingActionButton;
+        FloatingActionButton hSettingsFB = hActivityMainBinding.hBoottomSheet.hSettingsLayout.hFloatingActionButton;
+        FloatingActionButton hCompassFB = hActivityMainBinding.hBoottomSheet.hCompassLayout.hFloatingActionButton;
+        FloatingActionButton hRateUsFb = hActivityMainBinding.hBoottomSheet.hRateAppLayout.hFloatingActionButton;
+        FloatingActionButton hVoiceCommandFB = hActivityMainBinding.hBoottomSheet.hContactsLayout.hFloatingActionButton;
 
-        AppCompatTextView hRateUsTv = hRateAppLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hSettingsTv = hSettingsLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hCompass = hCompassLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hAppCompatTextView1 = hShareLocationLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hAppCompatTextView2 = hFindRouteLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hAppCompatTextView3 = hTrackMeLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hAppCompatTextView4 = hInfoLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hAtmsTextView = hAtmsLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hBanksTextView = hBanksLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hPoliceTv = hPoliceLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hMosqueTv = hMosqueLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hBusStationTextView = hBusStationLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hHospitalsTextView = hHospitalsLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hCafesTextView = hCafesLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hViewAllTextView = hViewAllLayout.findViewById(R.id.ButtonTexts);
-        AppCompatTextView hVoiceCommadTv = hContactsLayout.findViewById(R.id.ButtonTexts);
+        AppCompatTextView hRateUsTv = hActivityMainBinding.hBoottomSheet.hRateAppLayout.hButtonTexts;
+
+        AppCompatTextView hSettingsTv = hActivityMainBinding.hBoottomSheet.hSettingsLayout.hButtonTexts;
+        AppCompatTextView hCompass = hActivityMainBinding.hBoottomSheet.hCompassLayout.hButtonTexts;
+        AppCompatTextView hAppCompatTextView1 = hActivityMainBinding.hBoottomSheet.fButtonLayout1.hButtonTexts;
+        AppCompatTextView hAppCompatTextView2 = hActivityMainBinding.hBoottomSheet.fButtonLayout2.hButtonTexts;
+        AppCompatTextView hAppCompatTextView3 = hActivityMainBinding.hBoottomSheet.fButtonLayout3.hButtonTexts;
+        AppCompatTextView hAppCompatTextView4 = hActivityMainBinding.hBoottomSheet.fButtonLayout4.hButtonTexts;
+        AppCompatTextView hAtmsTextView = hActivityMainBinding.hBoottomSheet.fButtonLayout5.hButtonTexts;
+        AppCompatTextView hBanksTextView = hActivityMainBinding.hBoottomSheet.fButtonLayout6.hButtonTexts;
+        AppCompatTextView hPoliceTv = hActivityMainBinding.hBoottomSheet.fButtonLayout7.hButtonTexts;
+        AppCompatTextView hMosqueTv = hActivityMainBinding.hBoottomSheet.fButtonLayout8.hButtonTexts;
+        AppCompatTextView hBusStationTextView = hActivityMainBinding.hBoottomSheet.fButtonLayout9.hButtonTexts;
+        AppCompatTextView hHospitalsTextView = hActivityMainBinding.hBoottomSheet.fButtonLayout10.hButtonTexts;
+        AppCompatTextView hCafesTextView = hActivityMainBinding.hBoottomSheet.fButtonLayout11.hButtonTexts;
+        AppCompatTextView hViewAllTextView = hActivityMainBinding.hBoottomSheet.fButtonLayout12.hButtonTexts;
+        AppCompatTextView hVoiceCommadTv = hActivityMainBinding.hBoottomSheet.hContactsLayout.hButtonTexts;
         hShareLoactionFb.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, (R.color.share_loc_color))));
         hFindRouteFb.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, (R.color.find_route_color))));
         hTrackMeFb.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, (R.color.weather_button_color))));
@@ -969,17 +867,18 @@ public class MainActivity extends AppCompatActivity implements
         UIHelper.hSetTextToTextView(hVoiceCommadTv, getString(R.string.voice_navigation));
     }
 
-
-    @SuppressLint("MissingPermission")
-    @OnClick({R.id.fButtonLayout1, R.id.fButtonLayout2, R.id.fButtonLayout3, R.id.fButtonLayout4,
+    private void hSetupLiseners() {
+        /*
+        * {R.id.fButtonLayout1, R.id.fButtonLayout2, R.id.fButtonLayout3, R.id.fButtonLayout4,
             R.id.fButtonLayout5, R.id.fButtonLayout6, R.id.fButtonLayout7, R.id.fButtonLayout8,
             R.id.fButtonLayout9, R.id.fButtonLayout10, R.id.fButtonLayout11, R.id.fButtonLayout12,
             R.id.hEmergentTextLayout, R.id.hRateAppLayout, R.id.hSettingsLayout, R.id.hNormalChip,
             R.id.hSatelliteChip, R.id.hMoreChip, R.id.hGoToLocation, R.id.hGoToMyLoaction, R.id.hCompassLayout,
-            R.id.hRateUsFb, R.id.hRefreshImageView, R.id.hGetDirectionsB, R.id.hContactsLayout})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.hGetDirectionsB:
+            R.id.hRateUsFb, R.id.hRefreshImageView, R.id.hGetDirectionsB, R.id.hContactsLayout}
+        * */
+
+        /*
+        *  case R.id.hGetDirectionsB:
                 hPermissionCheck(Constants.H_LOCATION_PERMISSION, Constants.H_CALCULATE_ROUTE_TRUE_PC);
                 break;
             case R.id.fButtonLayout1:
@@ -1063,8 +962,9 @@ public class MainActivity extends AppCompatActivity implements
                 hPromptSpeechInput();
 
                 break;
-        }
+        * */
     }
+
 
     private void hPromptSpeechInput() {
         Intent hIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -1093,7 +993,7 @@ public class MainActivity extends AppCompatActivity implements
                         hFindNearByPlaces(hSearchStringList.get(hLocationTag), hCurrentLocation, String.valueOf(hLocationTag));
                     } else {
                         LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location, Refresh");
-                        UIHelper.hMakeVisibleInVisible(hRefreshImageView, Constants.H_VISIBLE);
+                        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
                     }
                 }
             case Constants.REQ_CODE_SPEECH_INPUT:
@@ -1144,7 +1044,7 @@ public class MainActivity extends AppCompatActivity implements
             startActivity(hIntent);
         } else {
             LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location, Refresh");
-            UIHelper.hMakeVisibleInVisible(hRefreshImageView, Constants.H_VISIBLE);
+            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
         }
     }
 
@@ -1156,7 +1056,7 @@ public class MainActivity extends AppCompatActivity implements
             startActivity(hIntent);
         } else {
             LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location");
-            UIHelper.hMakeVisibleInVisible(hRefreshImageView, Constants.H_VISIBLE);
+            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
         }
     }
 
@@ -1244,7 +1144,7 @@ public class MainActivity extends AppCompatActivity implements
     private void hFindRoute() {
 
         hBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        final View root = hPlaceAutocompleteCard.getRootView();
+        final View root = hActivityMainBinding.placeAutocompleteCard.getRootView();
         root.post(new Runnable() {
             @Override
             public void run() {
@@ -1268,7 +1168,7 @@ public class MainActivity extends AppCompatActivity implements
             startActivity(Intent.createChooser(shareIntent, "Share via"));
         } else {
             LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location, Refresh");
-            UIHelper.hMakeVisibleInVisible(hRefreshImageView, Constants.H_VISIBLE);
+            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
         }
     }
 
@@ -1281,13 +1181,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onDrawerOpened(@NonNull View view) {
         hDrawerIsOpened = true;
-        UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_INVISIBLE);
+        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_INVISIBLE);
     }
 
     @Override
     public void onDrawerClosed(@NonNull View view) {
         hDrawerIsOpened = false;
-        UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_VISIBLE);
+        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_VISIBLE);
     }
 
     @Override
@@ -1508,15 +1408,15 @@ public class MainActivity extends AppCompatActivity implements
 
         } else {
             LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location, Refresh");
-            UIHelper.hMakeVisibleInVisible(hRefreshImageView, Constants.H_VISIBLE);
+            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
         }
     }
 
     private void hShowCardHideBottomSheet(String hAddress) {
-        UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_INVISIBLE);
-        UIHelper.hMakeVisibleInVisible(hDetailCardView, Constants.H_VISIBLE);
-        UIHelper.hSetTextToTextView(hNameTv, hDestName);
-        UIHelper.hSetTextToTextView(hAddressTv, hAddress);
+        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_INVISIBLE);
+        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hDetailCardView, Constants.H_VISIBLE);
+        UIHelper.hSetTextToTextView(hActivityMainBinding.hNameTv, hDestName);
+        UIHelper.hSetTextToTextView(hActivityMainBinding.hAddressTv, hAddress);
     }
 
     @Override
@@ -1527,16 +1427,16 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onMapClick(LatLng latLng) {
 
-        if (hDetailCardView.getVisibility() == View.VISIBLE) {
-            UIHelper.hMakeVisibleInVisible(hDetailCardView, Constants.H_INVISIBLE);
-            UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_VISIBLE);
+        if (hActivityMainBinding.hDetailCardView.getVisibility() == View.VISIBLE) {
+            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hDetailCardView, Constants.H_INVISIBLE);
+            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_VISIBLE);
 
         }
-        if (hBottomSheet.getVisibility() == View.VISIBLE) {
-            UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_INVISIBLE);
+        if (hActivityMainBinding.hBoottomSheet.bottomSheet.getVisibility() == View.VISIBLE) {
+            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_INVISIBLE);
         } else {
 
-            UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_VISIBLE);
+            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_VISIBLE);
         }
     }
 

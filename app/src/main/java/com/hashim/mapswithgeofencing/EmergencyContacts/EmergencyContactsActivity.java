@@ -1,44 +1,33 @@
 package com.hashim.mapswithgeofencing.EmergencyContacts;
 
 import android.os.Bundle;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.hashim.mapswithgeofencing.Helper.Constants;
 import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Interfaces.OnFragmentInteractionListener;
 import com.hashim.mapswithgeofencing.R;
+import com.hashim.mapswithgeofencing.databinding.ActivityTrackMeSettingsBinding;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class EmergencyContactsActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
-
-    @BindView(R.id.hATmAppBar)
-    Toolbar hToolbar;
-
-    @BindView(R.id.hFragmentContainer)
-    FrameLayout hFragmentContainer;
-
+    private ActivityTrackMeSettingsBinding hActivityTrackMeSettingsBinding;
     private FragmentManager hFragmentManager;
-    @BindView(R.id.toolbar_title)
-    TextView hToolbarTitle;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_track_me_settings);
-        ButterKnife.bind(this);
+        hActivityTrackMeSettingsBinding = ActivityTrackMeSettingsBinding.inflate(getLayoutInflater());
+        setContentView(hActivityTrackMeSettingsBinding.getRoot());
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
-        hToolBarHelper.hSetToolbar(hToolbar);
-        hToolBarHelper.hSetToolbarTitle(hToolbarTitle, getString(R.string.add_remove_locations));
+        hToolBarHelper.hSetToolbar(hActivityTrackMeSettingsBinding.hATmAppBar.toolbar);
+        hToolBarHelper.hSetToolbarTitle(hActivityTrackMeSettingsBinding.hATmAppBar.toolbarTitle, getString(R.string.add_remove_locations));
 
         hFragmentManager = getSupportFragmentManager();
 

@@ -1,26 +1,22 @@
 package com.hashim.mapswithgeofencing.CustomView;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
+import androidx.fragment.app.DialogFragment;
 
 import com.hashim.mapswithgeofencing.Helper.LogToastSnackHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.DialogResponseInterface;
 import com.hashim.mapswithgeofencing.R;
+import com.hashim.mapswithgeofencing.databinding.CustomInputDialog1Binding;
 
 import java.util.Objects;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public class HcustomDialog1 extends DialogFragment {
     private static final String H_TITLE = "hTitle";
@@ -34,22 +30,22 @@ public class HcustomDialog1 extends DialogFragment {
     private String hMessage;
     private int hColor;
     private int hIcon;
-    Unbinder unbinder;
 
-    @BindView(R.id.hDialogTitle)
-    TextView hDialogTitleTv;
-
-    @BindView(R.id.hNameNumberTv)
-    EditText hNameNumberTv;
-
-    @BindView(R.id.hTextTv)
-    EditText hMessageTv;
-
-    @BindView(R.id.hOkB)
-    Button hOkB;
-
-    @BindView(R.id.hCancelB)
-    Button hCancelB;
+    //    @BindView(R.id.hDialogTitle)
+//    TextView hDialogTitleTv;
+//
+//    @BindView(R.id.hNameNumberTv)
+//    EditText hNameNumberTv;
+//
+//    @BindView(R.id.hTextTv)
+//    EditText hMessageTv;
+//
+//    @BindView(R.id.hOkB)
+//    Button hOkB;
+//
+//    @BindView(R.id.hCancelB)
+//    Button hCancelB;
+    private CustomInputDialog1Binding hCustomInputDialog1Binding;
 
     public boolean ishIsSendToAll() {
         return hIsSendToAll;
@@ -67,8 +63,8 @@ public class HcustomDialog1 extends DialogFragment {
     }
 
     private void hSetListners() {
-        hOkB.setOnClickListener(view -> {
-            String hMessage = UIHelper.hGetTextFromTextView(hMessageTv);
+        hCustomInputDialog1Binding.hOkB.setOnClickListener(view -> {
+            String hMessage = UIHelper.hGetTextFromTextView(hCustomInputDialog1Binding.hTextTv);
 
             if (hMessage != null && !hMessage.equals("")) {
                 hDialogResponseInterface.hSubmitPositiveResponse(HcustomDialog1.this, hMessage);
@@ -79,7 +75,7 @@ public class HcustomDialog1 extends DialogFragment {
 
 
         });
-        hCancelB.setOnClickListener(view -> hDialogResponseInterface.hSubmitNegativeResponse(HcustomDialog1.this));
+        hCustomInputDialog1Binding.hCancelB.setOnClickListener(view -> hDialogResponseInterface.hSubmitNegativeResponse(HcustomDialog1.this));
     }
 
     @Override
@@ -114,12 +110,12 @@ public class HcustomDialog1 extends DialogFragment {
     private Dialog hCreateDialog() {
         AlertDialog.Builder hBuilder = new AlertDialog.Builder(getActivity());
 
+        hCustomInputDialog1Binding = CustomInputDialog1Binding.inflate(getLayoutInflater());
         final LayoutInflater hDialogLayoutInflater = getActivity().getLayoutInflater();
         @SuppressLint("InflateParams") View hDilaogView = hDialogLayoutInflater.inflate(R.layout.custom_input_dialog_1, null);
-        unbinder = ButterKnife.bind(this, hDilaogView);
 
 
-        UIHelper.hSetTextToTextView(hMessageTv, hMessage);
+        UIHelper.hSetTextToTextView(hCustomInputDialog1Binding.hTextTv, hMessage);
 
 
         hSetListners();
@@ -131,7 +127,6 @@ public class HcustomDialog1 extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     public static HcustomDialog1 newInstance(String param1, boolean hIsAllSendingClicked) {

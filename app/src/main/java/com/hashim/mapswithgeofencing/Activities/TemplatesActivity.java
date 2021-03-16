@@ -1,7 +1,12 @@
 package com.hashim.mapswithgeofencing.Activities;
 
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.hashim.mapswithgeofencing.Adapters.RecyclerAdapter;
 import com.hashim.mapswithgeofencing.CustomView.HcustomDialog;
 import com.hashim.mapswithgeofencing.Helper.ListUtils;
@@ -10,53 +15,29 @@ import com.hashim.mapswithgeofencing.Interfaces.DialogResponseInterface;
 import com.hashim.mapswithgeofencing.Interfaces.RecyclerInterface;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
-
-import androidx.fragment.app.DialogFragment;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-import android.view.View;
-import android.widget.TextView;
-
+import com.hashim.mapswithgeofencing.databinding.ActivityTemplatesBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class TemplatesActivity extends AppCompatActivity implements DialogResponseInterface, RecyclerInterface {
 
     private String hTag = LogToastSnackHelper.hMakeTag(TemplatesActivity.class);
 
-    @BindView(R.id.hAtAppbar)
-    Toolbar toolbar;
-
-    @BindView(R.id.hAddTextTemplate)
-    FloatingActionButton hAddTextTemplate;
-
-    @BindView(R.id.toolbar_title)
-    TextView toolbarTitle;
-
-    @BindView(R.id.hDefaultTemplateRv)
-    RecyclerView hDefaultTemplateRv;
-
-    @BindView(R.id.hCustomTemplateRv)
-    RecyclerView hCustomTemplateRv;
 
     private List<String> hDefaultTempList;
     private List<String> hCustomTempList = new ArrayList<>();
     private RecyclerAdapter hDefaultTempAdapter;
     private RecyclerAdapter hCustomTempAdapter;
     private SettingsPrefrences hSettingsPrefrences;
+    private ActivityTemplatesBinding hActivityTemplatesBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_templates);
-        ButterKnife.bind(this);
+        hActivityTemplatesBinding = ActivityTemplatesBinding.inflate(getLayoutInflater());
+        setContentView(hActivityTemplatesBinding.getRoot());
         hInit();
     }
 
@@ -66,8 +47,8 @@ public class TemplatesActivity extends AppCompatActivity implements DialogRespon
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         hDefaultTempAdapter = new RecyclerAdapter(this, hDefaultTempList, RecyclerAdapter.H_TEMPLATES_ADAPTER);
-        hDefaultTemplateRv.setLayoutManager(layoutManager);
-        hDefaultTemplateRv.setAdapter(hDefaultTempAdapter);
+        hActivityTemplatesBinding.hDefaultTemplateRv.setLayoutManager(layoutManager);
+        hActivityTemplatesBinding.hDefaultTemplateRv.setAdapter(hDefaultTempAdapter);
 
         hInitCustomAdapter();
     }
@@ -84,14 +65,16 @@ public class TemplatesActivity extends AppCompatActivity implements DialogRespon
             hCustomTempAdapter = new RecyclerAdapter(this, hCustomTempList, RecyclerAdapter.H_TEMPLATES_ADAPTER);
             hCustomTempAdapter.notifyDataSetChanged();
         }
-        hCustomTemplateRv.setLayoutManager(layoutManager);
-        hCustomTemplateRv.setAdapter(hCustomTempAdapter);
+        hActivityTemplatesBinding.hCustomTemplateRv.setLayoutManager(layoutManager);
+        hActivityTemplatesBinding.hCustomTemplateRv.setAdapter(hCustomTempAdapter);
     }
 
-    @OnClick(R.id.hAddTextTemplate)
-    public void onViewClicked() {
-        HcustomDialog dialog = new HcustomDialog();
-        dialog.show(getSupportFragmentManager(), "H_Dialog");
+    public void hSetupListeners() {
+        hActivityTemplatesBinding.hAddTextTemplate.setOnClickListener(v -> {
+            HcustomDialog dialog = new HcustomDialog();
+            dialog.show(getSupportFragmentManager(), "H_Dialog");
+        });
+
     }
 
     @Override

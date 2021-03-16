@@ -2,14 +2,11 @@ package com.hashim.mapswithgeofencing.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.hashim.mapswithgeofencing.Adapters.RecyclerAdapter;
 import com.hashim.mapswithgeofencing.Helper.Constants;
@@ -18,41 +15,33 @@ import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.RecyclerInterface;
 import com.hashim.mapswithgeofencing.R;
+import com.hashim.mapswithgeofencing.databinding.ActivityViewAllBinding;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class ViewAllActivity extends AppCompatActivity implements RecyclerInterface {
 
-    @BindView(R.id.recycler_view)
-    RecyclerView hRecyclerView;
-    @BindView(R.id.toolbar_title)
-    TextView hToolbarTitle;
-    @BindView(R.id.hExAppBar)
-    Toolbar hToolbar;
 
-
+    private ActivityViewAllBinding hActivityViewAllBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_all);
-        ButterKnife.bind(this);
+        hActivityViewAllBinding = ActivityViewAllBinding.inflate(getLayoutInflater());
+        setContentView(hActivityViewAllBinding.getRoot());
         UIHelper.hOreoOrientationCheck(this);
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
-        hToolBarHelper.hSetToolbar(hToolbar);
-        hToolBarHelper.hSetToolbarTitle(hToolbarTitle,
+        hToolBarHelper.hSetToolbar(hActivityViewAllBinding.hExAppBar.toolbar);
+        hToolBarHelper.hSetToolbarTitle(hActivityViewAllBinding.hExAppBar.toolbarTitle,
                 getString(R.string.explore_nearby_places));
 
         List<String> hPlacesString = ListUtils.hConvertArrayToArrayList(getResources().getStringArray(R.array.place_strings));
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
         RecyclerAdapter adapter = new RecyclerAdapter(this, hPlacesString, RecyclerAdapter.H_VIEW_ALL_ADAPTER);
-        hRecyclerView.setLayoutManager(layoutManager);
-        hRecyclerView.setAdapter(adapter);
+        hActivityViewAllBinding.recyclerView.setLayoutManager(layoutManager);
+        hActivityViewAllBinding.recyclerView.setAdapter(adapter);
 
     }
 

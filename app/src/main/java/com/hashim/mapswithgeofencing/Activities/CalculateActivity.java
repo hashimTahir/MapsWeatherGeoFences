@@ -12,18 +12,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -58,14 +51,11 @@ import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
+import com.hashim.mapswithgeofencing.databinding.AcitivityCalculateRouteBinding;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class CalculateActivity extends AppCompatActivity implements
@@ -74,38 +64,6 @@ public class CalculateActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         DirectionFinderListener, PlaceSelectionListener {
 
-    @BindView(R.id.hFromTV)
-    TextView hFromTv;
-
-    @BindView(R.id.hToTV)
-    TextView hToTv;
-
-    @BindView(R.id.toolbar_title)
-    TextView hToolbarTitle;
-    @BindView(R.id.hAcrAppBar)
-    Toolbar hToolbar;
-    @BindView(R.id.hTabs)
-    TabLayout hTabLayout;
-    @BindView(R.id.hFragmentContainer)
-    FrameLayout hFragmentContainer;
-    @BindView(R.id.hDistanceTv)
-    TextView hDistanceTv;
-    @BindView(R.id.hTimeTv)
-    TextView hTimeTv;
-    @BindView(R.id.place_autocomplete_card)
-    CardView hPlaceAutocompleteCard;
-    @BindView(R.id.hBottomCardView)
-    CardView hBottomCardView;
-    @BindView(R.id.hGetDirectionsB)
-    Button hGetDirectionsB;
-
-
-    @BindView(R.id.hIconSwitch)
-    ImageView hIconSwitch;
-
-
-    @BindView(R.id.hEtaTV)
-    TextView hEtaTV;
 
     private LatLng hCurrentLatLng;
     private LatLng hDestLatLng;
@@ -126,18 +84,21 @@ public class CalculateActivity extends AppCompatActivity implements
     private boolean hIsSwitced = false;
     private String hCurrentLocationName;
     private boolean hIsVoiceCommand;
+    private AcitivityCalculateRouteBinding hAcitivityCalculateRouteBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.acitivity_calculate_route);
-        ButterKnife.bind(this);
+
+        hAcitivityCalculateRouteBinding = AcitivityCalculateRouteBinding.inflate(getLayoutInflater());
+
+        setContentView(hAcitivityCalculateRouteBinding.getRoot());
 
         UIHelper.hOreoOrientationCheck(this);
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
-        hToolBarHelper.hSetToolbar(hToolbar);
-        hToolBarHelper.hSetToolbarTitle(hToolbarTitle, getString(R.string.find_route));
+        hToolBarHelper.hSetToolbar(hAcitivityCalculateRouteBinding.hAcrAppBar.toolbar);
+        hToolBarHelper.hSetToolbarTitle(hAcitivityCalculateRouteBinding.hAcrAppBar.toolbarTitle, getString(R.string.find_route));
 
         hGetIntentData();
         hMode = DirectionFinder.H_DRIVING_MODE;
@@ -156,15 +117,16 @@ public class CalculateActivity extends AppCompatActivity implements
     }
 
     private void hInitView() {
-        hTabLayout.addTab(hTabLayout.newTab().setText(getString(R.string.drive_tab)).setIcon(R.drawable.car));
-        hTabLayout.addTab(hTabLayout.newTab().setText(getString(R.string.cycling_tab)).setIcon(R.drawable.cycle));
-        hTabLayout.addTab(hTabLayout.newTab().setText(getString(R.string.walking_tab)).setIcon(R.drawable.walking));
-        hTabLayout.addOnTabSelectedListener(this);
+        TabLayout hTabs = hAcitivityCalculateRouteBinding.hTabs;
+        hTabs.addTab(hTabs.newTab().setText(getString(R.string.drive_tab)).setIcon(R.drawable.car));
+        hTabs.addTab(hTabs.newTab().setText(getString(R.string.cycling_tab)).setIcon(R.drawable.cycle));
+        hTabs.addTab(hTabs.newTab().setText(getString(R.string.walking_tab)).setIcon(R.drawable.walking));
+        hTabs.addOnTabSelectedListener(this);
 
 
-        hTabLayout.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.share_loc_color), PorterDuff.Mode.SRC_IN);
-        hTabLayout.getTabAt(1).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-        hTabLayout.getTabAt(2).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        hTabs.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.share_loc_color), PorterDuff.Mode.SRC_IN);
+        hTabs.getTabAt(1).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        hTabs.getTabAt(2).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
 
 
         /*Todo initilize later*/
@@ -176,7 +138,8 @@ public class CalculateActivity extends AppCompatActivity implements
                 .findFragmentById(R.id.hMap);
         mapFragment.getMapAsync(this);
 
-        hGetDirectionsB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, (R.color.share_loc_color))));
+        hAcitivityCalculateRouteBinding.hGetDirectionsB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,
+                (R.color.share_loc_color))));
     }
 
     private void hGetIntentData() {
@@ -230,10 +193,13 @@ public class CalculateActivity extends AppCompatActivity implements
 
         UIHelper.hOreoOrientationCheck(this);
 
-        UIHelper.hSetTextToTextView(hFromTv, getString(R.string.current_location));
+        UIHelper.hSetTextToTextView(
+                hAcitivityCalculateRouteBinding.hFromTV,
+                getString(R.string.current_location));
 
         if (hDestName != null) {
-            UIHelper.hSetTextToTextView(hToTv, hDestName);
+            UIHelper.hSetTextToTextView(
+                    hAcitivityCalculateRouteBinding.hToTV, hDestName);
 
             try {
                 hFindDirections(hMode);
@@ -246,28 +212,46 @@ public class CalculateActivity extends AppCompatActivity implements
 
     }
 
+    /*Todo: Call later from on create*/
 
-    @OnClick({R.id.hToTV, R.id.hGetDirectionsB})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.hToTV:
-//                UIHelper.hMakeVisibleInVisible(hPlaceAutocompleteCard, Constants.H_VISIBLE);
-                final View root = hPlaceAutocompleteCard.getRootView();
-                root.post(new Runnable() {
-                    @Override
-                    public void run() {
+    private void hSetupListeners() {
+        hAcitivityCalculateRouteBinding.hToTV.setOnClickListener(v -> {
+            //                UIHelper.hMakeVisibleInVisible(hPlaceAutocompleteCard, Constants.H_VISIBLE);
+//            final View root = hPlaceAutocompleteCard.getRootView();
+//            root.post(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//            });
+        });
+        hAcitivityCalculateRouteBinding.hGetDirectionsB.setOnClickListener(v -> {
+            hLaunchGoogleMaps();
+        });
+        hAcitivityCalculateRouteBinding.hIconSwitch.setOnClickListener(v -> {
+            if (!hIsSwitced) {
+                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hToTV, getString(R.string.current_location));
+                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hFromTV, hDestName);
 
-                    }
-                });
-                break;
-            case R.id.hGetDirectionsB:
 
-                hLaunchGoogleMaps();
-                break;
+                LatLng hTempLatLng = hCurrentLatLng;
+                hCurrentLatLng = hDestLatLng;
+                hDestLatLng = hTempLatLng;
+                hIsSwitced = true;
+            } else {
+                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hToTV, hDestName);
+                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hFromTV, getString(R.string.current_location));
 
 
-        }
+                LatLng hTempLatLng = hCurrentLatLng;
+                hCurrentLatLng = hDestLatLng;
+                hDestLatLng = hTempLatLng;
+
+                hIsSwitced = false;
+            }
+        });
     }
+
 
     private void hLaunchGoogleMaps() {
 
@@ -429,8 +413,8 @@ public class CalculateActivity extends AppCompatActivity implements
 
         } else {
             LogToastSnackHelper.hMakeLongToast(this, hMode.concat(getString(R.string.not_available)));
-            AnimHelper.hAnimateBottomDown(this, hBottomCardView);
-            UIHelper.hMakeVisibleInVisible(hBottomCardView, Constants.H_INVISIBLE);
+            AnimHelper.hAnimateBottomDown(this, hAcitivityCalculateRouteBinding.hBottomCardView);
+            UIHelper.hMakeVisibleInVisible(hAcitivityCalculateRouteBinding.hBottomCardView, Constants.H_INVISIBLE);
         }
 
 
@@ -491,20 +475,20 @@ public class CalculateActivity extends AppCompatActivity implements
             if (hSettingsPrefrences.hGetDistanceUnit() == Constants.H_MILES_DIS) {
                 dis = dis / 1600;
 
-                UIHelper.hSetTextToTextView(hDistanceTv, String.valueOf(dis) + getString(R.string.miles));
-                UIHelper.hSetTextToTextView(hEtaTV, "  (".concat(hDuration) + ")");
+                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hDistanceTv, String.valueOf(dis) + getString(R.string.miles));
+                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hEtaTV, "  (".concat(hDuration) + ")");
             } else {
 
-                UIHelper.hSetTextToTextView(hDistanceTv, hDist);
-                UIHelper.hSetTextToTextView(hEtaTV, "  (".concat(hDuration) + ")");
+                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hDistanceTv, hDist);
+                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hEtaTV, "  (".concat(hDuration) + ")");
             }
 
 
 //        hGoogleMap.setMyLocationEnabled(false);
 
 
-            UIHelper.hSetTextToTextView(hTimeTv, hDestName);
-            AnimHelper.hAnimateBottomUp(this, hBottomCardView);
+            UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hTimeTv, hDestName);
+            AnimHelper.hAnimateBottomUp(this, hAcitivityCalculateRouteBinding.hBottomCardView);
 
         }
 
@@ -516,7 +500,7 @@ public class CalculateActivity extends AppCompatActivity implements
         String hPlaceName = (String) place.getName();
         hDestLatLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
         hDestName = hPlaceName;
-        UIHelper.hSetTextToTextView(hToTv, hPlaceName);
+        UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hToTV, hPlaceName);
 
         try {
             hFindDirections(hMode);
@@ -551,27 +535,4 @@ public class CalculateActivity extends AppCompatActivity implements
     }
 
 
-    @OnClick(R.id.hIconSwitch)
-    public void onViewClicked() {
-        if (!hIsSwitced) {
-            UIHelper.hSetTextToTextView(hToTv, getString(R.string.current_location));
-            UIHelper.hSetTextToTextView(hFromTv, hDestName);
-
-
-            LatLng hTempLatLng = hCurrentLatLng;
-            hCurrentLatLng = hDestLatLng;
-            hDestLatLng = hTempLatLng;
-            hIsSwitced = true;
-        } else {
-            UIHelper.hSetTextToTextView(hToTv, hDestName);
-            UIHelper.hSetTextToTextView(hFromTv, getString(R.string.current_location));
-
-
-            LatLng hTempLatLng = hCurrentLatLng;
-            hCurrentLatLng = hDestLatLng;
-            hDestLatLng = hTempLatLng;
-
-            hIsSwitced = false;
-        }
-    }
 }

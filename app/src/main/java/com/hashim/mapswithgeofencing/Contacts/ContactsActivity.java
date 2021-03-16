@@ -8,21 +8,15 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hashim.mapswithgeofencing.Adapters.ContactsAdapter;
@@ -41,17 +35,14 @@ import com.hashim.mapswithgeofencing.Interfaces.RecyclerInterface;
 import com.hashim.mapswithgeofencing.Interfaces.onActionModeListener;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
+import com.hashim.mapswithgeofencing.databinding.ActivityContactsBinding;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import dmax.dialog.SpotsDialog;
-import in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView;
 import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
@@ -61,29 +52,6 @@ public class ContactsActivity extends AppCompatActivity
         RecyclerInterface, DialogResponseInterface,
         EasyPermissions.PermissionCallbacks, onActionModeListener {
 
-    @BindView(R.id.fast_scroller_recycler)
-    IndexFastScrollRecyclerView hFRecyclerView;
-
-    @BindView(R.id.toolbar_title)
-    TextView hToolbarTitle;
-
-    @BindView(R.id.hToolbar)
-    Toolbar hToolbar;
-
-    @BindView(R.id.hAddContactsFB)
-    FloatingActionButton hAddContactsFB;
-
-    @BindView(R.id.hAlertTextView)
-    AppCompatTextView hAlertTextView;
-
-    @BindView(R.id.hSaveContactsB)
-    Button hSaveContactsB;
-
-    @BindView(R.id.hSelectedContactsT)
-    TextView hSelectedContactsT;
-
-    @BindView(R.id.hSaveContactsL)
-    LinearLayout hSaveContactsL;
 
     private static final String hTag = LogToastSnackHelper.hMakeTag(ContactsActivity.class);
     private static final int H_SHOW_SAVE_CONTACTS_LAYOUT = 222;
@@ -108,16 +76,19 @@ public class ContactsActivity extends AppCompatActivity
     private boolean hIsAllSelected = false;
     //    Todo: For new location check this first
     private boolean hIsNewLocation = false;
+    private Bundle savedInstanceState;
+    private ActivityContactsBinding hActivityContactsBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contacts);
-        ButterKnife.bind(this);
+        this.savedInstanceState = savedInstanceState;
+        super.onCreate(this.savedInstanceState);
+        hActivityContactsBinding = ActivityContactsBinding.inflate(getLayoutInflater());
+        setContentView(hActivityContactsBinding.getRoot());
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
-        hToolBarHelper.hSetToolbar(hToolbar);
-        hToolBarHelper.hSetToolbarTitle(hToolbarTitle, getString(R.string.emergency_contacts));
+        hToolBarHelper.hSetToolbar(hActivityContactsBinding.hToolbar.toolbar);
+        hToolBarHelper.hSetToolbarTitle(hActivityContactsBinding.hToolbar.toolbarTitle, getString(R.string.emergency_contacts));
 
         hSettingsPrefrences = new SettingsPrefrences(this);
         hAppRepository = AppRepository.hGetInstance(this);
@@ -204,11 +175,11 @@ public class ContactsActivity extends AppCompatActivity
         if (hContactsAdapter == null) {
             hContactsAdapter = new ContactsAdapter(this, hList);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(hContactsAdapter, this));
-            itemTouchHelper.attachToRecyclerView(hFRecyclerView);
+            itemTouchHelper.attachToRecyclerView(hActivityContactsBinding.fastScrollerRecycler);
 
-            hFRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            hActivityContactsBinding.fastScrollerRecycler.setLayoutManager(new LinearLayoutManager(this));
 //            hFRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, hFRecyclerView, this));
-            hFRecyclerView.setAdapter(hContactsAdapter);
+            hActivityContactsBinding.fastScrollerRecycler.setAdapter(hContactsAdapter);
 
         } else {
             hContactsAdapter.hSetNewList(hList);
@@ -217,15 +188,15 @@ public class ContactsActivity extends AppCompatActivity
     }
 
     private void hSetSideScroller() {
-        hFRecyclerView.setIndexTextSize(12);
-        hFRecyclerView.setIndexBarColor("#ff212121");
-        hFRecyclerView.setIndexBarCornerRadius(0);
-        hFRecyclerView.setIndexBarTransparentValue((float) 0.4);
-        hFRecyclerView.setIndexbarMargin(0);
-        hFRecyclerView.setIndexbarWidth(50);
-        hFRecyclerView.setPreviewPadding(0);
-        hFRecyclerView.setIndexBarTextColor("#FFFFFF");
-        hFRecyclerView.setIndexBarVisibility(true);
+        hActivityContactsBinding.fastScrollerRecycler.setIndexTextSize(12);
+        hActivityContactsBinding.fastScrollerRecycler.setIndexBarColor("#ff212121");
+        hActivityContactsBinding.fastScrollerRecycler.setIndexBarCornerRadius(0);
+        hActivityContactsBinding.fastScrollerRecycler.setIndexBarTransparentValue((float) 0.4);
+        hActivityContactsBinding.fastScrollerRecycler.setIndexbarMargin(0);
+        hActivityContactsBinding.fastScrollerRecycler.setIndexbarWidth(50);
+        hActivityContactsBinding.fastScrollerRecycler.setPreviewPadding(0);
+        hActivityContactsBinding.fastScrollerRecycler.setIndexBarTextColor("#FFFFFF");
+        hActivityContactsBinding.fastScrollerRecycler.setIndexBarVisibility(true);
 //        hFRecyclerView.setIndexbarHighLateTextColor("#33334c");
 //        hFRecyclerView.setIndexBarHighLateTextVisibility(true);
     }
@@ -241,25 +212,25 @@ public class ContactsActivity extends AppCompatActivity
     private void hShowLayout(int layout, boolean hIsShown) {
         switch (layout) {
             case H_SHOW_RECYCLER_LAYOUT:
-                UIHelper.hMakeVisibleInVisible(hFRecyclerView, Constants.H_VISIBLE);
-                UIHelper.hMakeVisibleInVisible(hAlertTextView, Constants.H_INVISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityContactsBinding.fastScrollerRecycler, Constants.H_VISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityContactsBinding.hAlertTextView, Constants.H_INVISIBLE);
                 if (hWhatLoaded == H_ALL_LIST) {
-                    UIHelper.hMakeVisibleInVisible(hAddContactsFB, Constants.H_INVISIBLE);
+                    UIHelper.hMakeVisibleInVisible(hActivityContactsBinding.hAddContactsFB, Constants.H_INVISIBLE);
                 } else {
-                    UIHelper.hMakeVisibleInVisible(hAddContactsFB, Constants.H_VISIBLE);
+                    UIHelper.hMakeVisibleInVisible(hActivityContactsBinding.hAddContactsFB, Constants.H_VISIBLE);
                 }
                 break;
             case H_SHOW_ALERT_LAYOUT:
-                UIHelper.hMakeVisibleInVisible(hFRecyclerView, Constants.H_INVISIBLE);
-                UIHelper.hMakeVisibleInVisible(hAlertTextView, Constants.H_VISIBLE);
-                UIHelper.hMakeVisibleInVisible(hAddContactsFB, Constants.H_VISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityContactsBinding.fastScrollerRecycler, Constants.H_INVISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityContactsBinding.hAlertTextView, Constants.H_VISIBLE);
+                UIHelper.hMakeVisibleInVisible(hActivityContactsBinding.hAddContactsFB, Constants.H_VISIBLE);
                 break;
             case H_SHOW_SAVE_CONTACTS_LAYOUT:
                 if (hIsShown) {
-                    UIHelper.hMakeVisibleInVisible(hSaveContactsL, Constants.H_VISIBLE);
+                    UIHelper.hMakeVisibleInVisible(hActivityContactsBinding.hSaveContactsL, Constants.H_VISIBLE);
                     hIsSaveLayoutVisible = true;
                 } else {
-                    UIHelper.hMakeVisibleInVisible(hSaveContactsL, Constants.H_INVISIBLE);
+                    UIHelper.hMakeVisibleInVisible(hActivityContactsBinding.hSaveContactsL, Constants.H_INVISIBLE);
                     hIsSaveLayoutVisible = false;
                 }
                 break;
@@ -400,39 +371,36 @@ public class ContactsActivity extends AppCompatActivity
 
 //    }
 
-    @OnClick({R.id.hAddContactsFB, R.id.hSaveContactsB})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.hAddContactsFB:
-                if (hContactsRetrieved) {
-                    Collections.sort(hAllContactsList, new Hcomparator());
-                    hSetupRecyclerView(hAllContactsList, H_ALL_LIST);
-                    hShowLayout(H_SHOW_RECYCLER_LAYOUT, false);
+    public void hSetupListeners() {
+        hActivityContactsBinding.hAddContactsFB.setOnClickListener(v -> {
+            if (hContactsRetrieved) {
+                Collections.sort(hAllContactsList, new Hcomparator());
+                hSetupRecyclerView(hAllContactsList, H_ALL_LIST);
+                hShowLayout(H_SHOW_RECYCLER_LAYOUT, false);
+            }
+        });
+        hActivityContactsBinding.hSaveContactsB.setOnClickListener(v -> {
+            List<ContactsEntity> hContactsToSaveList = new ArrayList<>();
+            for (ContactsEntity contactsModelWithIds : hAllContactsList) {
+                if (hSelectedIds.contains(contactsModelWithIds.getContactsId())) {
+                    hContactsToSaveList.add(contactsModelWithIds);
                 }
-                break;
-            case R.id.hSaveContactsB:
-                List<ContactsEntity> hContactsToSaveList = new ArrayList<>();
-                for (ContactsEntity contactsModelWithIds : hAllContactsList) {
-                    if (hSelectedIds.contains(contactsModelWithIds.getContactsId())) {
-                        hContactsToSaveList.add(contactsModelWithIds);
-                    }
-                }
-                LogToastSnackHelper.hMakeShortToast(this, getString(R.string.selected_contacts_saved));
-                hShowLayout(H_SHOW_SAVE_CONTACTS_LAYOUT, false);
+            }
+            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.selected_contacts_saved));
+            hShowLayout(H_SHOW_SAVE_CONTACTS_LAYOUT, false);
 
 //                TODO:save contacts here
 //                hSettingsPrefrences.hSaveContacts(hContactsToSaveList);
-                if (hSavedContacatsList == null) {
-                    hSavedContacatsList = new ArrayList<>();
-                }
-                hSavedContacatsList.clear();
-                isMultiSelect = false;
-                hSelectedIds = new ArrayList<>();
-                hContactsAdapter.sethSelectedIds(hSelectedIds);
-                hWhatLoaded = 34;
-                hSetLayout();
-                break;
-        }
+            if (hSavedContacatsList == null) {
+                hSavedContacatsList = new ArrayList<>();
+            }
+            hSavedContacatsList.clear();
+            isMultiSelect = false;
+            hSelectedIds = new ArrayList<>();
+            hContactsAdapter.sethSelectedIds(hSelectedIds);
+            hWhatLoaded = 34;
+            hSetLayout();
+        });
     }
 
     @Override
@@ -671,6 +639,7 @@ public class ContactsActivity extends AppCompatActivity
             cursor.close();
             return hContactsModelWithIds;
         }
+
     }
 
     @Override
