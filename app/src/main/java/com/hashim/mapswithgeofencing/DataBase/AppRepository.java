@@ -1,7 +1,7 @@
 package com.hashim.mapswithgeofencing.DataBase;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
-
 
 import com.hashim.mapswithgeofencing.Helper.LogToastSnackHelper;
 
@@ -14,7 +14,7 @@ import java.util.concurrent.Future;
 
 public class AppRepository {
     private static final String hTag = LogToastSnackHelper.hMakeTag(AppRepository.class);
-    private static com.hashim.mapswithgeofencing.Contacts.AppDataBase hAppDataBase;
+    private static AppDataBase hAppDataBase;
     private int hId;
     private static ExecutorService hExecuter = Executors.newSingleThreadExecutor();
     @SuppressLint("StaticFieldLeak")
@@ -22,7 +22,7 @@ public class AppRepository {
 
 
     public AppRepository(Context context) {
-        hAppDataBase = com.hashim.mapswithgeofencing.Contacts.AppDataBase.gethAppDbInstance(context);
+        hAppDataBase = AppDataBase.gethAppDbInstance(context);
     }
 
     public static AppRepository hGetInstance(Context context) {
@@ -35,17 +35,17 @@ public class AppRepository {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////Callables//////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private Callable<List<cLocationEntitiy>> hAllLocationsListCallable = new Callable<List<cLocationEntitiy>>() {
+    private Callable<List<LocationEntitiy>> hAllLocationsListCallable = new Callable<List<LocationEntitiy>>() {
         @Override
-        public List<cLocationEntitiy> call() {
+        public List<LocationEntitiy> call() {
             return hAppDataBase.getLocationDao().hGetAllLocationData();
         }
     };
 
 
-    private Callable<List<cContactsEntity>> hAllContactsListCallable = new Callable<List<cContactsEntity>>() {
+    private Callable<List<ContactsEntity>> hAllContactsListCallable = new Callable<List<ContactsEntity>>() {
         @Override
-        public List<cContactsEntity> call() {
+        public List<ContactsEntity> call() {
             return hAppDataBase.getContactsDao().hGetAllContacts();
         }
     };
@@ -64,15 +64,15 @@ public class AppRepository {
     };
 
 
-    private Callable<cLocationEntitiy> hLocationsByIdCallable = new Callable<cLocationEntitiy>() {
+    private Callable<LocationEntitiy> hLocationsByIdCallable = new Callable<LocationEntitiy>() {
         @Override
-        public cLocationEntitiy call() {
+        public LocationEntitiy call() {
             return hAppDataBase.getLocationDao().hLocationById(hId);
         }
     };
-    private Callable<List<cContactsEntity>> hContactsByIdCallable = new Callable<List<cContactsEntity>>() {
+    private Callable<List<ContactsEntity>> hContactsByIdCallable = new Callable<List<ContactsEntity>>() {
         @Override
-        public List<cContactsEntity> call() {
+        public List<ContactsEntity> call() {
             return hAppDataBase.getContactsDao().hContactsById(hId);
         }
     };
@@ -81,7 +81,7 @@ public class AppRepository {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void hAddSampleData() {
         hExecuter.execute(() -> {
-            cSampleData hSampleData = new cSampleData();
+            SampleData hSampleData = new SampleData();
             hSampleData.hCreateTestData();
 
             hAppDataBase.getLocationDao().hInsertAllLocationEntity(hSampleData.gethLocationEntitiyList());
@@ -90,8 +90,8 @@ public class AppRepository {
         });
     }
 
-    public List<cLocationEntitiy> hGetAllLocationsData() {
-        Future<List<cLocationEntitiy>> future = hExecuter.submit(hAllLocationsListCallable);
+    public List<LocationEntitiy> hGetAllLocationsData() {
+        Future<List<LocationEntitiy>> future = hExecuter.submit(hAllLocationsListCallable);
 
         try {
             return future.get();
@@ -101,8 +101,8 @@ public class AppRepository {
         return null;
     }
 
-    public List<cContactsEntity> hGetAllContactsData() {
-        Future<List<cContactsEntity>> future = hExecuter.submit(hAllContactsListCallable);
+    public List<ContactsEntity> hGetAllContactsData() {
+        Future<List<ContactsEntity>> future = hExecuter.submit(hAllContactsListCallable);
 
         try {
             return future.get();
@@ -112,9 +112,9 @@ public class AppRepository {
         return null;
     }
 
-    public cLocationEntitiy hQueryLocationDataById(String id) {
+    public LocationEntitiy hQueryLocationDataById(String id) {
         hId = Integer.parseInt(id);
-        Future<cLocationEntitiy> future = hExecuter.submit(hLocationsByIdCallable);
+        Future<LocationEntitiy> future = hExecuter.submit(hLocationsByIdCallable);
         try {
             return future.get();
         } catch (ExecutionException | InterruptedException e) {
@@ -123,9 +123,9 @@ public class AppRepository {
         return null;
     }
 
-    public List<cContactsEntity> hQueryContactsDataById(String mParam1) {
+    public List<ContactsEntity> hQueryContactsDataById(String mParam1) {
         hId = Integer.parseInt(mParam1);
-        Future<List<cContactsEntity>> future = hExecuter.submit(hContactsByIdCallable);
+        Future<List<ContactsEntity>> future = hExecuter.submit(hContactsByIdCallable);
         try {
             return future.get();
         } catch (ExecutionException | InterruptedException e) {
@@ -159,23 +159,23 @@ public class AppRepository {
     }
 
 
-    public void hDeleteContact(cContactsEntity contactsEntity) {
+    public void hDeleteContact(ContactsEntity contactsEntity) {
         hExecuter.execute(() -> hAppDataBase.getContactsDao().hDeleteContact(contactsEntity));
 
     }
 
-    public void hDeleteContactList(List<cContactsEntity> contactsEntityList) {
+    public void hDeleteContactList(List<ContactsEntity> contactsEntityList) {
         hExecuter.execute(() -> hAppDataBase.getContactsDao().hDeleteAllContacts(contactsEntityList));
 
     }
 
 
-    public void hAddAllContacts(List<cContactsEntity> contactsEntityList) {
+    public void hAddAllContacts(List<ContactsEntity> contactsEntityList) {
         hExecuter.execute(() -> hAppDataBase.getContactsDao().hInsertAllContactsEntity(contactsEntityList));
 
     }
 
-    public void hAddLocation(cLocationEntitiy locationEntitiy) {
+    public void hAddLocation(LocationEntitiy locationEntitiy) {
         hExecuter.execute(() -> hAppDataBase.getLocationDao().hInsertLocationEntity(locationEntitiy));
 
     }
@@ -185,7 +185,7 @@ public class AppRepository {
         hExecuter.execute(() -> hAppDataBase.getContactsDao().hNukeContactsTable());
     }
 
-    public void hDeleteLocationEntity(cLocationEntitiy hLocationEntitiy) {
-        hExecuter.execute(()->hAppDataBase.getLocationDao().hDeleteLocation(hLocationEntitiy));
+    public void hDeleteLocationEntity(LocationEntitiy hLocationEntitiy) {
+        hExecuter.execute(() -> hAppDataBase.getLocationDao().hDeleteLocation(hLocationEntitiy));
     }
 }

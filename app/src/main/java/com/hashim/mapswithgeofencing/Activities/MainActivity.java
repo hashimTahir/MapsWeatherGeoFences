@@ -20,19 +20,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.cardview.widget.CardView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,15 +27,42 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.hashim.mapswithgeofencing.ApplicationClass;
 import com.hashim.mapswithgeofencing.DirectionsApi.DirectionFinderListener;
+import com.hashim.mapswithgeofencing.DirectionsApi.Route;
 import com.hashim.mapswithgeofencing.Helper.Constants;
 import com.hashim.mapswithgeofencing.Helper.DialogHelper;
 import com.hashim.mapswithgeofencing.Helper.GeoFenceUtil;
@@ -59,6 +73,7 @@ import com.hashim.mapswithgeofencing.Helper.MarkerUtils;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.HDialogResponseInterface;
 import com.hashim.mapswithgeofencing.Interfaces.LocationCallBackInterface;
+import com.hashim.mapswithgeofencing.MapsModels.Result;
 import com.hashim.mapswithgeofencing.Models.HLatLngModel;
 import com.hashim.mapswithgeofencing.Models.VoiceReturnModel.VoiceReturnModel;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
@@ -214,10 +229,9 @@ public class MainActivity extends AppCompatActivity implements
     private List<Marker> hDestinationMarkers = new ArrayList<>();
     private List<Polyline> hPolylinePaths = new ArrayList<>();
     private String hInfo;
-    private PlaceAutocompleteFragment hPlaceAutocompleteFragment;
+    private AutocompleteSupportFragment hPlaceAutocompleteFragment;
     private BottomSheetBehavior hBottomSheetBehavior;
     private SpotsDialog hAlertDialog;
-    private H_InterstetialAdd h_interstetialAdd;
     private boolean hIsNetworkConnected;
     private boolean hIsLocationEnabled;
     private MapsUtils hMapsUtils;
@@ -249,7 +263,6 @@ public class MainActivity extends AppCompatActivity implements
         hHandler = new Handler();
         hInitView();
         hSettingsPrefrences = new SettingsPrefrences(this);
-        h_interstetialAdd = new H_InterstetialAdd(this);
 
 
         hCheckAppCounter();
@@ -267,26 +280,26 @@ public class MainActivity extends AppCompatActivity implements
                                 break;
                             case Constants.H_NEAR_BY_PLACES_PC:
                                 hViewAllActivity();
-                                h_interstetialAdd.hShowInterstitial();
+
                                 break;
                             case Constants.H_CALCULATE_ROUTE_FALSE_PC:
                                 hStartCalculateRouteActivity(false);
-                                h_interstetialAdd.hShowInterstitial();
+
                                 break;
                             case Constants.H_CALCULATE_ROUTE_TRUE_PC:
                                 hStartCalculateRouteActivity(true);
-                                h_interstetialAdd.hShowInterstitial();
+
                                 break;
                             case Constants.H_SHARE_LOCATION_PC:
                                 hShareLocationLayout();
                                 break;
                             case Constants.H_VIEW_ALL_PC:
                                 hViewAllActivity();
-                                h_interstetialAdd.hShowInterstitial();
+
                                 break;
                             case Constants.H_WEATHER_PC:
                                 hStartWeatherActivity();
-                                h_interstetialAdd.hShowInterstitial();
+
                                 break;
                             default:
                                 hAllocateTasks(task);
@@ -436,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements
                             hCurrentMarker.showInfoWindow();
                             UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_VISIBLE);
                             UIHelper.hMakeVisibleInVisible(hDetailCardView, Constants.H_INVISIBLE);
-                            h_interstetialAdd.hLoadAd();
+
                         }
                     }
                 }
@@ -469,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements
                         hCurrentMarker.showInfoWindow();
                         UIHelper.hMakeVisibleInVisible(hBottomSheet, Constants.H_VISIBLE);
                         UIHelper.hMakeVisibleInVisible(hDetailCardView, Constants.H_INVISIBLE);
-                        h_interstetialAdd.hLoadAd();
+
 
                     }
                 }
@@ -491,8 +504,6 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.remove_ads_menu:
-                Intent hRemoveAdsIntent = new Intent(this, RemoveAds.class);
-                startActivity(hRemoveAdsIntent);
                 break;
             case R.id.rate_us_menu:
                 hShowDialog(Constants.H_RATE_US_DIALOG);
@@ -518,7 +529,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_compass:
                 startActivity(new Intent(this, CompassActivity.class));
-                h_interstetialAdd.hShowInterstitial();
+
                 break;
 
             case R.id.nav_ContactUs:
@@ -528,17 +539,8 @@ public class MainActivity extends AppCompatActivity implements
                 hPermissionCheck(Constants.H_WRITE_PERMISSION, Constants.H_SHARE_APP);
                 break;
             case R.id.menu_settings:
-                h_interstetialAdd.hShowInterstitial();
+
                 hLoadSettings();
-                break;
-            case R.id.nav_facebook:
-                hShareIntent(Constants.H_FACEBOOK_URL);
-                break;
-            case R.id.nav_twitter:
-                hShareIntent(Constants.H_TWITTER_URL);
-                break;
-            case R.id.nav_insta:
-                hShareIntent(Constants.H_INSTA_URL);
                 break;
         }
 
@@ -739,7 +741,7 @@ public class MainActivity extends AppCompatActivity implements
                 Constants.H_G_RADIUS + Constants.H_API_KEY;
         hCreateHttpClient(hApiRequestUrl);
 
-        h_interstetialAdd.hShowInterstitial();
+
     }
 
     private void hCreateHttpClient(String hApiRequestUrl) {
@@ -818,8 +820,7 @@ public class MainActivity extends AppCompatActivity implements
                 (ColorStateList.valueOf(ContextCompat.getColor(this, R.color.share_loc_color)));
 
         //setup autocomplete fragment
-        hPlaceAutocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+//        hPlaceAutocompleteFragment
         hPlaceAutocompleteFragment.setOnPlaceSelectedListener(this);
 
         // set listeners for hamburger icon and cancel search
@@ -1024,7 +1025,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.hSettingsLayout:
                 hLoadSettings();
-                h_interstetialAdd.hShowInterstitial();
+
                 break;
             case R.id.hNormalChip:
                 hGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -1081,6 +1082,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case Constants.H_REQUEST_CODE:
                 if (resultCode == RESULT_OK) {
@@ -1246,8 +1248,8 @@ public class MainActivity extends AppCompatActivity implements
         root.post(new Runnable() {
             @Override
             public void run() {
-                root.findViewById(R.id.place_autocomplete_search_input)
-                        .performClick();
+//                root.findViewById(R.id.place_autocomplete_search_input)
+//                        .performClick();
             }
         });
     }
@@ -1478,7 +1480,7 @@ public class MainActivity extends AppCompatActivity implements
 
             String hAddress = String.valueOf(place.getAddress());
             String hId = place.getId();
-            String hLocale = String.valueOf(place.getLocale());
+//            String hLocale = String.valueOf(p());
             String hRatting = String.valueOf(place.getRating());
             String hNumber = String.valueOf(place.getPhoneNumber());
 

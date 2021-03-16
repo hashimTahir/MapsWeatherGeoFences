@@ -85,8 +85,7 @@ public class SettingsActivity extends AppCompatActivity implements
     @BindView(R.id.hTestNotificationTv)
     TextView hTestNotificationTv;
 
-    @BindView(R.id.adView)
-    AdView hAdView;
+
 
     @BindView(R.id.hAddRemoveContactsELayout)
     ConstraintLayout hAddRemoveContactsLayout;
@@ -112,8 +111,6 @@ public class SettingsActivity extends AppCompatActivity implements
     private boolean hIsFromTrackMe = false;
     private int hCounter = 1;
     private SettingsPrefrences hSettingsPrefrences;
-    private HAdmob hAdmob;
-    private H_InterstetialAdd h_interstetialAdd;
     private String hTag = LogToastSnackHelper.hMakeTag(SettingsActivity.class);
     private boolean hIsEnableDisableEmergencySettings;
     private boolean hIsEnableDisableTrackMeSettings;
@@ -149,7 +146,6 @@ public class SettingsActivity extends AppCompatActivity implements
         UIHelper.hOreoOrientationCheck(this);
 
         hSettingsPrefrences = new SettingsPrefrences(this);
-        h_interstetialAdd = new H_InterstetialAdd(this);
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
         hToolBarHelper.hSetToolbar(hToolbar);
@@ -159,9 +155,6 @@ public class SettingsActivity extends AppCompatActivity implements
 
         hInitView();
 
-        hAdmob = new HAdmob(this, hAdView);
-        h_interstetialAdd = new H_InterstetialAdd(this);
-        hAdmob.hLoadAd();
 
 
     }
@@ -249,13 +242,11 @@ public class SettingsActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         UIHelper.hOreoOrientationCheck(this);
-        hAdmob.hResumeAdd();
-        h_interstetialAdd.hLoadAd();
     }
 
     @Override
     public void onBackPressed() {
-        h_interstetialAdd.hShowInterstitial();
+        
         super.onBackPressed();
     }
 
@@ -339,7 +330,7 @@ public class SettingsActivity extends AppCompatActivity implements
                 break;
             case R.id.hAddRemoveContactsELayout:
                 startActivity(new Intent(SettingsActivity.this, TrackMeActivity.class));
-                h_interstetialAdd.hShowInterstitial();
+                
                 break;
             case R.id.hEditMessageELayout:
                 hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
@@ -363,7 +354,7 @@ public class SettingsActivity extends AppCompatActivity implements
 
             case R.id.hAddRemoveLocationsTLayout:
                 startActivity(new Intent(this, EmergencyContactsActivity.class));
-                h_interstetialAdd.hShowInterstitial();
+                
 
                 break;
             case R.id.hEditMessageTLayout:

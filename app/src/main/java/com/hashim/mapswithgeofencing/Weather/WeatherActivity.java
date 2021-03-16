@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdView;
 import com.hashim.mapswithgeofencing.Activities.SettingsActivity;
 import com.hashim.mapswithgeofencing.Adapters.WeatherRecyclerAdapter;
 import com.hashim.mapswithgeofencing.Helper.Constants;
@@ -101,11 +100,8 @@ public class WeatherActivity extends AppCompatActivity implements
     private final String hJstDayNameFormat = "EEEE";
     private final String hDayNameMonthDate = "EEEE, MMMM d";
     private final String hHrsMinTime = " h:mm aa";
-    private H_InterstetialAdd h_interstetialAdd;
     private String hLastDayName;
-    @BindView(R.id.adView)
-    AdView hAdView;
-    private HAdmob hAdmob;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,14 +115,10 @@ public class WeatherActivity extends AppCompatActivity implements
         hToolBarHelper.hSetToolbar(hToolbar);
         hToolBarHelper.hSetToolbarTitle(hToolbarTitle, "Weather Updates");
 
-        h_interstetialAdd = new H_InterstetialAdd(this);
 
         hGetIntentData();
         hGeoCodeLatLng();
 
-
-        hAdmob = new HAdmob(this, hAdView);
-        hAdmob.hLoadAd();
     }
 
     private void hLoadWeather() {
@@ -142,7 +134,6 @@ public class WeatherActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        h_interstetialAdd.hShowInterstitial();
     }
 
     private void hGeoCodeLatLng() {
@@ -232,8 +223,6 @@ public class WeatherActivity extends AppCompatActivity implements
         super.onResume();
         UIHelper.hOreoOrientationCheck(this);
         hLoadWeather();
-        h_interstetialAdd.hLoadAd();
-        hAdmob.hResumeAdd();
     }
 
     private void hSetForeCast(WeatherMainReturnResponse hWeatherMainReturnResponse) {
@@ -375,7 +364,6 @@ public class WeatherActivity extends AppCompatActivity implements
         }
         if (item.getItemId() == R.id.settings) {
             startActivity(new Intent(this, SettingsActivity.class));
-            h_interstetialAdd.hShowInterstitial();
         }
         return super.onOptionsItemSelected(item);
     }

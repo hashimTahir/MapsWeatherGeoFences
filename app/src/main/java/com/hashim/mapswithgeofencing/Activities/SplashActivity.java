@@ -2,8 +2,9 @@ package com.hashim.mapswithgeofencing.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.R;
@@ -17,7 +18,6 @@ public class SplashActivity extends AppCompatActivity {
 
     @BindView(R.id.hLetsGoIv)
     ImageView hLetsGoIv;
-    private H_InterstetialAdd h_interstetialAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +25,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         UIHelper.hOreoOrientationCheck(this);
-
-        h_interstetialAdd = new H_InterstetialAdd(this);
-        h_interstetialAdd.hLoadAd();
-
-//        hHandler.postDelayed(hRunnable, Constants.H_2Secs_Timer);
 
     }
 
@@ -43,16 +38,11 @@ public class SplashActivity extends AppCompatActivity {
     private void hLetsGo() {
         Intent hMainIntent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(hMainIntent);
-        h_interstetialAdd.hShowInterstitial();
         finish();
     }
 
     @Override
     public void onBackPressed() {
-
-//        if (!(((ApplicationClass) getApplication()).hIsPurchased)) {
-        h_interstetialAdd.hLoadAd();
-//        }
         finish();
     }
 
@@ -65,11 +55,6 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public void onPause() {
-//        if (!(((ApplicationClass) getApplication()).hIsPurchased)) {
-
-        h_interstetialAdd.hPauseInterstitialAds();
-
-//        }
 
         super.onPause();
     }

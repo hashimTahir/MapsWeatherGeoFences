@@ -14,8 +14,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.hashim.mapswithgeofencing.Interfaces.LocationCallBackInterface;
 
 
@@ -30,8 +32,8 @@ public class MapsUtils implements GoogleApiClient.ConnectionCallbacks,
     public MapsUtils(Context context, LocationCallBackInterface locationCallBackInterface) {
         this.hContext = context;
         this.hLocationCallBackInterface = locationCallBackInterface;
-        GeoDataClient hGeoDataClient = Places.getGeoDataClient(hContext);
-        PlaceDetectionClient hPlaceDetectionClient = Places.getPlaceDetectionClient(hContext);
+//        GeoDataClient hGeoDataClient = Places.getGeoDataClient(hContext);
+//        PlaceDetectionClient hPlaceDetectionClient = Places.getPlaceDetectionClient(hContext);
         // Construct a PlaceDetectionClient.
 
         // Construct a FusedLocationProviderClient.

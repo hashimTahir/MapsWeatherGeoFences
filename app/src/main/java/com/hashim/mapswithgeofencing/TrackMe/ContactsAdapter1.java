@@ -12,6 +12,7 @@ import android.widget.SectionIndexer;
 
 import com.hashim.mapswithgeofencing.Contacts.ContactsModelWithIds;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
+import com.hashim.mapswithgeofencing.Interfaces.OnItemClickListener;
 import com.hashim.mapswithgeofencing.Interfaces.RecyclerInterface;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.ViewHolders.ContactsVH;

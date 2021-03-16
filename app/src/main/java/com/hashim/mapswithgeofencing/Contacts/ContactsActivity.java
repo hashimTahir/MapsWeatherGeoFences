@@ -36,6 +36,7 @@ import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.DeleteCallBack;
 import com.hashim.mapswithgeofencing.Interfaces.DialogResponseInterface;
+import com.hashim.mapswithgeofencing.Interfaces.OnItemClickListener;
 import com.hashim.mapswithgeofencing.Interfaces.RecyclerInterface;
 import com.hashim.mapswithgeofencing.Interfaces.onActionModeListener;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
@@ -182,7 +183,7 @@ public class ContactsActivity extends AppCompatActivity
         if (hSavedContacatsList == null) {
             hShowLayout(H_SHOW_ALERT_LAYOUT, false);
         } else {
-            Collections.sort(hSavedContacatsList, new Contacts.Hcomparator());
+            Collections.sort(hSavedContacatsList, new Hcomparator());
             hShowLayout(H_SHOW_RECYCLER_LAYOUT, false);
             hSetupRecyclerView(hSavedContacatsList, H_SAVED_LIST);
         }
@@ -202,11 +203,11 @@ public class ContactsActivity extends AppCompatActivity
         hWhatLoaded = i;
         if (hContactsAdapter == null) {
             hContactsAdapter = new ContactsAdapter(this, hList);
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new Contacts.SwipeToDeleteCallback(hContactsAdapter, this));
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(hContactsAdapter, this));
             itemTouchHelper.attachToRecyclerView(hFRecyclerView);
 
             hFRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            hFRecyclerView.addOnItemTouchListener(new Contacts.RecyclerItemClickListener(this, hFRecyclerView, this));
+//            hFRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, hFRecyclerView, this));
             hFRecyclerView.setAdapter(hContactsAdapter);
 
         } else {
@@ -225,8 +226,8 @@ public class ContactsActivity extends AppCompatActivity
         hFRecyclerView.setPreviewPadding(0);
         hFRecyclerView.setIndexBarTextColor("#FFFFFF");
         hFRecyclerView.setIndexBarVisibility(true);
-        hFRecyclerView.setIndexbarHighLateTextColor("#33334c");
-        hFRecyclerView.setIndexBarHighLateTextVisibility(true);
+//        hFRecyclerView.setIndexbarHighLateTextColor("#33334c");
+//        hFRecyclerView.setIndexBarHighLateTextVisibility(true);
     }
 
     @Override
@@ -404,7 +405,7 @@ public class ContactsActivity extends AppCompatActivity
         switch (view.getId()) {
             case R.id.hAddContactsFB:
                 if (hContactsRetrieved) {
-                    Collections.sort(hAllContactsList, new Contacts.Hcomparator());
+                    Collections.sort(hAllContactsList, new Hcomparator());
                     hSetupRecyclerView(hAllContactsList, H_ALL_LIST);
                     hShowLayout(H_SHOW_RECYCLER_LAYOUT, false);
                 }
@@ -451,7 +452,7 @@ public class ContactsActivity extends AppCompatActivity
 //                hSettingsPrefrences.hSaveContacts(hSavedContacatsList);
 //                hSavedContacatsList.clear();
 //                hSavedContacatsList = hSettingsPrefrences.hGetSavedContacts();
-                Collections.sort(hSavedContacatsList, new Contacts.Hcomparator());
+                Collections.sort(hSavedContacatsList, new Hcomparator());
                 hSetupRecyclerView(hSavedContacatsList, H_SAVED_LIST);
                 break;
         }

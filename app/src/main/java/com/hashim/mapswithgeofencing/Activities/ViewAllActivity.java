@@ -34,11 +34,6 @@ public class ViewAllActivity extends AppCompatActivity implements RecyclerInterf
     Toolbar hToolbar;
 
 
-    @BindView(R.id.adView)
-    AdView mAdView;
-    private HAdmob hAdmob;
-
-    private H_InterstetialAdd h_interstetialAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +47,12 @@ public class ViewAllActivity extends AppCompatActivity implements RecyclerInterf
         hToolBarHelper.hSetToolbarTitle(hToolbarTitle,
                 getString(R.string.explore_nearby_places));
 
-        h_interstetialAdd = new H_InterstetialAdd(this);
         List<String> hPlacesString = ListUtils.hConvertArrayToArrayList(getResources().getStringArray(R.array.place_strings));
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
         RecyclerAdapter adapter = new RecyclerAdapter(this, hPlacesString, RecyclerAdapter.H_VIEW_ALL_ADAPTER);
         hRecyclerView.setLayoutManager(layoutManager);
         hRecyclerView.setAdapter(adapter);
-
-        hAdmob = new HAdmob(this, mAdView);
-        hAdmob.hLoadAd();
 
     }
 
@@ -70,9 +61,6 @@ public class ViewAllActivity extends AppCompatActivity implements RecyclerInterf
     protected void onResume() {
         super.onResume();
         UIHelper.hOreoOrientationCheck(this);
-        h_interstetialAdd.hLoadAd();
-        hAdmob.hResumeAdd();
-
     }
 
 
@@ -101,6 +89,5 @@ public class ViewAllActivity extends AppCompatActivity implements RecyclerInterf
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        h_interstetialAdd.hShowInterstitial();
     }
 }

@@ -45,10 +45,6 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     private float mCurrentDegree = 0f;
     private long hLastUpdate;
 
-    @BindView(R.id.adView)
-    AdView mAdView;
-    private HAdmob hAdmob;
-    private H_InterstetialAdd h_interstetialAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +54,6 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
         UIHelper.hOreoOrientationCheck(this);
 
-        h_interstetialAdd = new H_InterstetialAdd(this);
 
         ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
         hToolBarHelper.hSetToolbar(hToolbar);
@@ -69,8 +64,6 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
         hAccelerometerSensor = hSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         hMagnetometerSensor = hSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        hAdmob = new HAdmob(this, mAdView);
-        hAdmob.hLoadAd();
 
     }
 
@@ -92,8 +85,6 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
         UIHelper.hOreoOrientationCheck(this);
 
         // for the system's orientation sensor registered listeners
-        hAdmob.hResumeAdd();
-        h_interstetialAdd.hLoadAd();
         hSensorManager.registerListener(this, hAccelerometerSensor, SensorManager.SENSOR_STATUS_ACCURACY_LOW);
         hSensorManager.registerListener(this, hMagnetometerSensor, SensorManager.SENSOR_STATUS_ACCURACY_LOW);
     }
@@ -147,7 +138,6 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        h_interstetialAdd.hShowInterstitial();
     }
 
     @Override

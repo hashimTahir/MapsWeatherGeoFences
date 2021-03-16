@@ -25,6 +25,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hashim.mapswithgeofencing.Contacts.ContactsActivity;
@@ -111,7 +118,6 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     }.getType();
     private String hLocationName;
     private LatLng hGeoLatLng;
-    private H_InterstetialAdd h_interstetialAdd;
 
     public AddLocationFragment() {
 
@@ -138,8 +144,6 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
             hLocationId = getArguments().getString(H_LOCATION_ID);
         }
         hFetchContacts();
-        h_interstetialAdd = new H_InterstetialAdd(getContext());
-
 
         hInitData();
 
@@ -276,7 +280,6 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onResume() {
         super.onResume();
-        h_interstetialAdd.hLoadAd();
         if (hLocationEntitiy == null) {
             hRadiusSeekBar.setProgress(0);
             UIHelper.hSetTextToTextView(hTitleTv, getString(R.string.add_new_location));
@@ -346,7 +349,6 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
                 hAddRemoveContacts();
                 break;
             case R.id.hSaveContactsB:
-                h_interstetialAdd.hShowInterstitial();
                 hCheckIds(hIsAddNewLocation);
 
 

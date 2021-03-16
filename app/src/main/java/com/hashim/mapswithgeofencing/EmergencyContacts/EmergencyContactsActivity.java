@@ -29,10 +29,6 @@ public class EmergencyContactsActivity extends AppCompatActivity implements OnFr
     @BindView(R.id.toolbar_title)
     TextView hToolbarTitle;
 
-    @BindView(R.id.adView)
-    AdView hAdView;
-    private HAdmob hAdmob;
-    private H_InterstetialAdd h_interstetialAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +43,11 @@ public class EmergencyContactsActivity extends AppCompatActivity implements OnFr
         hFragmentManager = getSupportFragmentManager();
 
         hLoadFragment(0, Constants.H_MAIN_TRACK_ME_FRAGMENT);
-        h_interstetialAdd = new H_InterstetialAdd(this);
-        hAdmob = new HAdmob(this, hAdView);
-        hAdmob.hLoadAd();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        h_interstetialAdd.hLoadAd();
-        hAdmob.hResumeAdd();
     }
 
     @Override
@@ -70,7 +61,6 @@ public class EmergencyContactsActivity extends AppCompatActivity implements OnFr
 
     @Override
     public void onBackPressed() {
-        h_interstetialAdd.hShowInterstitial();
         if (hFragmentManager.getBackStackEntryCount() == 1) {
             finish();
         } else {

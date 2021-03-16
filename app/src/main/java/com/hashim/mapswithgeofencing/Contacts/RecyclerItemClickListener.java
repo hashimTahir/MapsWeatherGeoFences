@@ -5,6 +5,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.hashim.mapswithgeofencing.Interfaces.OnItemClickListener;
 
 
 public class RecyclerItemClickListener implements

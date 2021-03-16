@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.hashim.mapswithgeofencing.Models.WeatherModel.ListWeatherModel.Clouds;
 import com.hashim.mapswithgeofencing.Models.WeatherModel.ListWeatherModel.Coord;
+import com.hashim.mapswithgeofencing.Models.WeatherModel.ListWeatherModel.Main;
 import com.hashim.mapswithgeofencing.Models.WeatherModel.ListWeatherModel.Weather;
 import com.hashim.mapswithgeofencing.Models.WeatherModel.ListWeatherModel.Wind;
 

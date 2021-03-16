@@ -15,16 +15,17 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
-import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,9 +38,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,9 +48,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.gson.Gson;
 import com.hashim.mapswithgeofencing.DirectionsApi.DirectionFinder;
 import com.hashim.mapswithgeofencing.DirectionsApi.DirectionFinderListener;
+import com.hashim.mapswithgeofencing.DirectionsApi.Route;
 import com.hashim.mapswithgeofencing.Helper.Constants;
 import com.hashim.mapswithgeofencing.Helper.GeoFenceUtil;
 import com.hashim.mapswithgeofencing.Helper.LogToastSnackHelper;
@@ -62,6 +64,7 @@ import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.HDialogResponseInterface;
 import com.hashim.mapswithgeofencing.Interfaces.LocationCallBackInterface;
 import com.hashim.mapswithgeofencing.MapsModels.MainMapReturn;
+import com.hashim.mapswithgeofencing.MapsModels.Result;
 import com.hashim.mapswithgeofencing.MarkerAnimation.LatLngInterpolator;
 import com.hashim.mapswithgeofencing.MarkerAnimation.MarkerAnimation;
 import com.hashim.mapswithgeofencing.R;
@@ -117,10 +120,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @BindArray(R.array.search_strings)
     String[] hSearchStrings;
 
-
-
-    @BindView(R.id.adView)
-    AdView mAdView;
     private SpotsDialog hAlertDialog;
     private Location hLastLocation;
     GoogleApiClient hGoogleApiClient;
@@ -191,9 +190,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String hWhatToLoad;
     private boolean hNearByPlaces = false;
     private boolean hIsPathDrawn = false;
-    private HAdmob hAdmob;
     private int hLoadDogIcon = 93;
-    private H_InterstetialAdd h_interstetialAdd;
     private Marker hCurentDogMarker;
     private Marker hCurrentMarker;
     private boolean hIsNetworkConnected;
@@ -223,16 +220,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        hSetUpNavigationView();
         hGetIntentData();
 
-        h_interstetialAdd = new H_InterstetialAdd(this);
-
-        hAdmob = new HAdmob(this, mAdView);
-        hAdmob.hLoadAd();
 
         hGeoFenceUtil = new GeoFenceUtil(this);
 
-        PlaceAutocompleteFragment hPlaceAutocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
+        /*Todo initilize later*/
+        AutocompleteSupportFragment hPlaceAutocompleteFragment = null;
         hPlaceAutocompleteFragment.setOnPlaceSelectedListener(this);
         if (hIsNetworkConnected && hIsLocationEnabled) {
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -282,18 +274,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         UIHelper.hOreoOrientationCheck(this);
 
-//        if (!(((ApplicationClass) getApplication()).hIsPurchased)) {
-        h_interstetialAdd.hLoadAd();
-        hAdmob.hResumeAdd();
-//        } else {
     }
 
 
     @Override
     public void onDestroy() {
-//        if (!(((ApplicationClass) getApplication()).hIsPurchased)) {
-        hAdmob.hDestroyAdd();
-//        }
         super.onDestroy();
     }
 
@@ -328,13 +313,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onPause() {
         hStopLoctionUpdates();
-        hAdmob.hPauseAdd();
         super.onPause();
     }
 
     @Override
     public void onBackPressed() {
-        h_interstetialAdd.hShowInterstitial();
         super.onBackPressed();
     }
 
@@ -677,10 +660,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 break;
             case Constants.H_REMOVE_ADS_DIALOG:
-                if (id == Constants.H_DIALOG_POSITIVE_RESPONSE) {
-                    Intent hRemoveAdsIntent = new Intent(this, RemoveAds.class);
-                    startActivity(hRemoveAdsIntent);
-                }
+
                 break;
         }
 

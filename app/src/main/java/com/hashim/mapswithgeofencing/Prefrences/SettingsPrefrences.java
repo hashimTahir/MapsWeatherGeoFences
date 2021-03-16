@@ -48,7 +48,7 @@ public class SettingsPrefrences {
     public SettingsPrefrences(Context context) {
         this.hContext = context;
         int PRIVATE_MODE = Context.MODE_PRIVATE;
-        hProfilePrefrences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+//        hProfilePrefrences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         hEditor = hProfilePrefrences.edit();
     }
 

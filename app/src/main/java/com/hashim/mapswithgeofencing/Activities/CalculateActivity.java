@@ -9,15 +9,43 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.tabs.TabLayout;
 import com.hashim.mapswithgeofencing.DirectionsApi.DirectionFinder;
 import com.hashim.mapswithgeofencing.DirectionsApi.DirectionFinderListener;
@@ -30,23 +58,6 @@ import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
-
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -108,7 +119,7 @@ public class CalculateActivity extends AppCompatActivity implements
     private List<Marker> hOriginMarkers = new ArrayList<>();
     private List<Marker> hDestinationMarkers = new ArrayList<>();
     private List<Polyline> hPolylinePaths = new ArrayList<>();
-    private PlaceAutocompleteFragment hPlaceAutocompleteFragment;
+    private AutocompleteSupportFragment hPlaceAutocompleteFragment;
     private String hDestName;
     private boolean hIsFromSearch;
     private String hMode;
@@ -130,7 +141,6 @@ public class CalculateActivity extends AppCompatActivity implements
 
         hGetIntentData();
         hMode = DirectionFinder.H_DRIVING_MODE;
-        h_interstetialAdd = new H_InterstetialAdd(this);
 
         hInitView();
 
@@ -157,8 +167,8 @@ public class CalculateActivity extends AppCompatActivity implements
         hTabLayout.getTabAt(2).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
 
 
-        hPlaceAutocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        /*Todo initilize later*/
+        hPlaceAutocompleteFragment = null;
         hPlaceAutocompleteFragment.setOnPlaceSelectedListener(this);
 
 
@@ -204,7 +214,6 @@ public class CalculateActivity extends AppCompatActivity implements
         if (item.getItemId() == R.id.settings) {
             Intent hIntent = new Intent(this, SettingsActivity.class);
             startActivity(hIntent);
-            h_interstetialAdd.hShowInterstitial();
 
         }
         return super.onOptionsItemSelected(item);
@@ -213,7 +222,6 @@ public class CalculateActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        h_interstetialAdd.hShowInterstitial();
     }
 
     @Override
@@ -224,7 +232,6 @@ public class CalculateActivity extends AppCompatActivity implements
 
         UIHelper.hSetTextToTextView(hFromTv, getString(R.string.current_location));
 
-        h_interstetialAdd.hLoadAd();
         if (hDestName != null) {
             UIHelper.hSetTextToTextView(hToTv, hDestName);
 
@@ -249,8 +256,7 @@ public class CalculateActivity extends AppCompatActivity implements
                 root.post(new Runnable() {
                     @Override
                     public void run() {
-                        root.findViewById(R.id.place_autocomplete_search_input)
-                                .performClick();
+
                     }
                 });
                 break;

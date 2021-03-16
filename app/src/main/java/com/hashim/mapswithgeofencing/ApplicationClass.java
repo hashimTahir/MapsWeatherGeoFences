@@ -2,7 +2,6 @@ package com.hashim.mapswithgeofencing;
 
 import android.app.Application;
 
-import com.google.android.gms.ads.MobileAds;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 
 @SuppressWarnings("HardCodedStringLiteral")
@@ -18,7 +17,6 @@ public class ApplicationClass extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        MobileAds.initialize(this, H_AD_MOB_TEST_ID);
 
         SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(getApplicationContext());
         hIsAppPaid = hSettingsPrefrences.hGetPaidStatus();

@@ -18,6 +18,7 @@ import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.DeleteCallBack;
 import com.hashim.mapswithgeofencing.Interfaces.DialogResponseInterface;
+import com.hashim.mapswithgeofencing.Interfaces.OnItemClickListener;
 import com.hashim.mapswithgeofencing.Interfaces.onActionModeListener;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
@@ -85,10 +86,7 @@ public class TrackMeActivity extends AppCompatActivity implements
     private boolean hIsAllSendingClicked = false;
     private boolean hIsSelectedList = false;
     public static final int MENU_ITEM_MESSAGE = 34;
-    @BindView(R.id.adView)
-    AdView hAdView;
-    private HAdmob hAdmob;
-    private H_InterstetialAdd h_interstetialAdd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,17 +104,12 @@ public class TrackMeActivity extends AppCompatActivity implements
 
         hSetLayout();
         hFetchContacts();
-        h_interstetialAdd = new H_InterstetialAdd(this);
-        hAdmob = new HAdmob(this, hAdView);
-        hAdmob.hLoadAd();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        hAdmob.hResumeAdd();
-        h_interstetialAdd.hLoadAd();
 
     }
 
@@ -594,7 +587,6 @@ public class TrackMeActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        h_interstetialAdd.hShowInterstitial();
         if (hIsSaveLayoutVisible) {
             hShowLayout(H_SHOW_RECYCLER_LAYOUT, false);
             hShowLayout(H_SHOW_SAVE_CONTACTS_LAYOUT, false);
