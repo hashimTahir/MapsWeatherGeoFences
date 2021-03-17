@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun hInitNavView() {
         hNavHostFragments = supportFragmentManager
-                .findFragmentById(R.id.hMainFragmentContainerV) as NavHostFragment
+                .findFragmentById(R.id.hMainFragmentContainer) as NavHostFragment
         hNavController = hNavHostFragments.navController
 
         hNavController.setGraph(R.navigation.main_nav)
