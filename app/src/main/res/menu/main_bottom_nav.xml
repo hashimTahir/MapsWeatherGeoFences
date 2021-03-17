@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <item
+            android:id="@+id/hNavigateToMenu"
+            android:icon="@drawable/ic_navigation"
+            android:title="@string/navigate" />
+        <item
+            android:id="@+id/hWeatherMenu"
+            android:icon="@drawable/weather"
+            android:title="@string/weather" />
+        <item
+            android:id="@+id/hDirectionsMenu"
+            android:icon="@drawable/destination_marker"
+            android:title="@string/get_directions" />
+        <item
+            android:id="@+id/hExit"
+            android:icon="@drawable/ic_navigation"
+            android:title="@string/navigate" />
+
+</menu>
