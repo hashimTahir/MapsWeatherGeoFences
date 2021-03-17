@@ -56,7 +56,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-import com.hashim.mapswithgeofencing.ApplicationClass;
 import com.hashim.mapswithgeofencing.DirectionsApi.DirectionFinderListener;
 import com.hashim.mapswithgeofencing.DirectionsApi.Route;
 import com.hashim.mapswithgeofencing.Helper.Constants;
@@ -248,14 +247,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void hCheckAppCounter() {
-        ApplicationClass.hAppCounter++;
-        hSettingsPrefrences.hSaveAppCounter(ApplicationClass.hAppCounter);
-        if (ApplicationClass.hAppCounter % 4 == 0) {
-            hDialogHelper = new DialogHelper(this, this);
-            hDialogHelper.hSetDialogType(Constants.H_RATE_US_DIALOG);
-            hDialogHelper.hConformationDialogWithTitle(getString(R.string.app_name), getString(R.string.if_you_like),
-                    getString(R.string.give_feedback), getString(R.string.no_thanks), getString(R.string.remind_me_later), true);
-        }
+//        ApplicationClass.hAppCounter++;
+//        hSettingsPrefrences.hSaveAppCounter(ApplicationClass.hAppCounter);
+//        if (ApplicationClass.hAppCounter % 4 == 0) {
+//            hDialogHelper = new DialogHelper(this, this);
+//            hDialogHelper.hSetDialogType(Constants.H_RATE_US_DIALOG);
+//            hDialogHelper.hConformationDialogWithTitle(getString(R.string.app_name), getString(R.string.if_you_like),
+//                    getString(R.string.give_feedback), getString(R.string.no_thanks), getString(R.string.remind_me_later), true);
+//        }
     }
 
     private void hAskForPermissions(String permission) {
@@ -327,29 +326,29 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ApplicationClass.hIsLocationPermissionGranted) {
-                if (hIsLocationEnabled && hIsNetworkConnected) {
-                    if (hPlaceAutocompleteFragment != null) {
-                        hPlaceAutocompleteFragment.setText("");
-                    }
-                    if (!hIsPlaceSelected) {
-                        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_INVISIBLE);
-                        if (hCurrentLocation != null) {
-                            hGoogleMap.clear();
-                            Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
+//            if (ApplicationClass.hIsLocationPermissionGranted) {
+            if (hIsLocationEnabled && hIsNetworkConnected) {
+                if (hPlaceAutocompleteFragment != null) {
+                    hPlaceAutocompleteFragment.setText("");
+                }
+                if (!hIsPlaceSelected) {
+                    UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_INVISIBLE);
+                    if (hCurrentLocation != null) {
+                        hGoogleMap.clear();
+                        Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
 
 
-                            hCurrentMarker = hGoogleMap.addMarker(new MarkerOptions().
-                                    position(new LatLng(hCurrentLocation.getLatitude(), hCurrentLocation.getLongitude()))
-                                    .title(getString(R.string.current_location))
-                                    .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)));
-                            hCurrentMarker.showInfoWindow();
-                            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_VISIBLE);
-                            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hDetailCardView, Constants.H_INVISIBLE);
+                        hCurrentMarker = hGoogleMap.addMarker(new MarkerOptions().
+                                position(new LatLng(hCurrentLocation.getLatitude(), hCurrentLocation.getLongitude()))
+                                .title(getString(R.string.current_location))
+                                .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)));
+                        hCurrentMarker.showInfoWindow();
+                        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_VISIBLE);
+                        UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hDetailCardView, Constants.H_INVISIBLE);
 
-                        }
                     }
                 }
+//                }
 
                 if (hDrawerIsOpened) {
                     UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_INVISIBLE);
@@ -492,16 +491,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onMapReady(GoogleMap googleMap) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            if (ApplicationClass.hIsLocationPermissionGranted) {
-                hGoogleMap = googleMap;
-                hGoogleMap.setMyLocationEnabled(true);
-                hGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
-                hGoogleMap.setOnMarkerClickListener(this);
-                hGoogleMap.setOnMapClickListener(this);
-                hGoogleMap.setMapType(hSettingsPrefrences.hGetMapsType());
-                hBuildGoogleApiClient();
-            }
-        } else {
+//            if (ApplicationClass.hIsLocationPermissionGranted) {
             hGoogleMap = googleMap;
             hGoogleMap.setMyLocationEnabled(true);
             hGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
@@ -511,6 +501,16 @@ public class MainActivity extends AppCompatActivity implements
             hBuildGoogleApiClient();
         }
     }
+//            }
+//        } else {
+//            hGoogleMap = googleMap;
+//            hGoogleMap.setMyLocationEnabled(true);
+//            hGoogleMap.getUiSettings().setMyLocationButtonEnabled(false);
+//            hGoogleMap.setOnMarkerClickListener(this);
+//            hGoogleMap.setOnMapClickListener(this);
+//            hGoogleMap.setMapType(hSettingsPrefrences.hGetMapsType());
+//            hBuildGoogleApiClient();
+//        }
 
     @Override
     public void hGetCurrentLocation(Location hLocation) {
@@ -1459,12 +1459,12 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-
-        if (requestCode == H_LOCATION_PERMISSION_CODE) {
-            ApplicationClass.hIsLocationPermissionGranted = true;
-            hSettingsPrefrences.hSetPermissionCheck(ApplicationClass.hIsLocationPermissionGranted);
-
-        }
+//
+//        if (requestCode == H_LOCATION_PERMISSION_CODE) {
+//            ApplicationClass.hIsLocationPermissionGranted = true;
+//            hSettingsPrefrences.hSetPermissionCheck(ApplicationClass.hIsLocationPermissionGranted);
+//
+//        }
         if (requestCode == H_WRITE_PERMISSION_CODE) {
             hCreateBitmapnShare();
         }
