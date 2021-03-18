@@ -83,11 +83,15 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
     private fun hInitNavView() {
         hNavHostFragments = supportFragmentManager
-                .findFragmentById(R.id.hMainFragmentContainer) as NavHostFragment
+                .findFragmentById(R.id.hMainFragmentContainer)
+                as NavHostFragment
         hNavController = hNavHostFragments.navController
 
         hNavController.setGraph(R.navigation.main_nav)
-        NavigationUI.setupWithNavController(hActivityMainBinding.hBottomNav, hNavController)
+        NavigationUI.setupWithNavController(
+                hActivityMainBinding.hBottomNav,
+                hNavController
+        )
     }
 
     override fun onSearchStateChanged(enabled: Boolean) {
