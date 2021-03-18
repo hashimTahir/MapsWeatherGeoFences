@@ -209,6 +209,8 @@
     <string name="out_radius_message">Hi! I am exiting out of the radius of (Integar value jo save ke ho ge) of my (work, home , office, etc…jo b name hua is ka). See my location!</string>
     <string name="voice_navigation">Voice Navigation</string>
     <string name="speech_prompt">"Say something&#8230;</string>
+    <string name="location_permision">Location permission is required</string>
+    <string name="ok">Ok</string>
 
 
 </resources>
