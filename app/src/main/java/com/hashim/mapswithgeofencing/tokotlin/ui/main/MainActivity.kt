@@ -13,16 +13,16 @@ import com.mancj.materialsearchbar.MaterialSearchBar
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListener {
-    private val hMainViewModel: MainViewModel by viewModels()
+    private val hMainSharedViewModel: MainSharedViewModel by viewModels()
     private lateinit var hActivityMainBinding: ActivityMain2Binding
     private lateinit var hNavHostFragments: NavHostFragment
-
     private lateinit var hNavController: NavController
     private lateinit var hCategoriesAdapter: CategoriesAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         hActivityMainBinding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(hActivityMainBinding.root)
 
@@ -42,7 +42,9 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                 hList
         )
         hCategoriesAdapter.apply {
-            hActivityMainBinding.hCategoriesRv.adapter = this
+            hSetCategoriesCallback { category ->
+                hMainSharedViewModel.hHandleCategoriesCallBack(category)
+            }
         }
 
         hActivityMainBinding.hCategoriesRv.apply {
@@ -85,6 +87,7 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
         hNavHostFragments = supportFragmentManager
                 .findFragmentById(R.id.hMainFragmentContainer)
                 as NavHostFragment
+
         hNavController = hNavHostFragments.navController
 
         hNavController.setGraph(R.navigation.main_nav)
@@ -105,4 +108,5 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
     override fun onButtonClicked(buttonCode: Int) {
         TODO("Not yet implemented")
     }
+
 }

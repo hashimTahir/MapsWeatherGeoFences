@@ -12,6 +12,7 @@ class CategoriesAdapter(
         private val hCategoriesList: List<String>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
+    private var hCategoriesCallback: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return CategoryVh(
@@ -33,6 +34,15 @@ class CategoriesAdapter(
     }
 
     private fun hBindCategoryVh(categoryVh: CategoryVh, position: Int) {
-        categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.text = hCategoriesList.get(position)
+        var hCategoryItem = hCategoriesList.get(position)
+        categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.text = hCategoryItem
+        categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.setOnClickListener {
+            hCategoriesCallback?.invoke(hCategoryItem)
+        }
     }
+
+    fun hSetCategoriesCallback(categoriesCallback: (String) -> Unit) {
+        hCategoriesCallback = categoriesCallback
+    }
+
 }

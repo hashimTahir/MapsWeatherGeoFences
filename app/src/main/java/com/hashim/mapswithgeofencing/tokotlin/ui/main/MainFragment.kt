@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -16,9 +17,11 @@ import com.hashim.mapswithgeofencing.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
     lateinit var hFragmentMainBinding: FragmentMainBinding
+    lateinit var hMainViewModel: MainViewModel
 
 
     private val hMapCallBack = OnMapReadyCallback { googleMap ->
+        hMainViewModel.hHandleInputEvent()
         val sydney = LatLng(-34.0, 151.0)
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
@@ -43,6 +46,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        hMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         hInitMap()
 
 
