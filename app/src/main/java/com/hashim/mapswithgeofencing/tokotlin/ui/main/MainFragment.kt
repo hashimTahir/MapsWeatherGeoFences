@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentMainBinding
+import com.hashim.mapswithgeofencing.tokotlin.location.LocationUtis
 import com.hashim.mapswithgeofencing.tokotlin.utils.UiHelper
 import timber.log.Timber
 
@@ -64,8 +65,8 @@ class MainFragment : Fragment() {
                     onLocationRetrieved = {
                         Timber.d("Current Location ${it?.latitude}")
                         TODO("send to viewmodel")
-                    }
-
+                    },
+                    onLocationUpdated = {}
             )
         } else {
             hRequestPermissions()

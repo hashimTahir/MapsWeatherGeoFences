@@ -399,14 +399,14 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.remove_ads_menu:
-                break;
-            case R.id.rate_us_menu:
-                hShowDialog(Constants.H_RATE_US_DIALOG);
-                break;
-            case R.id.menu_privacy_policy:
-                hShareIntent(Constants.H_PRIVACY_POLICY_URL);
-                break;
+//            case R.id.remove_ads_menu:
+//                break;
+//            case R.id.rate_us_menu:
+//                hShowDialog(Constants.H_RATE_US_DIALOG);
+//                break;
+//            case R.id.menu_privacy_policy:
+//                hShareIntent(Constants.H_PRIVACY_POLICY_URL);
+//                break;
             case R.id.nav_currentLocationInfo:
                 hShowDialog(Constants.H_INFO_DIALOG);
                 break;
@@ -428,12 +428,11 @@ public class MainActivity extends AppCompatActivity implements
 
                 break;
 
-            case R.id.nav_ContactUs:
-
-                break;
-            case R.id.share_app:
-                hPermissionCheck(Constants.H_WRITE_PERMISSION, Constants.H_SHARE_APP);
-                break;
+//            case R.id.nav_ContactUs:
+//                break;
+//            case R.id.share_app:
+//                hPermissionCheck(Constants.H_WRITE_PERMISSION, Constants.H_SHARE_APP);
+//                break;
             case R.id.menu_settings:
 
                 hLoadSettings();
@@ -480,7 +479,7 @@ public class MainActivity extends AppCompatActivity implements
         hShareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
 
         String hAppLink = "https://play.google.com/store/apps/details?id=".concat(getPackageName());
-        hShareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_body) + "\n" + hAppLink);
+//        hShareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_body) + "\n" + hAppLink);
         hShareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         hShareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
         startActivity(Intent.createChooser(hShareIntent, "Share via"));
@@ -849,7 +848,7 @@ public class MainActivity extends AppCompatActivity implements
         hCompassFB.setImageResource(R.drawable.compass);
         hVoiceCommandFB.setImageResource(R.drawable.ic_mic);
 
-        UIHelper.hSetTextToTextView(hAppCompatTextView1, getString(R.string.share_location_fb));
+//        UIHelper.hSetTextToTextView(hAppCompatTextView1, getString(R.string.share_location_fb));
         UIHelper.hSetTextToTextView(hAppCompatTextView2, getString(R.string.find_route));
         UIHelper.hSetTextToTextView(hAppCompatTextView3, getString(R.string.weather));
         UIHelper.hSetTextToTextView(hAppCompatTextView4, getString(R.string.info));
@@ -1083,15 +1082,15 @@ public class MainActivity extends AppCompatActivity implements
             case Constants.H_RATE_US_DIALOG:
                 hDialogHelper = new DialogHelper(this, this);
                 hDialogHelper.hSetDialogType(Constants.H_RATE_US_DIALOG);
-                hDialogHelper.hConformationDialogWithTitle(getString(R.string.app_name), getString(R.string.rate_us_on_playstore),
-                        getString(R.string.rate_us_1), null, getString(android.R.string.cancel), true);
+//                hDialogHelper.hConformationDialogWithTitle(getString(R.string.app_name), getString(R.string.rate_us_on_playstore),
+//                        getString(R.string.rate_us_1), null, getString(android.R.string.cancel), true);
                 break;
             case Constants.H_REMOVE_ADS_DIALOG:
                 hDialogHelper = new DialogHelper(this, this);
                 hDialogHelper.hSetDialogType(Constants.H_REMOVE_ADS_DIALOG);
 
-                hDialogHelper.hConformationDialogWithTitle(getString(R.string.remove_ads), getString(R.string.purchase_the_app),
-                        getString(R.string.purchase), null, getString(R.string.cancel), true);
+//                hDialogHelper.hConformationDialogWithTitle(getString(R.string.remove_ads), getString(R.string.purchase_the_app),
+//                        getString(R.string.purchase), null, getString(R.string.cancel), true);
                 break;
 
 

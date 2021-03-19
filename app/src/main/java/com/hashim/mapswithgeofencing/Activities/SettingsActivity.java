@@ -357,23 +357,23 @@ public class SettingsActivity extends AppCompatActivity implements
 
     private void hEditEmergencyTrackeMeMessage(String hEnableDisableTrackMeSettings) {
         HLatLngModel hLatLngModel = hSettingsPrefrences.hGetCurrentLocation();
-        String hMessage = String.format(getString(R.string.emergency_contact_message),
-                hLatLngModel.getLatitude().concat(" ,").concat(hLatLngModel.getLongitude()));
-        LogToastSnackHelper.hLogField(hTag, hMessage);
+//        String hMessage = String.format(getString(R.string.emergency_contact_message),
+//                hLatLngModel.getLatitude().concat(" ,").concat(hLatLngModel.getLongitude()));
+//        LogToastSnackHelper.hLogField(hTag, hMessage);
 
         switch (hEnableDisableTrackMeSettings) {
             case Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS:
                 if (hLatLngModel != null) {
-                    HcustomDialog1 hcustomDialog = HcustomDialog1.newInstance(hMessage, true);
-                    hcustomDialog.show(getSupportFragmentManager(), "H_Dialog");
+//                    HcustomDialog1 hcustomDialog = HcustomDialog1.newInstance(hMessage, true);
+//                    hcustomDialog.show(getSupportFragmentManager(), "H_Dialog");
                 } else {
 
                 }
                 break;
             case Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS:
                 if (hLatLngModel != null) {
-                    HcustomDialog1 hcustomDialog = HcustomDialog1.newInstance(hMessage, false);
-                    hcustomDialog.show(getSupportFragmentManager(), "H_Dialog");
+//                    HcustomDialog1 hcustomDialog = HcustomDialog1.newInstance(hMessage, false);
+//                    hcustomDialog.show(getSupportFragmentManager(), "H_Dialog");
                 } else {
 
                 }

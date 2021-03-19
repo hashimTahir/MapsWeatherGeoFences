@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class WeatherActivity extends AppCompatActivity implements
-        WeatherAysncCallBack, RecyclerInterface {
+         RecyclerInterface {
 
     private Double hLat;
     private Double hLng;
@@ -73,13 +73,13 @@ public class WeatherActivity extends AppCompatActivity implements
     }
 
     private void hLoadWeather() {
-        RequestWeatherTask hRequestWeatherTask =
-                new RequestWeatherTask(this, hLat, hLng, Constants.H_GET_WEATHER);
-        hRequestWeatherTask.execute();
-
-        RequestWeatherTask hRequestWeatherTask1 =
-                new RequestWeatherTask(this, hLat, hLng, Constants.H_GET_FORECAST);
-        hRequestWeatherTask1.execute();
+//        RequestWeatherTask hRequestWeatherTask =
+//                new RequestWeatherTask(this, hLat, hLng, Constants.H_GET_WEATHER);
+//        hRequestWeatherTask.execute();
+//
+//        RequestWeatherTask hRequestWeatherTask1 =
+//                new RequestWeatherTask(this, hLat, hLng, Constants.H_GET_FORECAST);
+//        hRequestWeatherTask1.execute();
     }
 
     @Override
@@ -156,18 +156,18 @@ public class WeatherActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onWeatherFetch(Object object, String hDecodedString) {
-        if (object instanceof LatLonReturnModel) {
-            LatLonReturnModel hLatLonReturnModel = (LatLonReturnModel) object;
-            hSetCurrentWeatherData(hLatLonReturnModel);
-        }
-        if (object instanceof WeatherMainReturnResponse) {
-            WeatherMainReturnResponse hWeatherMainReturnResponse = (WeatherMainReturnResponse) object;
-            hSetForeCast(hWeatherMainReturnResponse);
-        }
-
-    }
+//    @Override
+//    public void onWeatherFetch(Object object, String hDecodedString) {
+//        if (object instanceof LatLonReturnModel) {
+//            LatLonReturnModel hLatLonReturnModel = (LatLonReturnModel) object;
+//            hSetCurrentWeatherData(hLatLonReturnModel);
+//        }
+//        if (object instanceof WeatherMainReturnResponse) {
+//            WeatherMainReturnResponse hWeatherMainReturnResponse = (WeatherMainReturnResponse) object;
+//            hSetForeCast(hWeatherMainReturnResponse);
+//        }
+//
+//    }
 
     @Override
     protected void onResume() {

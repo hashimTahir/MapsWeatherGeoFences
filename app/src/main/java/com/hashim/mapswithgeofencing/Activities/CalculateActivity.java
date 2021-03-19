@@ -268,7 +268,6 @@ public class CalculateActivity extends AppCompatActivity implements
                 Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri1);
                 startActivity(unrestrictedIntent);
             } catch (ActivityNotFoundException innerEx) {
-                Toast.makeText(this, getString(R.string.please_install_maps_app), Toast.LENGTH_LONG).show();
             }
         }
     }

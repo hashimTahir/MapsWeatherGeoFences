@@ -5,10 +5,6 @@
     <group
         android:id="@+id/remove_ads_group"
         android:checkableBehavior="single">
-        <item
-            android:id="@+id/remove_ads_menu"
-            android:icon="@drawable/ic_removeads"
-            android:title="@string/remove_ads" />
 
 
     </group>
@@ -48,14 +44,6 @@
             android:id="@+id/nav_compass"
             android:icon="@drawable/compass"
             android:title="@string/compass" />
-        <!--<item-->
-        <!--android:id="@+id/nav_TrackMe"-->
-        <!--android:icon="@drawable/nav_track_me"-->
-        <!--android:title="@string/track_me" />-->
-        <!--<item-->
-        <!--android:id="@+id/nav_EmergencyText"-->
-        <!--android:icon="@drawable/nav_emergency_text"-->
-        <!--android:title="@string/emergency_text" />-->
 
 
     </group>
@@ -68,45 +56,6 @@
             android:title="@string/settings" />
     </group>
 
-    <group
-        android:id="@+id/reach_group"
-        android:checkableBehavior="single">
 
-        <item
-            android:id="@+id/nav_ContactUs"
-            android:icon="@drawable/ic_contactus"
-            android:title="@string/contact_us" />
-        <item
-            android:id="@+id/rate_us_menu"
-            android:icon="@drawable/ic_rateus"
-            android:title="@string/rate_us" />
-        <item
-            android:id="@+id/share_app"
-            android:icon="@drawable/ic_shareapp"
-            android:title="@string/share_app" />
-        <item
-            android:id="@+id/menu_privacy_policy"
-            android:icon="@drawable/ic_privacypolicy"
-            android:title="@string/privacy_policy" />
-
-    </group>
-    <group
-        android:id="@+id/share_group"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_facebook"
-            android:icon="@drawable/ic_facebook"
-            android:title="@string/follow_us_facebook" />
-        <item
-            android:id="@+id/nav_twitter"
-            android:icon="@drawable/ic_twitter"
-            android:title="@string/follow_us_twitter" />
-
-        <item
-            android:id="@+id/nav_insta"
-            android:icon="@drawable/ic_instagram"
-            android:title="@string/follow_us_instagram" />
-
-    </group>
 
 </menu>

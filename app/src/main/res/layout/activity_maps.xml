@@ -28,7 +28,6 @@
 
             <fragment
                 android:id="@+id/place_autocomplete_fragment"
-                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5dp" />
@@ -54,7 +53,7 @@
             android:layout_marginBottom="8dp"
             android:alpha="1"
             android:background="@drawable/circle"
-            android:text="@string/share_location_fb"
+            android:text="@string/test_string"
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:layout_constraintBottom_toTopOf="@+id/adView"

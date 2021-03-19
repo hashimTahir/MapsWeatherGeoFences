@@ -4,15 +4,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerCategoryBinding
 
 
 class CategoriesAdapter(
-        private val hContext: Context,
-        private val hCategoriesList: List<String>
+        hContext: Context,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
     private var hCategoriesCallback: ((String) -> Unit)? = null
+    private var hCategoriesList: List<String> = hContext.resources.getStringArray(R.array.place_strings).asList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return CategoryVh(
