@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+  -->
+
 <resources>
     <dimen name="_5dp">5dp</dimen>
     <dimen name="_25sp">25sp</dimen>

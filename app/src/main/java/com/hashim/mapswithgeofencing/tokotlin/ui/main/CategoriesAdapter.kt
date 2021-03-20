@@ -1,19 +1,24 @@
+/*
+ * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ */
+
 package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerCategoryBinding
+import timber.log.Timber
 
 
 class CategoriesAdapter(
-        hContext: Context,
+        private val hContext: Context,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
-    private var hCategoriesCallback: ((String) -> Unit)? = null
-    private var hCategoriesList: List<String> = hContext.resources.getStringArray(R.array.place_strings).asList()
+    private var hCategoriesCallback: ((Category) -> Unit)? = null
+    private var hCategoriesList: List<Category> = TempData.hGetCategroyList(hContext)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return CategoryVh(
@@ -35,14 +40,22 @@ class CategoriesAdapter(
     }
 
     private fun hBindCategoryVh(categoryVh: CategoryVh, position: Int) {
-        var hCategoryItem = hCategoriesList.get(position)
-        categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.text = hCategoryItem
+        val hCategoryItem = hCategoriesList.get(position)
+        Timber.d("Category $hCategoryItem")
+        categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.text = hCategoryItem.name
+
+        categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.chipIcon =
+                ResourcesCompat.getDrawable(
+                        hContext.resources,
+                        hCategoryItem.icon,
+                        null
+                )
         categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.setOnClickListener {
             hCategoriesCallback?.invoke(hCategoryItem)
         }
     }
 
-    fun hSetCategoriesCallback(categoriesCallback: (String) -> Unit) {
+    fun hSetCategoriesCallback(categoriesCallback: (Category) -> Unit) {
         hCategoriesCallback = categoriesCallback
     }
 

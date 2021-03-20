@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ */
+
 package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
 import androidx.lifecycle.ViewModel
@@ -12,7 +16,7 @@ class MainSharedViewModel : ViewModel() {
     }
 
 
-    fun hHandleCategoriesCallBack(category: String) {
+    fun hHandleCategoriesCallBack(category: Category) {
         Timber.d("Handle Callback $category")
     }
 }

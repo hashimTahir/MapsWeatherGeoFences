@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+  -->
+
 <layout>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,15 +17,6 @@
 
 
             <include
-                android:id="@+id/hAwAppbar"
-                layout="@layout/appbar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <include
                 android:id="@+id/hWeatherHeader"
                 layout="@layout/item_weather_header"
                 android:layout_width="match_parent"
@@ -31,7 +26,7 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/hAwAppbar" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/hTodayWeatherTv"

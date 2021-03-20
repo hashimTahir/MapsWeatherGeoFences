@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ */
+
 package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
 import android.os.Bundle
@@ -35,12 +39,8 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
     private fun hInitCategoryRv() {
 
-        val hList = TempData.hGetTempCategroyList()
 
-        hCategoriesAdapter = CategoriesAdapter(
-                this,
-                hList
-        )
+        hCategoriesAdapter = CategoriesAdapter(this)
         hCategoriesAdapter.apply {
             hSetCategoriesCallback { category ->
                 hMainSharedViewModel.hHandleCategoriesCallBack(category)
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                     Timber.d("hNavigateToMenu")
                 }
                 R.id.hWeatherMenu -> {
-                    Timber.d("hWeatherMenu")
+                    hNavController.navigate(R.id.action_hMainFragment_to_hWeatherFragment)
                 }
                 R.id.hDirectionsMenu -> {
                     Timber.d("hDirectionsMenu")

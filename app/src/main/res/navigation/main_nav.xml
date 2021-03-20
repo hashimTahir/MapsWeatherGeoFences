@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<!--
+  ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
     app:startDestination="@id/hMainFragment">
@@ -8,5 +13,14 @@
         android:id="@+id/hMainFragment"
         android:name="com.hashim.mapswithgeofencing.tokotlin.ui.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_hMainFragment_to_hWeatherFragment"
+            app:destination="@id/hWeatherFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/hWeatherFragment"
+        android:name="com.hashim.mapswithgeofencing.tokotlin.ui.weather.WeatherFragment"
+        android:label="WeatherFragment"
+        tools:layout="@layout/weather_fragment" />
 </navigation>

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ */
+
 package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
 import android.Manifest
@@ -64,7 +68,7 @@ class MainFragment : Fragment() {
                     context = requireContext(),
                     onLocationRetrieved = {
                         Timber.d("Current Location ${it?.latitude}")
-                        TODO("send to viewmodel")
+//                        TODO("send to viewmodel")
                     },
                     onLocationUpdated = {}
             )

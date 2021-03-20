@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+  -->
+
+<resources>
+
+    <string-array name="unit_spinner_array">
+        <item>Km</item>
+        <item>miles</item>
+    </string-array>
+    <string-array name="language_spinner_array">
+        <item>English</item>
+    </string-array>
+    <string-array name="temprature_spinner_array">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+        <item>Kelvin</item>
+    </string-array>
+    <array name="default_templates_array">
+        <item>Template 1</item>
+        <item>Template 2</item>
+        <item>Template 3</item>
+        <item>Template 4</item>
+        <item>Template 5</item>
+    </array>
+
+    <array name="search_strings">
+        <item>atm</item>
+        <item>bank</item>
+        <item>hospital</item>
+        <item>mosque</item>
+        <item>doctor</item>
+        <item>train_station</item>
+        <item>parking</item>
+        <item>park</item>
+        <item>cafe</item>
+        <item>restaurant</item>
+        <item>gas_station</item>
+        <item>police</item>
+        <item>book_store</item>
+        <item>bus_station</item>
+        <item>pharmacy</item>
+        <item>clothing_store</item>
+        <item>school</item>
+        <item>supermarket</item>
+    </array>
+
+    <array name="place_strings">
+        <item>Atms</item>
+        <item>Banks</item>
+        <item>Hospitals</item>
+        <item>Mosques</item>
+        <item>Doctors</item>
+        <item>Train Stations</item>
+        <item>Parking Spots</item>
+        <item>Parks</item>
+        <item>Cafes</item>
+        <item>Restraunts</item>
+        <item>Gas Stations</item>
+        <item>@string/police_staions</item>
+        <item>Book Stores</item>
+        <item>@string/bus_staions</item>
+        <item>Pharmacys</item>
+        <item>Clothing Stores</item>
+        <item>Schools</item>
+        <item>Supermarkets</item>
+    </array>
+
+    <integer-array name="places_icons_array">
+        <item>@drawable/atm</item>
+        <item>@drawable/ic_icon_bank</item>
+        <item>@drawable/ic_hospitals</item>
+        <item>@drawable/mosques</item>
+        <item>@drawable/doctors</item>
+        <item>@drawable/ic_train_stations</item>
+        <item>@drawable/ic_parking_spots</item>
+        <item>@drawable/parks</item>
+        <item>@drawable/cafe</item>
+        <item>@drawable/restaurant</item>
+        <item>@drawable/ic_gas_stations</item>
+        <item>@drawable/ic_police_stations</item>
+        <item>@drawable/ic_book_stores</item>
+        <item>@drawable/bus_stop</item>
+        <item>@drawable/pharmacy</item>
+        <item>@drawable/ic_clothes_stores</item>
+        <item>@drawable/schools</item>
+        <item>@drawable/super_market</item>
+    </integer-array>
+    <array name="maps_type_array">
+        <item>Normal</item>
+        <item>Satellite</item>
+        <item>Terrain</item>
+        <item>Hybrid</item>
+        <item>Enable Traffic</item>
+    </array>
+</resources>
