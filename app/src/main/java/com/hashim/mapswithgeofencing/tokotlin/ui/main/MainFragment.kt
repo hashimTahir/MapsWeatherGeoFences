@@ -6,7 +6,9 @@ package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +33,7 @@ class MainFragment : Fragment() {
     lateinit var hFragmentMainBinding: FragmentMainBinding
     lateinit var hMainViewModel: MainViewModel
 
+    lateinit var hOnFragmentInteraction: OnFragmentInteraction
 
     @SuppressLint("MissingPermission")
     private val hMapCallBack = OnMapReadyCallback { googleMap ->
@@ -68,6 +71,7 @@ class MainFragment : Fragment() {
                     context = requireContext(),
                     onLocationRetrieved = {
                         Timber.d("Current Location ${it?.latitude}")
+                        hOnFragmentInteraction.hSetLocation(it)
 //                        TODO("send to viewmodel")
                     },
                     onLocationUpdated = {}
@@ -121,5 +125,15 @@ class MainFragment : Fragment() {
                     )
                 }
             }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        hOnFragmentInteraction = context as OnFragmentInteraction
+    }
+
+    interface OnFragmentInteraction {
+        fun hSetLocation(location: Location?)
+
+    }
 
 }

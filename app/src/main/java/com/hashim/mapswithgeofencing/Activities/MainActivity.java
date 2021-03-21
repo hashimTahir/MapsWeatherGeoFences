@@ -77,7 +77,7 @@ import com.hashim.mapswithgeofencing.Models.HLatLngModel;
 import com.hashim.mapswithgeofencing.Models.VoiceReturnModel.VoiceReturnModel;
 import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
-import com.hashim.mapswithgeofencing.Weather.WeatherActivity;
+
 import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding;
 
 import org.json.JSONArray;
@@ -1052,15 +1052,15 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void hStartWeatherActivity() {
-        if (hIsLocationRetrieved && hCurrentLocation != null) {
-            Intent hIntent = new Intent(this, WeatherActivity.class);
-            hIntent.putExtra(Constants.H_LATITUDE, hCurrentLocation.getLatitude());
-            hIntent.putExtra(Constants.H_LONGITUDE, hCurrentLocation.getLongitude());
-            startActivity(hIntent);
-        } else {
-            LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location");
-            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
-        }
+//        if (hIsLocationRetrieved && hCurrentLocation != null) {
+//            Intent hIntent = new Intent(this, WeatherActivity.class);
+//            hIntent.putExtra(Constants.H_LATITUDE, hCurrentLocation.getLatitude());
+//            hIntent.putExtra(Constants.H_LONGITUDE, hCurrentLocation.getLongitude());
+//            startActivity(hIntent);
+//        } else {
+//            LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location");
+//            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
+//        }
     }
 
     private void hShowDialog(int hLocationDialog) {

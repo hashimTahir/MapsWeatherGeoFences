@@ -50,7 +50,7 @@ object NetworkModule {
             gson: Gson
     ): RetroService {
         return Retrofit.Builder()
-                .baseUrl("")
+                .baseUrl("https://your.api.url/")
                 .addConverterFactory(
                         GsonConverterFactory.create(
                                 gson

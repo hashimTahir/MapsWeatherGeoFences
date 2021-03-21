@@ -4,10 +4,13 @@
 
 package com.hashim.mapswithgeofencing.tokotlin.repository.remote
 
+import android.location.Location
 import com.hashim.mapswithgeofencing.tokotlin.network.RetroService
+import com.hashim.mapswithgeofencing.tokotlin.ui.main.Category
 
 class RemoteRepoImpl(
-        private val hRetroService: RetroService
+        private val hRetroService: RetroService,
+        private val hKey: String
 ) : RemoteRepo {
     override fun hGetWeather() {
 
@@ -23,8 +26,11 @@ class RemoteRepoImpl(
         TODO("Not yet implemented")
     }
 
-    override fun hFindNearybyPlaces() {
-        TODO("Not yet implemented")
+    override suspend fun hFindNearybyPlaces(category: Category, location: Location) {
+        val hStringBuilder = StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=")
+        hStringBuilder.append("${location.latitude},${location.longitude}&radius=1000&type=${category.name}&key=$hKey")
+
+        hRetroService.hFindNearByPlaces(hStringBuilder.toString())
 
         /*
         *

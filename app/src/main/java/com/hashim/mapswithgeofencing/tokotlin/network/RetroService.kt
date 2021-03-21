@@ -12,4 +12,6 @@ interface RetroService {
     fun hGetWeather(@Url url: String?)
 
 
+    @GET
+    suspend fun hFindNearByPlaces(@Url url: String): String
 }

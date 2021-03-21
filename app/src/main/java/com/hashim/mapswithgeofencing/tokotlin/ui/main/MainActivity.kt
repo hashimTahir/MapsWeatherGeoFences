@@ -4,6 +4,7 @@
 
 package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
+import android.location.Location
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,9 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.ActivityMain2Binding
 import com.mancj.materialsearchbar.MaterialSearchBar
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListener {
+
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListener, MainFragment.OnFragmentInteraction {
+    private var hLocation: Location? = null
     private val hMainSharedViewModel: MainSharedViewModel by viewModels()
     private lateinit var hActivityMainBinding: ActivityMain2Binding
     private lateinit var hNavHostFragments: NavHostFragment
@@ -43,7 +48,7 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
         hCategoriesAdapter = CategoriesAdapter(this)
         hCategoriesAdapter.apply {
             hSetCategoriesCallback { category ->
-                hMainSharedViewModel.hHandleCategoriesCallBack(category)
+                hMainSharedViewModel.hHandleCategoriesCallBack(category, hLocation)
             }
         }
 
@@ -107,6 +112,10 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
     override fun onButtonClicked(buttonCode: Int) {
         TODO("Not yet implemented")
+    }
+
+    override fun hSetLocation(location: Location?) {
+        hLocation = location
     }
 
 }

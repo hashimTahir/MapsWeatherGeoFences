@@ -4,6 +4,9 @@
 
 package com.hashim.mapswithgeofencing.tokotlin.repository.remote
 
+import android.location.Location
+import com.hashim.mapswithgeofencing.tokotlin.ui.main.Category
+
 interface RemoteRepo {
 
     fun hGetWeather()
@@ -12,6 +15,6 @@ interface RemoteRepo {
 
     fun hGetDirections()
 
-    fun hFindNearybyPlaces()
 
+    suspend fun hFindNearybyPlaces(category: Category, location: Location)
 }
