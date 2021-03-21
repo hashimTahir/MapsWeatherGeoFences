@@ -17,9 +17,9 @@ import com.hashim.mapswithgeofencing.Helper.ListUtils;
 import com.hashim.mapswithgeofencing.Helper.LogToastSnackHelper;
 import com.hashim.mapswithgeofencing.Interfaces.DialogResponseInterface;
 import com.hashim.mapswithgeofencing.Interfaces.RecyclerInterface;
-import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.databinding.ActivityTemplatesBinding;
+import com.hashim.mapswithgeofencing.tokotlin.SettingsPrefrences;
 
 import java.util.ArrayList;
 import java.util.List;

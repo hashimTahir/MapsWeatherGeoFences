@@ -33,9 +33,9 @@ import com.hashim.mapswithgeofencing.Interfaces.DeleteCallBack;
 import com.hashim.mapswithgeofencing.Interfaces.DialogResponseInterface;
 import com.hashim.mapswithgeofencing.Interfaces.OnItemClickListener;
 import com.hashim.mapswithgeofencing.Interfaces.onActionModeListener;
-import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.databinding.ActivityTrackMeBinding;
+import com.hashim.mapswithgeofencing.tokotlin.SettingsPrefrences;
 
 import java.util.ArrayList;
 import java.util.Collections;

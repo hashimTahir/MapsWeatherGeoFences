@@ -15,12 +15,12 @@ import com.hashim.mapswithgeofencing.Helper.Constants;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.RecyclerInterface;
 import com.hashim.mapswithgeofencing.Models.WeatherModel.WeatherModelToShow;
-import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.ViewHolders.TodaysWeatherVH;
 import com.hashim.mapswithgeofencing.ViewHolders.WeeklyWeatherVH;
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerWeather1Binding;
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerWeatherBinding;
+import com.hashim.mapswithgeofencing.tokotlin.SettingsPrefrences;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

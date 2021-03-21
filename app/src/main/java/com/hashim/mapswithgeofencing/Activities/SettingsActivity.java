@@ -36,10 +36,10 @@ import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.DialogResponseInterface;
 import com.hashim.mapswithgeofencing.Models.HLatLngModel;
-import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.TrackMe.TrackMeActivity;
 import com.hashim.mapswithgeofencing.databinding.ActivitySettingsBinding;
+import com.hashim.mapswithgeofencing.tokotlin.SettingsPrefrences;
 
 import java.util.List;
 import java.util.Locale;

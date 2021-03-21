@@ -37,9 +37,9 @@ import com.hashim.mapswithgeofencing.Interfaces.DialogResponseInterface;
 import com.hashim.mapswithgeofencing.Interfaces.OnItemClickListener;
 import com.hashim.mapswithgeofencing.Interfaces.RecyclerInterface;
 import com.hashim.mapswithgeofencing.Interfaces.onActionModeListener;
-import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.databinding.ActivityContactsBinding;
+import com.hashim.mapswithgeofencing.tokotlin.SettingsPrefrences;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

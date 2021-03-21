@@ -22,34 +22,10 @@ class MainSharedViewModel @Inject constructor(
 
     fun hHandleCategoriesCallBack(category: Category, location: Location?) {
         Timber.d("Handle Callback $category")
-
-
-//        hTestNearByPlaces(location, category)
-//        hTestWeather(location)
-        hTestForecast(location)
+        hTestNearByPlaces(location, category)
     }
 
-    private fun hTestWeather(location: Location?) {
-        viewModelScope.launch {
-            location?.let {
-                hRemoteRepo.hGetWeather(
-                        location = location,
-                        unitType = Constants.H_CELCIUS_UNIT
-                )
-            }
-        }
-    }
 
-    private fun hTestForecast(location: Location?) {
-        viewModelScope.launch {
-            location?.let {
-                hRemoteRepo.hGetForecast(
-                        location = location,
-                        unitType = Constants.H_CELCIUS_UNIT
-                )
-            }
-        }
-    }
 
 
     private fun hTestNearByPlaces(location: Location?, category: Category) {

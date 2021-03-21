@@ -75,10 +75,9 @@ import com.hashim.mapswithgeofencing.Interfaces.LocationCallBackInterface;
 import com.hashim.mapswithgeofencing.MapsModels.Result;
 import com.hashim.mapswithgeofencing.Models.HLatLngModel;
 import com.hashim.mapswithgeofencing.Models.VoiceReturnModel.VoiceReturnModel;
-import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
-
 import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding;
+import com.hashim.mapswithgeofencing.tokotlin.SettingsPrefrences;
 
 import org.json.JSONArray;
 import org.json.JSONException;

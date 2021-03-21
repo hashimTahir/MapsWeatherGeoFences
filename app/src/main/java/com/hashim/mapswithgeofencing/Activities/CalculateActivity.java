@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,9 +52,9 @@ import com.hashim.mapswithgeofencing.Helper.LogToastSnackHelper;
 import com.hashim.mapswithgeofencing.Helper.MarkerUtils;
 import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
-import com.hashim.mapswithgeofencing.Prefrences.SettingsPrefrences;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.databinding.AcitivityCalculateRouteBinding;
+import com.hashim.mapswithgeofencing.tokotlin.SettingsPrefrences;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
