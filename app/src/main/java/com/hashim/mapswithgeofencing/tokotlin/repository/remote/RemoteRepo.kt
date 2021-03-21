@@ -13,8 +13,8 @@ interface RemoteRepo {
 
     suspend fun hGetForecast(location: Location, unitType: String)
 
-    fun hGetDirections()
-
+    suspend fun hGetDirections(startLocation: Location, endLocation: Location, mode: String)
 
     suspend fun hFindNearybyPlaces(category: Category, location: Location)
+
 }

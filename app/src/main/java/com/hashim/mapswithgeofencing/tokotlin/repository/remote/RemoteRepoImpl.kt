@@ -16,7 +16,6 @@ class RemoteRepoImpl(
 ) : RemoteRepo {
 
 
-
     override suspend fun hGetWeather(location: Location, unitType: String) {
         Timber.d("Maps key $hMapsKey")
         Timber.d("Weather key $hWeatherKey")
@@ -38,8 +37,13 @@ class RemoteRepoImpl(
     }
 
 
-    override fun hGetDirections() {
-        TODO("Not yet implemented")
+    override suspend fun hGetDirections(startLocation: Location, endLocation: Location, mode: String) {
+        hRetroService.hFindDirections(
+                startLocation = "${startLocation.latitude},${startLocation.longitude}",
+                endLocation = "${endLocation.latitude},${endLocation.longitude}",
+                key = hMapsKey,
+                mode = mode,
+        )
     }
 
     override suspend fun hFindNearybyPlaces(category: Category, location: Location) {

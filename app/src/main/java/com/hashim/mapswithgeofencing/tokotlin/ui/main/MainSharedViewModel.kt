@@ -5,6 +5,7 @@
 package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
 import android.location.Location
+import android.location.LocationManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hashim.mapswithgeofencing.tokotlin.repository.remote.RemoteRepo
@@ -23,9 +24,25 @@ class MainSharedViewModel @Inject constructor(
     fun hHandleCategoriesCallBack(category: Category, location: Location?) {
         Timber.d("Handle Callback $category")
         hTestNearByPlaces(location, category)
+        val hTestLocation = Location(LocationManager.GPS_PROVIDER)
+        hTestLocation.latitude = 41.43206
+        hTestLocation.longitude = -81.38992
+
+        hTestDirections(location, hTestLocation)
     }
 
+    private fun hTestDirections(location: Location?, hTestLocation: Location) {
+        viewModelScope.launch {
+            if (location != null) {
+                hRemoteRepo.hGetDirections(
 
+                        startLocation = location,
+                        endLocation = hTestLocation,
+                        Constants.H_DRIVING_MODE
+                )
+            }
+        }
+    }
 
 
     private fun hTestNearByPlaces(location: Location?, category: Category) {

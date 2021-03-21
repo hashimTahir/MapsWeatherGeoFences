@@ -57,7 +57,8 @@ public class DirectionFinder {
             case H_DRIVING_MODE:
                 return DIRECTION_URL_API + "origin=" + urlOrigin + "&destination=" + urlDestination + "&key=" + GOOGLE_API_KEY;
             case H_CYCLING_MODE:
-                return DIRECTION_URL_API + "origin=" + urlOrigin + "&destination=" + urlDestination + "&key=" + GOOGLE_API_KEY + "&mode=" + H_CYCLING_MODE;
+                return DIRECTION_URL_API + "origin=" + urlOrigin + "&destination=" + urlDestination + "&key="
+                        + GOOGLE_API_KEY + "&mode=" + H_CYCLING_MODE;
             case H_WALKING_MODE:
                 return DIRECTION_URL_API + "origin=" + urlOrigin + "&destination=" + urlDestination + "&key=" + GOOGLE_API_KEY + "&mode=" + H_WALKING_MODE;
             default:
