@@ -23,13 +23,13 @@ public class ListUtils {
     }
 
     public static void removeAllSubList(List<?> list, List<?> subList) {
-        // find first occurrence of the subList in the list, O(nm)
+        // find first occurrence of the subList in the ForecastList.kt, O(nm)
         int i = Collections.indexOfSubList(list, subList);
         // if found
         if (i != -1) {
             // bulk remove, O(m)
             list.subList(i, i + subList.size()).clear();
-            // recurse with the rest of the list
+            // recurse with the rest of the ForecastList.kt
             removeAllSubList(list.subList(i, list.size()), subList);
         }
     }

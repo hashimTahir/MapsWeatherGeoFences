@@ -26,6 +26,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resValue ("string", "MAPS_API_KEY", apikeyProperties['MAPS_API_KEY'])
+        resValue ("string", "WEATHER_API_KEY", apikeyProperties['WEATHER_API_KEY'])
     }
 
     buildTypes {

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerCategoryBinding
-import timber.log.Timber
 
 
 class CategoriesAdapter(
@@ -41,7 +40,6 @@ class CategoriesAdapter(
 
     private fun hBindCategoryVh(categoryVh: CategoryVh, position: Int) {
         val hCategoryItem = hCategoriesList.get(position)
-        Timber.d("Category $hCategoryItem")
         categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.text = hCategoryItem.name
 
         categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.chipIcon =

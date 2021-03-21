@@ -22,7 +22,7 @@ public class MarkerUtils {
         return Bitmap.createScaledBitmap(hBitmap, width, height, false);
     }
 
-    //            // Connect the recycler to the scroller (to let the scroller scroll the list)
+    //            // Connect the recycler to the scroller (to let the scroller scroll the ForecastList.kt)
 //            fastScroller.setRecyclerView(hRecyclerView);
 //
 //            // Connect the scroller to the recycler (to let the recycler scroll the scroller's handle)

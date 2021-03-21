@@ -26,7 +26,7 @@ public class WeatherMainReturnResponse {
     @Expose
     private Integer cnt;
 
-    @SerializedName("list")
+    @SerializedName("ForecastList.kt")
     @Expose
     private List<WeatherList> weatherList = null;
 

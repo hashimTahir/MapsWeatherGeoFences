@@ -9,9 +9,9 @@ import com.hashim.mapswithgeofencing.tokotlin.ui.main.Category
 
 interface RemoteRepo {
 
-    fun hGetWeather()
+    suspend fun hGetWeather(location: Location, unitType: String)
 
-    fun hGetForecast()
+    suspend fun hGetForecast(location: Location, unitType: String)
 
     fun hGetDirections()
 
