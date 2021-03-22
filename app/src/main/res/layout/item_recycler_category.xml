@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
   -->
 
@@ -14,8 +13,9 @@
             android:id="@+id/hCategoriesChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/test_string"
             android:layout_marginEnd="@dimen/_5dp"
+            android:text="@string/test_string"
+            app:iconStartPadding="@dimen/_10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

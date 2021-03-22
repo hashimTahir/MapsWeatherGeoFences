@@ -131,21 +131,24 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0'
 
     // Navigation Component
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.3'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.4'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.4'
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
     // Activity KTX for viewModels()
-    implementation 'androidx.activity:activity-ktx:1.2.0'
+    implementation 'androidx.activity:activity-ktx:1.2.1'
 
     //Dagger - Hilt
     implementation 'com.google.dagger:hilt-android:2.33-beta'
     kapt 'com.google.dagger:hilt-android-compiler:2.33-beta'
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
-    kapt "androidx.hilt:hilt-compiler:1.0.0-alpha03"
+    kapt 'androidx.hilt:hilt-compiler:1.0.0-beta01'
+
+
+
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
@@ -160,5 +163,8 @@ dependencies {
 
     implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
 
+}
 
+kapt {
+    correctErrorTypes true
 }

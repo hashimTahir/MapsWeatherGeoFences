@@ -15,7 +15,6 @@ class RemoteRepoImpl(
         private val hWeatherKey: String
 ) : RemoteRepo {
 
-
     override suspend fun hGetWeather(location: Location, unitType: String) {
         Timber.d("Maps key $hMapsKey")
         Timber.d("Weather key $hWeatherKey")
