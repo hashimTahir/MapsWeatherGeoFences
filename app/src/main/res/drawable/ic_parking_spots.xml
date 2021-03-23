@@ -1,0 +1,16 @@
+<!--
+  ~ Copyright (c) 2021/  3/ 23.  Created by Hashim Tahir
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="512dp"
+    android:height="512dp"
+    android:viewportWidth="192"
+    android:viewportHeight="192">
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m96,0a96,96 0,1 0,96 96,96.108 96.108,0 0,0 -96,-96zM96,176a80,80 0,1 1,80 -80,80.091 80.091,0 0,1 -80,80z"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m108,56h-28a8,8 0,0 0,-8 8v80h16v-32h20a28,28 0,0 0,0 -56zM108,96h-20v-24h20a12,12 0,0 1,0 24z"/>
+</vector>

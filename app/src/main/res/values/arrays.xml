@@ -67,24 +67,24 @@
     </array>
 
     <integer-array name="places_icons_array">
-        <item>@drawable/atm</item>
+        <item>@drawable/ic_atm</item>
         <item>@drawable/ic_icon_bank</item>
         <item>@drawable/ic_hospitals</item>
-        <item>@drawable/mosques</item>
-        <item>@drawable/doctors</item>
+        <item>@drawable/ic_mosques</item>
+        <item>@drawable/ic_doctors</item>
         <item>@drawable/ic_train_stations</item>
         <item>@drawable/ic_parking_spots</item>
-        <item>@drawable/parks</item>
-        <item>@drawable/cafe</item>
-        <item>@drawable/restaurant</item>
-        <item>@drawable/ic_gas_stations</item>
+        <item>@drawable/ic_parks</item>
+        <item>@drawable/ic_cafe</item>
+        <item>@drawable/ic_restaurant</item>
+        <item>@drawable/ic_gas_station</item>
         <item>@drawable/ic_police_stations</item>
         <item>@drawable/ic_book_stores</item>
-        <item>@drawable/bus_stop</item>
-        <item>@drawable/pharmacy</item>
+        <item>@drawable/ic_bus_stop</item>
+        <item>@drawable/ic_pharmacy</item>
         <item>@drawable/ic_clothes_stores</item>
-        <item>@drawable/schools</item>
-        <item>@drawable/super_market</item>
+        <item>@drawable/ic_schools</item>
+        <item>@drawable/ic_super_market</item>
     </integer-array>
     <array name="maps_type_array">
         <item>Normal</item>

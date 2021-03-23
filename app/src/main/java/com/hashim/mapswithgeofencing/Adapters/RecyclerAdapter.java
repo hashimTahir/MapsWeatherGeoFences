@@ -45,13 +45,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     List<LocationEntitiy> hLocationEntitiys = new ArrayList<>();
 
     private int[] hImages = {
-            R.drawable.atm, R.drawable.ic_icon_bank, R.drawable.ic_hospitals,
-            R.drawable.mosques, R.drawable.doctors, R.drawable.ic_train_stations,
-            R.drawable.ic_parking_spots, R.drawable.parks, R.drawable.cafe,
-            R.drawable.restaurant, R.drawable.ic_gas_stations,
+            R.drawable.ic_atm, R.drawable.ic_icon_bank, R.drawable.ic_hospitals,
+            R.drawable.ic_mosques, R.drawable.ic_doctors, R.drawable.ic_train_stations,
+            R.drawable.ic_parking_spots, R.drawable.ic_parks, R.drawable.ic_cafe,
+            R.drawable.ic_restaurant, R.drawable.ic_gas_station,
             R.drawable.ic_police_stations, R.drawable.ic_book_stores,
-            R.drawable.ic_bus_stations, R.drawable.ic_pharmacys,
-            R.drawable.ic_clothes_stores, R.drawable.schools, R.drawable.ic_super_market
+            R.drawable.ic_bus_stop, R.drawable.ic_pharmacy,
+            R.drawable.ic_clothes_stores, R.drawable.ic_schools, R.drawable.ic_super_market
     };
 
 

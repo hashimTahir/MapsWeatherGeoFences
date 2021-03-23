@@ -577,49 +577,49 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private int hChooseIcon(String category) {
 
-        switch (Integer.parseInt(category)) {
-            case 0:
-                return R.drawable.atm;
-            case 1:
-                return R.drawable.bank;
-            case 2:
-                return R.drawable.hospital;
-            case 3:
-                return R.drawable.mosque;
-            case 4:
-                return R.drawable.doctor;
-            case 5:
-                return R.drawable.train_station;
-            case 6:
-                return R.drawable.parking;
-            case 7:
-                return R.drawable.park;
-            case 8:
-                return R.drawable.cafe;
-            case 9:
-                return R.drawable.restaurant;
-            case 10:
-                return R.drawable.gas_station;
-            case 11:
-                return R.drawable.police;
-            case 12:
-                return R.drawable.book_store;
-            case 13:
-                return R.drawable.bus_stop;
-            case 14:
-                return R.drawable.pharmacy;
-            case 15:
-                return R.drawable.clothing_store;
-            case 16:
-                return R.drawable.school;
-            case 17:
-                return R.drawable.super_market;
-            case 67:
-                return R.drawable.dog_icon;
-            default:
-                return R.drawable.atm;
-        }
-
+//        switch (Integer.parseInt(category)) {
+//            case 0:
+//                return R.drawable.atm;
+//            case 1:
+//                return R.drawable.bank;
+//            case 2:
+//                return R.drawable.hospital;
+//            case 3:
+//                return R.drawable.mosque;
+//            case 4:
+//                return R.drawable.doctor;
+//            case 5:
+//                return R.drawable.train_station;
+//            case 6:
+//                return R.drawable.parking;
+//            case 7:
+//                return R.drawable.park;
+//            case 8:
+//                return R.drawable.cafe;
+//            case 9:
+//                return R.drawable.restaurant;
+//            case 10:
+//                return R.drawable.gas_station;
+//            case 11:
+//                return R.drawable.police;
+//            case 12:
+//                return R.drawable.book_store;
+//            case 13:
+//                return R.drawable.bus_stop;
+//            case 14:
+//                return R.drawable.pharmacy;
+//            case 15:
+//                return R.drawable.clothing_store;
+//            case 16:
+//                return R.drawable.school;
+//            case 17:
+//                return R.drawable.super_market;
+//            case 67:
+//                return R.drawable.dog_icon;
+//            default:
+//                return R.drawable.atm;
+//        }
+        return 0;
     }
 
 

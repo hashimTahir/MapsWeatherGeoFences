@@ -121,9 +121,9 @@ public class CalculateActivity extends AppCompatActivity implements
 
     private void hInitView() {
         TabLayout hTabs = hAcitivityCalculateRouteBinding.hTabs;
-        hTabs.addTab(hTabs.newTab().setText(getString(R.string.drive_tab)).setIcon(R.drawable.car));
+        hTabs.addTab(hTabs.newTab().setText(getString(R.string.drive_tab)).setIcon(R.drawable.ic_car));
         hTabs.addTab(hTabs.newTab().setText(getString(R.string.cycling_tab)).setIcon(R.drawable.cycle));
-        hTabs.addTab(hTabs.newTab().setText(getString(R.string.walking_tab)).setIcon(R.drawable.walking));
+        hTabs.addTab(hTabs.newTab().setText(getString(R.string.walking_tab)).setIcon(R.drawable.ic_walking));
         hTabs.addOnTabSelectedListener(this);
 
 

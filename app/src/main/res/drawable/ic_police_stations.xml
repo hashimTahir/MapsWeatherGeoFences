@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (c) 2021/  3/ 23.  Created by Hashim Tahir
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="512dp"
+    android:height="512dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m482,180.007v-90h-166.412c0.263,-2.65 0.412,-5.328 0.412,-8.034v-25.314l-60,-26.667 -60,26.667v25.314c0,2.706 0.15,5.384 0.412,8.034h-166.412v90h-30v302h512v-302zM226,76.156 L256,62.823 286,76.156v5.818c0,20.194 -11.865,38.234 -30,46.356 -18.135,-8.123 -30,-26.163 -30,-46.356zM60,120.007h145.5c9.515,17.846 25.616,31.917 45.756,38.631l4.743,1.581 4.743,-1.581c20.141,-6.714 36.241,-20.785 45.756,-38.631h145.502v60h-392zM301,452.007h-30v-62h30zM241,452.007h-30v-62h30zM482,452.007h-151v-92h-150v92h-151v-242h452z"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m150,240.007h-90v180h90zM120,270.007v30h-30v-30zM90,390.007v-60h30v60z"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m452,240.007h-90v180h90zM422,270.007v30h-30v-30zM392,390.007v-60h30v60z"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m181,240.007h30v30h-30z"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m241,240.007h30v30h-30z"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m181,300.007h30v30h-30z"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m241,300.007h30v30h-30z"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m301,240.007h30v30h-30z"/>
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="m301,300.007h30v30h-30z"/>
+</vector>

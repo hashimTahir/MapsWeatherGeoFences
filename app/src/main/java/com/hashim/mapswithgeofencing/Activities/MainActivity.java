@@ -839,15 +839,15 @@ public class MainActivity extends AppCompatActivity implements
         hFindRouteFb.setImageResource(R.drawable.ic_findroute);
         hShareLoactionFb.setImageResource(R.drawable.ic_sharelocation);
         hAtmsFb.setImageResource(R.drawable.ic_atm);
-        hBanksFb.setImageResource(R.drawable.ic_bank);
-        hPoliceFb.setImageResource(R.drawable.ic_policestation);
-        hMosqueFB.setImageResource(R.drawable.ic_mosque);
-        hBusStationFb.setImageResource(R.drawable.ic_busstop);
-        hHospitalFb.setImageResource(R.drawable.ic_hospital);
+        hBanksFb.setImageResource(R.drawable.ic_icon_bank);
+        hPoliceFb.setImageResource(R.drawable.ic_police_stations);
+        hMosqueFB.setImageResource(R.drawable.ic_mosques);
+        hBusStationFb.setImageResource(R.drawable.ic_bus_stop);
+        hHospitalFb.setImageResource(R.drawable.ic_hospitals);
         hCafeFb.setImageResource(R.drawable.ic_cafe);
         hViewAllFb.setImageResource(R.drawable.ic_viewall);
         hSettingsFB.setImageResource(R.drawable.ic_settings);
-        hRateUsFb.setImageResource(R.drawable.ic_rateus);
+//        hRateUsFb.setImageResource(R.drawable.ra);
         hCompassFB.setImageResource(R.drawable.compass);
         hVoiceCommandFB.setImageResource(R.drawable.ic_mic);
 

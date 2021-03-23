@@ -20,13 +20,12 @@ import timber.log.Timber
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListener, MainFragment.OnFragmentInteraction {
+class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListener{
     private var hLocation: Location? = null
     private val hMainSharedViewModel: MainSharedViewModel by viewModels()
     private lateinit var hActivityMainBinding: ActivityMain2Binding
     private lateinit var hNavHostFragments: NavHostFragment
     private lateinit var hNavController: NavController
-    private lateinit var hCategoriesAdapter: CategoriesAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,27 +38,8 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
         hSetupListeners()
 
-        hInitCategoryRv()
     }
 
-    private fun hInitCategoryRv() {
-
-
-        hCategoriesAdapter = CategoriesAdapter(this)
-        hCategoriesAdapter.apply {
-            hSetCategoriesCallback { category ->
-                hMainSharedViewModel.hHandleCategoriesCallBack(category, hLocation)
-            }
-        }
-
-        hActivityMainBinding.hCategoriesRv.apply {
-            adapter = hCategoriesAdapter
-            layoutManager = LinearLayoutManager(
-                    this@MainActivity,
-                    LinearLayoutManager.HORIZONTAL,
-                    false)
-        }
-    }
 
     private fun hSetupListeners() {
         hActivityMainBinding.hSearchBar.setHint("Search here")
@@ -114,8 +94,6 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
         TODO("Not yet implemented")
     }
 
-    override fun hSetLocation(location: Location?) {
-        hLocation = location
-    }
+
 
 }

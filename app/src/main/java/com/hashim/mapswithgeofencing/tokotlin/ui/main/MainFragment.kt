@@ -6,9 +6,7 @@ package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,13 +15,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentMainBinding
 import com.hashim.mapswithgeofencing.tokotlin.location.LocationUtis
+import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainStateEvent
 import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainStateEvent.OnCurrentLocationFound
 import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainStateEvent.OnMapReady
+import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainViewState
 import com.hashim.mapswithgeofencing.tokotlin.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -33,12 +37,13 @@ import timber.log.Timber
 class MainFragment : Fragment() {
     lateinit var hFragmentMainBinding: FragmentMainBinding
     private val hMainViewModel: MainViewModel by viewModels()
-
-    lateinit var hOnFragmentInteraction: OnFragmentInteraction
+    private var hGoogleMap: GoogleMap? = null
+    private lateinit var hCategoriesAdapter: CategoriesAdapter
 
     @SuppressLint("MissingPermission")
     private val hMapCallBack = OnMapReadyCallback { googleMap ->
-        googleMap.isMyLocationEnabled = true
+        hGoogleMap = googleMap
+        hGoogleMap?.isMyLocationEnabled = true
         hMainViewModel.hSetStateEvent(OnMapReady())
     }
 
@@ -58,11 +63,34 @@ class MainFragment : Fragment() {
         return hFragmentMainBinding.root
     }
 
+    private fun hInitCategoryRv() {
+
+
+        hCategoriesAdapter = CategoriesAdapter(requireContext())
+        hCategoriesAdapter.hSetCategoriesCallback { category ->
+            hMainViewModel.hSetStateEvent(
+                    MainStateEvent.OnCategorySelected(category)
+            )
+        }
+
+
+        hFragmentMainBinding.hCategoriesRv.apply {
+            adapter = hCategoriesAdapter
+            layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.HORIZONTAL,
+                    false)
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         hSubscribeObservers()
+
+        hInitCategoryRv()
+
 
         if (hHasPermission()) {
             hInitMap()
@@ -89,17 +117,27 @@ class MainFragment : Fragment() {
             it.hData?.let {
                 it.hMainFields?.let {
                     hMainViewModel.hSetMainData(it)
-
                 }
             }
         }
 
         hMainViewModel.hMainViewState.observe(viewLifecycleOwner) {
             it.hMainFields?.let {
-                Timber.d("Main view state set data to view ${it}")
+                hSetCurrentMarker(it)
             }
 
         }
+    }
+
+    private fun hSetCurrentMarker(mainfields: MainViewState.MainFields) {
+        hGoogleMap?.addMarker(mainfields.currentMarkerOptions)?.showInfoWindow()
+        hGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                        mainfields.currentLocation?.latitude!!,
+                        mainfields.currentLocation?.longitude!!
+
+                ), 12.0f))
+
     }
 
     private fun hHasPermission(): Boolean {
@@ -145,14 +183,5 @@ class MainFragment : Fragment() {
                 }
             }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        hOnFragmentInteraction = context as OnFragmentInteraction
-    }
-
-    interface OnFragmentInteraction {
-        fun hSetLocation(location: Location?)
-
-    }
 
 }

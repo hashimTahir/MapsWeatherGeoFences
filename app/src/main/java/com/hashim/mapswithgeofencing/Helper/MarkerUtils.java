@@ -22,52 +22,46 @@ public class MarkerUtils {
         return Bitmap.createScaledBitmap(hBitmap, width, height, false);
     }
 
-    //            // Connect the recycler to the scroller (to let the scroller scroll the ForecastList.kt)
-//            fastScroller.setRecyclerView(hRecyclerView);
-//
-//            // Connect the scroller to the recycler (to let the recycler scroll the scroller's handle)
-//            hRecyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
-//            https://github.com/myinnos/AlphabetIndex-Fast-Scroll-RecyclerView
-//    https://github.com/volsahin/volx-recyclerview-fast-scroll?utm_source=android-arsenal.com&utm_medium=referral&utm_campaign=5553
+
     private static int hChooseIcon(String category) {
 
         switch (Integer.parseInt(category)) {
             case 0:
-                return R.drawable.atm;
+                return R.drawable.ic_atm;
             case 1:
-                return R.drawable.bank;
+                return R.drawable.ic_icon_bank;
             case 2:
-                return R.drawable.hospital;
+                return R.drawable.ic_hospitals;
             case 3:
-                return R.drawable.mosque;
+                return R.drawable.ic_mosques;
             case 4:
-                return R.drawable.doctor;
+                return R.drawable.ic_doctors;
             case 5:
-                return R.drawable.train_station;
+                return R.drawable.ic_train_stations;
             case 6:
-                return R.drawable.parking;
+                return R.drawable.ic_parking_spots;
             case 7:
-                return R.drawable.park;
+                return R.drawable.ic_parks;
             case 8:
-                return R.drawable.cafe;
+                return R.drawable.ic_cafe;
             case 9:
-                return R.drawable.restaurant;
+                return R.drawable.ic_restaurant;
             case 10:
-                return R.drawable.gas_station;
+                return R.drawable.ic_gas_station;
             case 11:
-                return R.drawable.police;
+                return R.drawable.ic_police_stations;
             case 12:
-                return R.drawable.book_store;
+                return R.drawable.ic_book_stores;
             case 13:
-                return R.drawable.bus_stop;
+                return R.drawable.ic_bus_stop;
             case 14:
-                return R.drawable.pharmacy;
+                return R.drawable.ic_pharmacy;
             case 15:
-                return R.drawable.clothing_store;
+                return R.drawable.ic_clothes_stores;
             case 16:
-                return R.drawable.school;
+                return R.drawable.ic_schools;
             case 17:
-                return R.drawable.super_market;
+                return R.drawable.ic_super_market;
             case 67:
                 return R.drawable.dog_icon;
             case 82:

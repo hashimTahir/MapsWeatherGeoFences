@@ -37,7 +37,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/atm"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_add"

@@ -6,10 +6,7 @@ package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
 import android.content.Context
 import android.location.Location
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -24,6 +21,7 @@ import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainViewState.MainFields
 import com.hashim.mapswithgeofencing.tokotlin.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -34,6 +32,7 @@ class MainViewModel @Inject constructor(
         @ApplicationContext private val hContext: Context,
 ) : ViewModel() {
     private val _hMainStateEvent = MutableLiveData<MainStateEvent>()
+    private var hCurrentLocation: Location? = null
 
     /*Data setter for the view packged into a single object*/
     private val _hMainViewState = MutableLiveData<MainViewState>()
@@ -52,9 +51,21 @@ class MainViewModel @Inject constructor(
     private fun hHandleStateEvent(stateEvent: MainStateEvent): LiveData<DataState<MainViewState>>? {
         when (stateEvent) {
             is OnCurrentLocationFound -> {
-                return hCreateMaker(stateEvent.location)
+                hCurrentLocation = stateEvent.location
+                return hCreateMaker(hCurrentLocation)
             }
             is OnMapReady -> {
+            }
+            is OnCategorySelected -> {
+                viewModelScope.launch {
+                    /*Todo: get radius from app settings*/
+                    hCurrentLocation?.let {
+                        hRemoteRepo.hFindNearybyPlaces(
+                                category = stateEvent.category,
+                                location = it
+                        )
+                    }
+                }
             }
             is None -> {
             }

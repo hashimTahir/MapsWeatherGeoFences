@@ -4,9 +4,9 @@
 
 package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
-import androidx.annotation.IntegerRes
+import android.graphics.drawable.Drawable
 
 data class Category(
         val name: String,
-        @IntegerRes val icon: Int
+        val icon: Drawable
 )

@@ -39,7 +39,6 @@
 
                     <fragment
                         android:id="@+id/place_autocomplete_fragment"
-                        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -111,7 +110,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/_10dp"
                             android:layout_marginBottom="@dimen/_10dp"
-                            android:src="@drawable/ic_rateus"
 
                             android:tint="@color/white"
                             app:backgroundTint="@color/gradient_start" />

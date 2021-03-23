@@ -47,7 +47,7 @@ class RemoteRepoImpl(
 
     override suspend fun hFindNearybyPlaces(category: Category, location: Location) {
 
-        hRetroService.hFindNearByPlaces(
+        var hFindNearByPlaces = hRetroService.hFindNearByPlaces(
                 location = "${location.latitude},${location.longitude}",
                 radius = "1000",
                 type = category.name,

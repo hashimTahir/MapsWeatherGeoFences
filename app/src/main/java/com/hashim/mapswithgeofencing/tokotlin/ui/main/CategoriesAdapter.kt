@@ -7,7 +7,6 @@ package com.hashim.mapswithgeofencing.tokotlin.ui.main
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerCategoryBinding
 
@@ -42,12 +41,7 @@ class CategoriesAdapter(
         val hCategoryItem = hCategoriesList.get(position)
         categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.text = hCategoryItem.name
 
-        categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.chipIcon =
-                ResourcesCompat.getDrawable(
-                        hContext.resources,
-                        hCategoryItem.icon,
-                        null
-                )
+        categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.chipIcon = hCategoryItem.icon
         categoryVh.hItemRecyclerCategoryBinding.hCategoriesChip.setOnClickListener {
             hCategoriesCallback?.invoke(hCategoryItem)
         }

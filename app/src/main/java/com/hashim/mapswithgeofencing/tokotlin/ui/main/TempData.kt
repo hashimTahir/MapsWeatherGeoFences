@@ -6,6 +6,7 @@ package com.hashim.mapswithgeofencing.tokotlin.ui.main
 
 import android.content.Context
 import com.hashim.mapswithgeofencing.R
+import timber.log.Timber
 
 class TempData {
     companion object {
@@ -18,7 +19,7 @@ class TempData {
                 hCategoryList.add(
                         Category(
                                 name = name,
-                                icon = hIconsTypedArray.getResourceId(hIconsTypedArray.getIndex(index), -1)
+                                icon = hIconsTypedArray.getDrawable(index)!!
                         )
                 )
             }
