@@ -5,6 +5,7 @@
 package com.hashim.mapswithgeofencing.tokotlin.repository.remote
 
 import android.location.Location
+import com.hashim.mapswithgeofencing.tokotlin.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.tokotlin.ui.main.Category
 
 interface RemoteRepo {
@@ -15,6 +16,6 @@ interface RemoteRepo {
 
     suspend fun hGetDirections(startLocation: Location, endLocation: Location, mode: String)
 
-    suspend fun hFindNearybyPlaces(category: Category, location: Location)
+    suspend fun hFindNearybyPlaces(category: Category, location: Location): List<NearByPlaces>
 
 }

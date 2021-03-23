@@ -7,6 +7,7 @@ package com.hashim.mapswithgeofencing.tokotlin.di
 import android.content.Context
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.tokotlin.network.RetroService
+import com.hashim.mapswithgeofencing.tokotlin.network.model.NearByPlacesDtoMapper
 import com.hashim.mapswithgeofencing.tokotlin.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.tokotlin.repository.remote.RemoteRepoImpl
 import com.hashim.mapswithgeofencing.tokotlin.utils.Constants.Companion.H_MAPS_KEYTYPE
@@ -28,10 +29,12 @@ object RepositoryModule {
     fun hProvidesRemoteRepo(
             retrofitService: RetroService,
             @Named(H_MAPS_KEYTYPE) mapsKey: String,
-            @Named(H_WEATHER_KEYTYPE) weatherKey: String
+            @Named(H_WEATHER_KEYTYPE) weatherKey: String,
+            mapper: NearByPlacesDtoMapper,
     ): RemoteRepo {
         return RemoteRepoImpl(
                 hRetroService = retrofitService,
+                hMapper = mapper,
                 hMapsKey = mapsKey,
                 hWeatherKey = weatherKey
         )

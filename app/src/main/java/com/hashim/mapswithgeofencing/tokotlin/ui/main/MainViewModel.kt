@@ -60,10 +60,12 @@ class MainViewModel @Inject constructor(
                 viewModelScope.launch {
                     /*Todo: get radius from app settings*/
                     hCurrentLocation?.let {
-                        hRemoteRepo.hFindNearybyPlaces(
+                        var hFindNearybyPlaces = hRemoteRepo.hFindNearybyPlaces(
                                 category = stateEvent.category,
                                 location = it
                         )
+                        Timber.d("Size ${hFindNearybyPlaces.size}, Lat ${hFindNearybyPlaces.get(0).lat}, Lat ${hFindNearybyPlaces.get(0).lng}")
+
                     }
                 }
             }

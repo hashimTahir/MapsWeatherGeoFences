@@ -5,12 +5,15 @@
 package com.hashim.mapswithgeofencing.tokotlin.repository.remote
 
 import android.location.Location
+import com.hashim.mapswithgeofencing.tokotlin.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.tokotlin.network.RetroService
+import com.hashim.mapswithgeofencing.tokotlin.network.model.NearByPlacesDtoMapper
 import com.hashim.mapswithgeofencing.tokotlin.ui.main.Category
 import timber.log.Timber
 
 class RemoteRepoImpl(
         private val hRetroService: RetroService,
+        private val hMapper: NearByPlacesDtoMapper,
         private val hMapsKey: String,
         private val hWeatherKey: String
 ) : RemoteRepo {
@@ -45,7 +48,7 @@ class RemoteRepoImpl(
         )
     }
 
-    override suspend fun hFindNearybyPlaces(category: Category, location: Location) {
+    override suspend fun hFindNearybyPlaces(category: Category, location: Location): List<NearByPlaces> {
 
         var hFindNearByPlaces = hRetroService.hFindNearByPlaces(
                 location = "${location.latitude},${location.longitude}",
@@ -53,6 +56,8 @@ class RemoteRepoImpl(
                 type = category.name,
                 key = hMapsKey
         )
+
+        return hMapper.hToDomainList(hFindNearByPlaces.nearyByPlacesResultDtos)
     }
 
 }

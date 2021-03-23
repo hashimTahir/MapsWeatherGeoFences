@@ -6,6 +6,7 @@ package com.hashim.mapswithgeofencing.tokotlin.di
 
 import com.google.gson.Gson
 import com.hashim.mapswithgeofencing.tokotlin.network.RetroService
+import com.hashim.mapswithgeofencing.tokotlin.network.model.NearByPlacesDtoMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +22,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+
+    @Singleton
+    @Provides
+    fun hProvidesNearByPlacesDtoMapper(): NearByPlacesDtoMapper {
+        return NearByPlacesDtoMapper()
+    }
 
     @Singleton
     @Provides

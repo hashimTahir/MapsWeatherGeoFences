@@ -8,7 +8,7 @@ package com.hashim.mapswithgeofencing.tokotlin.network.response.nearybyplaces
 import com.google.gson.annotations.SerializedName
 
 
-data class Result(
+data class NearyByPlacesResultDto(
         @SerializedName("business_status")
         val businessStatus: String,
         @SerializedName("geometry")
