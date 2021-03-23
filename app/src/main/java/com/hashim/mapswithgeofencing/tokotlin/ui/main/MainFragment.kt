@@ -26,6 +26,7 @@ import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainStateEvent.OnCurrent
 import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainStateEvent.OnMapReady
 import com.hashim.mapswithgeofencing.tokotlin.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -60,7 +61,8 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        hMainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        hSubscribeObservers()
 
         if (hHasPermission()) {
             hInitMap()
@@ -79,6 +81,25 @@ class MainFragment : Fragment() {
         }
 
 
+    }
+
+    private fun hSubscribeObservers() {
+        hMainViewModel.hDataState.observe(viewLifecycleOwner) {
+            Timber.d("Data State is ${it}")
+            it.hData?.let {
+                it.hMainFields?.let {
+                    hMainViewModel.hSetMainData(it)
+
+                }
+            }
+        }
+
+        hMainViewModel.hMainViewState.observe(viewLifecycleOwner) {
+            it.hMainFields?.let {
+                Timber.d("Main view state set data to view ${it}")
+            }
+
+        }
     }
 
     private fun hHasPermission(): Boolean {
