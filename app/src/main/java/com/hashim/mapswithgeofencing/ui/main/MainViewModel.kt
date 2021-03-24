@@ -10,8 +10,10 @@ import androidx.lifecycle.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
+import com.hashim.mapswithgeofencing.R
+import com.hashim.mapswithgeofencing.SettingsPrefrences
+import com.hashim.mapswithgeofencing.SettingsPrefrences.HlatLng
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.*
@@ -53,6 +55,11 @@ class MainViewModel @Inject constructor(
         when (stateEvent) {
             is OnCurrentLocationFound -> {
                 hCurrentLocation = stateEvent.location
+                val hSettingsPrefrences = SettingsPrefrences(hContext)
+                hSettingsPrefrences.hSaveCurrentLocation(HlatLng(
+                        hLng = hCurrentLocation?.longitude,
+                        hLat = hCurrentLocation?.latitude,
+                ))
                 return hSubmitCurrentLocationData(hCurrentLocation)
             }
             is OnMapReady -> {

@@ -6,11 +6,13 @@ package com.hashim.mapswithgeofencing
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Parcelable
 import com.google.android.gms.maps.GoogleMap
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsModelWithIds
 import com.hashim.mapswithgeofencing.utils.Constants
+import kotlinx.android.parcel.Parcelize
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.FileInputStream
@@ -234,23 +236,23 @@ class SettingsPrefrences {
         return hProfilePrefrences!!.getBoolean(Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS, false)
     }
 
-//    fun hSaveCurrentLocation(hLatLng: HLatLngModel?) {
-//        val hGson = Gson()
-//        val hType = object : TypeToken<HLatLngModel?>() {}.type
-//        val hJson = hGson.toJson(hLatLng, hType)
-//        hEditor!!.putString(H_CURRENT_LAT_LNG, hJson)
-//        hEditor!!.apply()
-//    }
-//
-//    fun hGetCurrentLocation(): HLatLngModel? {
-//        val hJsonString = hProfilePrefrences!!.getString(H_CURRENT_LAT_LNG, null)
-//        if (hJsonString != null) {
-//            val type = object : TypeToken<HLatLngModel?>() {}.type
-//            val hGson = Gson()
-//            return hGson.fromJson(hJsonString, type)
-//        }
-//        return null
-//    }
+    fun hSaveCurrentLocation(hLatLng: HlatLng?) {
+        val hGson = Gson()
+        val hType = object : TypeToken<HlatLng?>() {}.type
+        val hJson = hGson.toJson(hLatLng, hType)
+        hEditor!!.putString(H_CURRENT_LAT_LNG, hJson)
+        hEditor!!.apply()
+    }
+
+    fun hGetCurrentLocation(): HlatLng? {
+        val hJsonString = hProfilePrefrences!!.getString(H_CURRENT_LAT_LNG, null)
+        if (hJsonString != null) {
+            val type = object : TypeToken<HlatLng?>() {}.type
+            val hGson = Gson()
+            return hGson.fromJson(hJsonString, type)
+        }
+        return null
+    }
 
     fun hSaveEmergencyMessage(hUserName: String?) {
         hEditor!!.putString(H_EMERGENCY_MESSAGE, hUserName)
@@ -269,4 +271,10 @@ class SettingsPrefrences {
     fun hGetTrackMeMessage(): String? {
         return hProfilePrefrences!!.getString(H_TRACK_ME_MESSAGE, null)
     }
+
+    @Parcelize
+    data class HlatLng(
+            val hLat: Double? = null,
+            val hLng: Double? = null,
+    ) : Parcelable
 }

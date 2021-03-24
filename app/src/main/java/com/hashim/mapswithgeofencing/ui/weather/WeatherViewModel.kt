@@ -14,6 +14,7 @@ import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent
 import com.hashim.mapswithgeofencing.ui.events.WeatherViewState
 import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,8 +33,8 @@ class WeatherViewModel @Inject constructor(
 
     val hDataState: LiveData<DataState<WeatherViewState>> = Transformations
             .switchMap(_hWeatherStateEvent) {
-                it?.let { mainStateEvent ->
-                    hHandleStateEvent(mainStateEvent)
+                it?.let { weatherStateEvent ->
+                    hHandleStateEvent(weatherStateEvent)
                 }
             }
 
@@ -43,6 +44,7 @@ class WeatherViewModel @Inject constructor(
             is WeatherStateEvent.OnFetchForecast -> {
             }
             is WeatherStateEvent.OnFetchWeather -> {
+                Timber.d("Weather State Event ${weatherStateEvent.hLat}")
 //                hRemoteRepo.hGetWeather()
             }
             is WeatherStateEvent.None -> {

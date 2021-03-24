@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.hashim.mapswithgeofencing.R
+import com.hashim.mapswithgeofencing.SettingsPrefrences
 import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding
 import com.mancj.materialsearchbar.MaterialSearchBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +53,11 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                     Timber.d("hNavigateToMenu")
                 }
                 R.id.hWeatherMenu -> {
-                    hNavController.navigate(R.id.action_hMainFragment_to_hWeatherFragment)
+                    val hSettingsPrefrences = SettingsPrefrences(this)
+                    val actionHMainFragmentToHWeatherFragment = MainFragmentDirections.actionHMainFragmentToHWeatherFragment(
+                            hSettingsPrefrences.hGetCurrentLocation()
+                    )
+                    hNavController.navigate(actionHMainFragmentToHWeatherFragment)
                 }
                 R.id.hDirectionsMenu -> {
                     Timber.d("hDirectionsMenu")

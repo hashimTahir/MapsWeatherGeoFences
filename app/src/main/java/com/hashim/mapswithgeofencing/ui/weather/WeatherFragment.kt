@@ -10,8 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.hashim.mapswithgeofencing.databinding.WeatherFragmentBinding
-import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent
+import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent.OnFetchWeather
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -250,6 +251,7 @@ class WeatherFragment : Fragment() {
 
     private lateinit var hWeatherViewModel: WeatherViewModel
     private lateinit var hWeatherFragmentBinding: WeatherFragmentBinding
+    val hArguments: WeatherFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -265,7 +267,21 @@ class WeatherFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         hWeatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
 
-        hWeatherViewModel.hSetStateEvent(WeatherStateEvent.OnFetchWeather(null))
+        hSubscribeObservers()
+
+
+        hWeatherViewModel.hSetStateEvent(
+                OnFetchWeather(
+                        hLat = hArguments?.hCurrentLocation?.hLat,
+                        hLng = hArguments?.hCurrentLocation?.hLng
+                )
+        )
+    }
+
+    private fun hSubscribeObservers() {
+        hWeatherViewModel.hDataState.observe(viewLifecycleOwner) {
+
+        }
     }
 
 }
