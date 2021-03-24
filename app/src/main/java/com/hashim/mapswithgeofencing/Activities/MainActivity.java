@@ -43,7 +43,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -67,8 +66,6 @@ import com.hashim.mapswithgeofencing.Helper.DialogHelper;
 import com.hashim.mapswithgeofencing.Helper.GeoFenceUtil;
 import com.hashim.mapswithgeofencing.Helper.ListUtils;
 import com.hashim.mapswithgeofencing.Helper.LogToastSnackHelper;
-import com.hashim.mapswithgeofencing.Helper.MapsUtils;
-import com.hashim.mapswithgeofencing.Helper.MarkerUtils;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.HDialogResponseInterface;
 import com.hashim.mapswithgeofencing.Interfaces.LocationCallBackInterface;
@@ -78,6 +75,7 @@ import com.hashim.mapswithgeofencing.Models.VoiceReturnModel.VoiceReturnModel;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding;
 import com.hashim.mapswithgeofencing.tokotlin.SettingsPrefrences;
+import com.hashim.mapswithgeofencing.tokotlin.utils.MarkerUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -132,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements
     private SpotsDialog hAlertDialog;
     private boolean hIsNetworkConnected;
     private boolean hIsLocationEnabled;
-    private MapsUtils hMapsUtils;
+    //    private MapsUtils hMapsUtils;
     private DialogHelper hDialogHelper;
     Handler hHandler;
     private String hDestName = null;
@@ -300,8 +298,8 @@ public class MainActivity extends AppCompatActivity implements
                 .findFragmentById(R.id.map);
         Objects.requireNonNull(mapFragment).getMapAsync(this);
 
-        hMapsUtils = new MapsUtils(this, this);
-        hMapsUtils.hGetCurrentLocationCoOrdinates();
+//        hMapsUtils = new MapsUtils(this, this);
+//        hMapsUtils.hGetCurrentLocationCoOrdinates();
 
         hShowLoader();
         hGeoFenceUtil = new GeoFenceUtil(this);
@@ -338,13 +336,13 @@ public class MainActivity extends AppCompatActivity implements
                     UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_INVISIBLE);
                     if (hCurrentLocation != null) {
                         hGoogleMap.clear();
-                        Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
+                        Bitmap hSmallMarkerBitmap; /*=*//* MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER)*//*;*/
 
 
-                        hCurrentMarker = hGoogleMap.addMarker(new MarkerOptions().
+         /*               hCurrentMarker = hGoogleMap.addMarker(new MarkerOptions().
                                 position(new LatLng(hCurrentLocation.getLatitude(), hCurrentLocation.getLongitude()))
                                 .title(getString(R.string.current_location))
-                                .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)));
+                                .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)));*/
                         hCurrentMarker.showInfoWindow();
                         UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_VISIBLE);
                         UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hDetailCardView, Constants.H_INVISIBLE);
@@ -371,13 +369,13 @@ public class MainActivity extends AppCompatActivity implements
                     UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_INVISIBLE);
                     if (hCurrentLocation != null) {
                         hGoogleMap.clear();
-                        Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
+//                        Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
 
 
                         hCurrentMarker = hGoogleMap.addMarker(new MarkerOptions().
-                                position(new LatLng(hCurrentLocation.getLatitude(), hCurrentLocation.getLongitude()))
-                                .title(getString(R.string.current_location))
-                                .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)));
+                                        position(new LatLng(hCurrentLocation.getLatitude(), hCurrentLocation.getLongitude()))
+                                        .title(getString(R.string.current_location))
+                                /*.icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)*/);
                         hCurrentMarker.showInfoWindow();
                         UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hBoottomSheet.bottomSheet, Constants.H_VISIBLE);
                         UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hDetailCardView, Constants.H_INVISIBLE);
@@ -522,15 +520,15 @@ public class MainActivity extends AppCompatActivity implements
             hIsLocationRetrieved = true;
             hCurrentLocation = hLocation;
             LatLng hLatLng = new LatLng(hCurrentLocation.getLatitude(), hCurrentLocation.getLongitude());
-            Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
+//            Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
 
             hCurrentMarker = hGoogleMap.addMarker(new MarkerOptions().
                     position(hLatLng)
-                    .title(getString(R.string.you_are_here))
-                    .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)));
-            hCurrentMarker.showInfoWindow();
+                    .title(getString(R.string.you_are_here)));
+//                    .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)));
+//            hCurrentMarker.showInfoWindow();
 
-            hGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hLatLng, 12.0f));
+//            hGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hLatLng, 12.0f));
 
 
             hGeoFenceUtil.hAddLocationAlert(hLatLng.latitude, hLatLng.longitude);
@@ -546,7 +544,7 @@ public class MainActivity extends AppCompatActivity implements
 
         } else {
             hIsLocationRetrieved = false;
-            hMapsUtils.hGetCurrentLocationCoOrdinates();
+//            hMapsUtils.hGetCurrentLocationCoOrdinates();
         }
     }
 
@@ -608,20 +606,20 @@ public class MainActivity extends AppCompatActivity implements
     private void hSendRequest(LatLng currentLatLng, LatLng destinationLatLng) {
         hGoogleMap.clear();
 
-        Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER));
-        Bitmap hDogMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
-
-
-        hCurentDogMarker = hGoogleMap.addMarker(new MarkerOptions().
-                position(currentLatLng)
-                .title(getString(R.string.current_location))
-                .icon(BitmapDescriptorFactory.fromBitmap(hDogMarkerBitmap)));
+//        Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER));
+//        Bitmap hDogMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
+//
+//
+//        hCurentDogMarker = hGoogleMap.addMarker(new MarkerOptions().
+//                position(currentLatLng)
+//                .title(getString(R.string.current_location))
+//                .icon(BitmapDescriptorFactory.fromBitmap(hDogMarkerBitmap)));
         hCurentDogMarker.showInfoWindow();
 
         hGoogleMap.addMarker(new MarkerOptions()
-                .position(destinationLatLng).
-                        title(getString(R.string.destination)).
-                        icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap)));
+                        .position(destinationLatLng).
+                                title(getString(R.string.destination))
+                /* icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap))*/);
 
         hDestLatLng = new LatLng(destinationLatLng.latitude, destinationLatLng.longitude);
 
@@ -702,13 +700,13 @@ public class MainActivity extends AppCompatActivity implements
         hMarkerOptions.position(hLatLng);
 
 
-        Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, category);
-
-
-        hMarkerOptions.title(name);
-        hMarkerOptions.snippet(name);
-        hMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap));
-        hGoogleMap.addMarker(hMarkerOptions).showInfoWindow();
+//        Bitmap hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(this, category);
+//
+//
+//        hMarkerOptions.title(name);
+//        hMarkerOptions.snippet(name);
+//        hMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap));
+//        hGoogleMap.addMarker(hMarkerOptions).showInfoWindow();
 
     }
 
@@ -737,11 +735,11 @@ public class MainActivity extends AppCompatActivity implements
 
 
                     hGoogleMap.clear();
-                    Bitmap hCurrentMarker = MarkerUtils.hGetCustomMapMarker(MainActivity.this,
-                            String.valueOf(Constants.H_CURRENT_MARKER));
-                    hGoogleMap.addMarker(new MarkerOptions().
-                            position(new LatLng(hCurrentLocation.getLatitude(),
-                                    hCurrentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromBitmap(hCurrentMarker)));
+//                    Bitmap hCurrentMarker = MarkerUtils.hGetCustomMapMarker(MainActivity.this,
+//                            String.valueOf(Constants.H_CURRENT_MARKER));
+//                    hGoogleMap.addMarker(new MarkerOptions().
+//                            position(new LatLng(hCurrentLocation.getLatitude(),
+//                                    hCurrentLocation.getLongitude())).icon(BitmapDescriptorFactory.fromBitmap(hCurrentMarker)));
                 }
             }
         });
@@ -1371,47 +1369,47 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onPlaceSelected(Place place) {
-        if (hIsLocationRetrieved && hCurrentLocation != null) {
+//        if (hIsLocationRetrieved && hCurrentLocation != null) {
 
-            hIsPlaceSelected = true;
-            hGoogleMap.clear();
-            hDestLatLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
+        hIsPlaceSelected = true;
+        hGoogleMap.clear();
+        hDestLatLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
 
 
-            hDestName = String.valueOf(place.getName());
+        hDestName = String.valueOf(place.getName());
 
-            String hAddress = String.valueOf(place.getAddress());
-            String hId = place.getId();
+        String hAddress = String.valueOf(place.getAddress());
+        String hId = place.getId();
 //            String hLocale = String.valueOf(p());
-            String hRatting = String.valueOf(place.getRating());
-            String hNumber = String.valueOf(place.getPhoneNumber());
+        String hRatting = String.valueOf(place.getRating());
+        String hNumber = String.valueOf(place.getPhoneNumber());
 
 
-            hShowCardHideBottomSheet(hAddress);
+        hShowCardHideBottomSheet(hAddress);
 
-            hNearByPlaces = true;
-
-
-            Bitmap hDestMarker = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER));
-            Bitmap hCurrentMarker = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
+        hNearByPlaces = true;
 
 
-            hGoogleMap.addMarker(new MarkerOptions().
-                    position(hDestLatLng).
-                    icon(BitmapDescriptorFactory.fromBitmap(hDestMarker)));
+//            Bitmap hDestMarker = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER));
+//            Bitmap hCurrentMarker = MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER));
 
-            hGoogleMap.addMarker(new MarkerOptions().
-                    position(new LatLng(hCurrentLocation.getLatitude(), hCurrentLocation.getLongitude())).
-                    icon(BitmapDescriptorFactory.fromBitmap(hCurrentMarker)));
-            hWhatToLoad = "4567";
 
-            hGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom
-                    (hDestLatLng, 10f));
+//            hGoogleMap.addMarker(new MarkerOptions().
+//                    position(hDestLatLng);
+//                    icon(BitmapDescriptorFactory.fromBitmap(hDestMarker)));
 
-        } else {
-            LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location, Refresh");
-            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
-        }
+//            hGoogleMap.addMarker(new MarkerOptions().
+//                    position(new LatLng(hCurrentLocation.getLatitude(), hCurrentLocation.getLongitude())).
+//                    icon(BitmapDescriptorFactory.fromBitmap(hCurrentMarker)));
+//            hWhatToLoad = "4567";
+
+//            hGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom
+//                    (hDestLatLng, 10f));
+
+//        } else {
+//            LogToastSnackHelper.hMakeShortToast(this, "Unable to retive current Location, Refresh");
+//            UIHelper.hMakeVisibleInVisible(hActivityMainBinding.hRefreshImageView, Constants.H_VISIBLE);
+//        }
     }
 
     private void hShowCardHideBottomSheet(String hAddress) {

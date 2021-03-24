@@ -58,7 +58,6 @@ import com.hashim.mapswithgeofencing.DirectionsApi.Route;
 import com.hashim.mapswithgeofencing.Helper.Constants;
 import com.hashim.mapswithgeofencing.Helper.GeoFenceUtil;
 import com.hashim.mapswithgeofencing.Helper.LogToastSnackHelper;
-import com.hashim.mapswithgeofencing.Helper.MapsUtils;
 import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.Interfaces.HDialogResponseInterface;
@@ -220,8 +219,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
 
-            MapsUtils hMapsUtils = new MapsUtils(this, this);
-            hMapsUtils.hGetCurrentLocationCoOrdinates();
+//            MapsUtils hMapsUtils = new MapsUtils(this, this);
+//            hMapsUtils.hGetCurrentLocationCoOrdinates();
             hShowLoader();
 //            if (hWhatToLoad.equals(Constants.H_CURRENT_LOCATION)) {
 //

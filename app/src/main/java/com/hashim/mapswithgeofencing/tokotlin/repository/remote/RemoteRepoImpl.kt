@@ -9,7 +9,6 @@ import com.hashim.mapswithgeofencing.tokotlin.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.tokotlin.network.RetroService
 import com.hashim.mapswithgeofencing.tokotlin.network.model.NearByPlacesDtoMapper
 import com.hashim.mapswithgeofencing.tokotlin.ui.main.Category
-import timber.log.Timber
 
 class RemoteRepoImpl(
         private val hRetroService: RetroService,
@@ -19,8 +18,6 @@ class RemoteRepoImpl(
 ) : RemoteRepo {
 
     override suspend fun hGetWeather(location: Location, unitType: String) {
-        Timber.d("Maps key $hMapsKey")
-        Timber.d("Weather key $hWeatherKey")
         hRetroService.hGetWeather(
                 lat = location.latitude.toString(),
                 lng = location.longitude.toString(),
@@ -59,5 +56,4 @@ class RemoteRepoImpl(
 
         return hMapper.hToDomainList(hFindNearByPlaces.nearyByPlacesResultDtos)
     }
-
 }

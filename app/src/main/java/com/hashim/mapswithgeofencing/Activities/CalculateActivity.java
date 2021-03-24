@@ -49,12 +49,12 @@ import com.hashim.mapswithgeofencing.DirectionsApi.Route;
 import com.hashim.mapswithgeofencing.Helper.AnimHelper;
 import com.hashim.mapswithgeofencing.Helper.Constants;
 import com.hashim.mapswithgeofencing.Helper.LogToastSnackHelper;
-import com.hashim.mapswithgeofencing.Helper.MarkerUtils;
 import com.hashim.mapswithgeofencing.Helper.ToolBarHelper;
 import com.hashim.mapswithgeofencing.Helper.UIHelper;
 import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.databinding.AcitivityCalculateRouteBinding;
 import com.hashim.mapswithgeofencing.tokotlin.SettingsPrefrences;
+import com.hashim.mapswithgeofencing.tokotlin.utils.MarkerUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -424,12 +424,12 @@ public class CalculateActivity extends AppCompatActivity implements
 
     private void hCreateMarker(LatLng currentLatLng, LatLng destLatLng) {
         MarkerOptions hMarkerOptions = new MarkerOptions();
-        hMarkerOptions.position(currentLatLng).icon(BitmapDescriptorFactory.
-                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER))));
+//        hMarkerOptions.position(currentLatLng).icon(BitmapDescriptorFactory.
+//                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER))));
 
         MarkerOptions hMarkerOptions1 = new MarkerOptions();
-        hMarkerOptions1.position(destLatLng).icon(BitmapDescriptorFactory.
-                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER))));
+//        hMarkerOptions1.position(destLatLng).icon(BitmapDescriptorFactory.
+//                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER))));
 
 
         hGoogleMap.addMarker(hMarkerOptions).showInfoWindow();

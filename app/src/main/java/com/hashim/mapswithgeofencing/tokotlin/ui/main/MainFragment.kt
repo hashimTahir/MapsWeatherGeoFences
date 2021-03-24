@@ -27,7 +27,8 @@ import com.hashim.mapswithgeofencing.tokotlin.location.LocationUtis
 import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainStateEvent
 import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainStateEvent.OnCurrentLocationFound
 import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainStateEvent.OnMapReady
-import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainViewState
+import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainViewState.MainFields
+import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainViewState.NearByFields
 import com.hashim.mapswithgeofencing.tokotlin.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -119,24 +120,48 @@ class MainFragment : Fragment() {
                     hMainViewModel.hSetMainData(it)
                 }
             }
+            it.hData.let {
+                it?.hNearbyFields?.let {
+                    hMainViewModel.hSetMarkerData(it)
+                }
+            }
         }
 
-        hMainViewModel.hMainViewState.observe(viewLifecycleOwner) {
-            it.hMainFields?.let {
-                hSetCurrentMarker(it)
+        hMainViewModel.hMainViewState.observe(viewLifecycleOwner) { mainviewstate ->
+            Timber.d("Setting Data to view")
+            mainviewstate.hMainFields.let { mainFields ->
+                mainFields.currentLocation?.let {
+                    hSetCurrentMarker(mainFields)
+                }
+            }
+
+
+            mainviewstate.hNearbyFields.let { nearByFields ->
+                nearByFields.hMarkerList.let {
+                    hCreateNearByMarker(nearByFields)
+                }
             }
 
         }
     }
 
-    private fun hSetCurrentMarker(mainfields: MainViewState.MainFields) {
+    private fun hCreateNearByMarker(nearByFields: NearByFields) {
+        Timber.d("Create markers")
+        hGoogleMap?.clear()
+        nearByFields.hMarkerList?.forEach {
+            Timber.d("Adding Marking")
+            hGoogleMap?.addMarker(it)
+        }
+    }
+
+    private fun hSetCurrentMarker(mainfields: MainFields) {
         hGoogleMap?.addMarker(mainfields.currentMarkerOptions)?.showInfoWindow()
         hGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 LatLng(
                         mainfields.currentLocation?.latitude!!,
                         mainfields.currentLocation?.longitude!!
 
-                ), 12.0f))
+                ), mainfields.cameraZoom!!))
 
     }
 

@@ -10,15 +10,16 @@ import androidx.lifecycle.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.hashim.mapswithgeofencing.Helper.Constants
-import com.hashim.mapswithgeofencing.Helper.MarkerUtils
 import com.hashim.mapswithgeofencing.R
+import com.hashim.mapswithgeofencing.tokotlin.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.tokotlin.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainStateEvent
 import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainStateEvent.*
 import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainViewState
 import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainViewState.MainFields
+import com.hashim.mapswithgeofencing.tokotlin.ui.events.MainViewState.NearByFields
 import com.hashim.mapswithgeofencing.tokotlin.utils.DataState
+import com.hashim.mapswithgeofencing.tokotlin.utils.MarkerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -52,7 +53,7 @@ class MainViewModel @Inject constructor(
         when (stateEvent) {
             is OnCurrentLocationFound -> {
                 hCurrentLocation = stateEvent.location
-                return hCreateMaker(hCurrentLocation)
+                return hSubmitCurrentLocationData(hCurrentLocation)
             }
             is OnMapReady -> {
             }
@@ -64,8 +65,7 @@ class MainViewModel @Inject constructor(
                                 category = stateEvent.category,
                                 location = it
                         )
-                        Timber.d("Size ${hFindNearybyPlaces.size}, Lat ${hFindNearybyPlaces.get(0).lat}, Lat ${hFindNearybyPlaces.get(0).lng}")
-
+                        hSubmitNearByMarkerList(hFindNearybyPlaces, stateEvent.category)
                     }
                 }
             }
@@ -78,24 +78,56 @@ class MainViewModel @Inject constructor(
 
     }
 
-    private fun hCreateMaker(location: Location?): LiveData<DataState<MainViewState>>? {
+    private fun hSubmitNearByMarkerList(nearyByPlacesList: List<NearByPlaces>, category: Category) {
+        val hMarkerList = mutableListOf<MarkerOptions>()
+        nearyByPlacesList.forEach { place ->
+            hMarkerList.add(
+                    hCreateMarkerOptions(
+                            hLat = place.lat!!,
+                            hLng = place.lng!!,
+                            hCategory = category
+                    )
+            )
+        }
+        _hMainViewState.value = MainViewState(MainFields(), NearByFields(hMarkerList))
+    }
+
+
+    private fun hCreateMarkerOptions(hLat: Double, hLng: Double, hCategory: Category?): MarkerOptions {
+        val hLatLng = LatLng(hLat, hLng)
+        val hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(hContext, hCategory)
+
+
+        val hMarkerOptions =
+                if (hCategory != null) {
+                    MarkerOptions().position(hLatLng)
+                            .title(hCategory.name)
+                            .snippet(hCategory.name)
+                            .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap))
+                } else {
+                    MarkerOptions().position(hLatLng)
+                            .title(hContext.getString(R.string.you_are_here))
+                            .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap))
+                }
+
+
+        return hMarkerOptions
+    }
+
+
+    private fun hSubmitCurrentLocationData(location: Location?): LiveData<DataState<MainViewState>>? {
         location?.let { location ->
-            val hLatLng = LatLng(location.latitude, location.longitude)
-            val hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(hContext, Constants.H_CURRENT_MARKER.toString())
-
-            val hMarkerOptions = MarkerOptions().position(hLatLng)
-                    .title(hContext.getString(R.string.you_are_here))
-                    .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap))
-
-//            hCurrentMarker.showInfoWindow()
-
             val mutableLiveData = MutableLiveData<DataState<MainViewState>>()
             mutableLiveData.value = DataState.hData(
                     message = null,
                     data = MainViewState(
                             hMainFields = MainFields(
                                     currentLocation = location,
-                                    currentMarkerOptions = hMarkerOptions,
+                                    currentMarkerOptions = hCreateMarkerOptions(
+                                            hLat = location.latitude,
+                                            hLng = location.longitude,
+                                            hCategory = null
+                                    ),
                                     cameraZoom = 12.0F
                             )
                     )
@@ -107,7 +139,6 @@ class MainViewModel @Inject constructor(
 
 
     fun hSetStateEvent(mainStateEvent: MainStateEvent) {
-        Timber.d("Setting State Event $mainStateEvent")
         _hMainStateEvent.value = mainStateEvent
     }
 
@@ -122,5 +153,11 @@ class MainViewModel @Inject constructor(
             it
         } ?: MainViewState()
         return hValue
+    }
+
+    fun hSetMarkerData(it: NearByFields) {
+        var hUpdate = hGetCurrentViewStateOrNew()
+        hUpdate.hNearbyFields = it
+        _hMainViewState.value = hUpdate
     }
 }

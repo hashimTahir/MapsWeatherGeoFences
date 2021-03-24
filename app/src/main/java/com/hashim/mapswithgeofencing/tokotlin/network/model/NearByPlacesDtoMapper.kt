@@ -20,7 +20,7 @@ class NearByPlacesDtoMapper : DomainMapper<NearyByPlacesResultDto, NearByPlaces>
                 model.rating,
                 model.types,
                 model.geometry.location.lat,
-                model.geometry.location.lat,
+                model.geometry.location.lng,
         )
     }
 
