@@ -39,10 +39,10 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class TrackMeActivity extends AppCompatActivity implements
-        OnItemClickListener, DialogResponseInterface, DeleteCallBack, onActionModeListener {
+public class TrackMeActivity extends AppCompatActivity /*implements
+        OnItemClickListener, DialogResponseInterface, DeleteCallBack, onActionModeListener*/ {
 
-
+/*
     private ContactsAdapter1 hContactsAdapter;
     private List<ContactsModelWithIds> hSavedContacatsList;
     private List<ContactsModelWithIds> hAllContactsList = new ArrayList<>();
@@ -572,5 +572,5 @@ public class TrackMeActivity extends AppCompatActivity implements
         } else {
             super.onBackPressed();
         }
-    }
+    }*/
 }

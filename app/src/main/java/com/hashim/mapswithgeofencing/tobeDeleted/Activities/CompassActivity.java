@@ -18,9 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.hashim.mapswithgeofencing.databinding.ActivityCompassBinding;
 
 
-public class CompassActivity extends AppCompatActivity implements SensorEventListener {
+public class CompassActivity extends AppCompatActivity/* implements SensorEventListener*/ {
 
-
+/*
     private Sensor hAccelerometerSensor;
     private Sensor hMagnetometerSensor;
 
@@ -134,5 +134,5 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
+    }*/
 }

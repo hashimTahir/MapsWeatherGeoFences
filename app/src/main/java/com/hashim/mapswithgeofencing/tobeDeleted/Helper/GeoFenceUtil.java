@@ -24,7 +24,6 @@ public class GeoFenceUtil {
     private GeofencingClient hGeofencingClient;
     int hRadius;
     SettingsPrefrences hSettingsPrefrences;
-    public static final String hTag = LogToastSnackHelper.hMakeTag(GeoFenceUtil.class);
 
     public GeoFenceUtil(Context context) {
         this.hContext = context;
@@ -74,8 +73,7 @@ public class GeoFenceUtil {
     }
 
     private Geofence getGeofence(double lat, double lang, String key) {
-        LogToastSnackHelper.hLogField(hTag, "GeoFence created with  key: " + key + " latlng: " +
-                lat + " " + lang + " Radius: " + hSettingsPrefrences.hGetRadius() * 1000);
+
         return new Geofence.Builder()
                 .setRequestId(key)
                 .setCircularRegion(lat, lang, hSettingsPrefrences.hGetRadius() * 1000)

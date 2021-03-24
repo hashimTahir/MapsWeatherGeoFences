@@ -16,8 +16,8 @@ import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.tobeDeleted.TrackMe.TrackMeActivity;
 
 
-public class PrimaryActionMode implements ActionMode.Callback {
-
+public class PrimaryActionMode/* implements ActionMode.Callback */{
+/*
 
     private onActionModeListener hOnActionModeListener;
 
@@ -88,5 +88,5 @@ public class PrimaryActionMode implements ActionMode.Callback {
     public void setTitle(String s) {
         this.hTtitle = s;
         hActionMode.setTitle(hTtitle);
-    }
+    }*/
 }

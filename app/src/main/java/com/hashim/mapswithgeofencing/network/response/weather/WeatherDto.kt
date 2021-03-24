@@ -8,7 +8,7 @@ package com.hashim.mapswithgeofencing.network.response.weather
 import com.google.gson.annotations.SerializedName
 
 
-data class WeatherResponse(
+data class WeatherDto(
         @SerializedName("base")
         val base: String,
         @SerializedName("clouds")

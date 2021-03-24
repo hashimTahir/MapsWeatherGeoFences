@@ -7,18 +7,22 @@ package com.hashim.mapswithgeofencing.repository.remote
 import android.location.Location
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.network.RetroService
+import com.hashim.mapswithgeofencing.network.model.ForecastDtoMapper
 import com.hashim.mapswithgeofencing.network.model.NearByPlacesDtoMapper
+import com.hashim.mapswithgeofencing.network.model.WeatherDtoMapper
 import com.hashim.mapswithgeofencing.ui.main.Category
 
 class RemoteRepoImpl(
         private val hRetroService: RetroService,
-        private val hMapper: NearByPlacesDtoMapper,
+        private val hNearByPlacesDtoMapper: NearByPlacesDtoMapper,
+        private val hWeatherDtoMapper: WeatherDtoMapper,
+        private val hForecastDtoMapper: ForecastDtoMapper,
         private val hMapsKey: String,
         private val hWeatherKey: String
 ) : RemoteRepo {
 
     override suspend fun hGetWeather(location: Location, unitType: String) {
-        hRetroService.hGetWeather(
+        var hGetWeather = hRetroService.hGetWeather(
                 lat = location.latitude.toString(),
                 lng = location.longitude.toString(),
                 key = hWeatherKey,
@@ -27,12 +31,13 @@ class RemoteRepoImpl(
     }
 
     override suspend fun hGetForecast(location: Location, unitType: String) {
-        hRetroService.hGetForecast(
+        var hGetForecast = hRetroService.hGetForecast(
                 lat = location.latitude.toString(),
                 lng = location.longitude.toString(),
                 key = hWeatherKey,
                 unit = unitType,
         )
+
     }
 
 
@@ -54,6 +59,6 @@ class RemoteRepoImpl(
                 key = hMapsKey
         )
 
-        return hMapper.hToDomainList(hFindNearByPlaces.nearyByPlacesResultDtos)
+        return hNearByPlacesDtoMapper.hToDomainList(hFindNearByPlaces.nearyByPlacesResultDtos)
     }
 }

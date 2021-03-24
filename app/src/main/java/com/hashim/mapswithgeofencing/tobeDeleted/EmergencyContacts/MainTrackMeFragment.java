@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainTrackMeFragment extends Fragment implements RecyclerInterface, DeleteCallBack, HDialogResponseInterface {
-    private static final String ARG_PARAM1 = "param1";
+public class MainTrackMeFragment extends Fragment /*implements RecyclerInterface, DeleteCallBack, HDialogResponseInterface*/ {
+  /*  private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
 
@@ -93,8 +93,7 @@ public class MainTrackMeFragment extends Fragment implements RecyclerInterface, 
         List<ContactsEntity> hContactsEntityList = hAppRepository.hGetAllContactsData();
 
         if (hLocationEntitiys != null) {
-            LogToastSnackHelper.hLogField(hTag, String.valueOf(hLocationEntitiys.size()));
-            LogToastSnackHelper.hLogField(hTag, String.valueOf(hContactsEntityList.size()));
+
 
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
             hRecyclerAdapter = new RecyclerAdapter(getContext(), hLocationEntitiys,
@@ -181,5 +180,5 @@ public class MainTrackMeFragment extends Fragment implements RecyclerInterface, 
     @Override
     public void onNeutralResponse(int which, int dialogueType) {
 
-    }
+    }*/
 }

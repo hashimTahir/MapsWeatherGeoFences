@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021/  3/ 21.  Created by Hashim Tahir
+ * Copyright (c) 2021/  3/ 24.  Created by Hashim Tahir
  */
 
 package com.hashim.mapswithgeofencing
@@ -10,7 +10,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsModelWithIds
-import com.hashim.mapswithgeofencing.Models.HLatLngModel
+import com.hashim.mapswithgeofencing.utils.Constants
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.FileInputStream
@@ -234,23 +234,23 @@ class SettingsPrefrences {
         return hProfilePrefrences!!.getBoolean(Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS, false)
     }
 
-    fun hSaveCurrentLocation(hLatLng: HLatLngModel?) {
-        val hGson = Gson()
-        val hType = object : TypeToken<HLatLngModel?>() {}.type
-        val hJson = hGson.toJson(hLatLng, hType)
-        hEditor!!.putString(H_CURRENT_LAT_LNG, hJson)
-        hEditor!!.apply()
-    }
-
-    fun hGetCurrentLocation(): HLatLngModel? {
-        val hJsonString = hProfilePrefrences!!.getString(H_CURRENT_LAT_LNG, null)
-        if (hJsonString != null) {
-            val type = object : TypeToken<HLatLngModel?>() {}.type
-            val hGson = Gson()
-            return hGson.fromJson(hJsonString, type)
-        }
-        return null
-    }
+//    fun hSaveCurrentLocation(hLatLng: HLatLngModel?) {
+//        val hGson = Gson()
+//        val hType = object : TypeToken<HLatLngModel?>() {}.type
+//        val hJson = hGson.toJson(hLatLng, hType)
+//        hEditor!!.putString(H_CURRENT_LAT_LNG, hJson)
+//        hEditor!!.apply()
+//    }
+//
+//    fun hGetCurrentLocation(): HLatLngModel? {
+//        val hJsonString = hProfilePrefrences!!.getString(H_CURRENT_LAT_LNG, null)
+//        if (hJsonString != null) {
+//            val type = object : TypeToken<HLatLngModel?>() {}.type
+//            val hGson = Gson()
+//            return hGson.fromJson(hJsonString, type)
+//        }
+//        return null
+//    }
 
     fun hSaveEmergencyMessage(hUserName: String?) {
         hEditor!!.putString(H_EMERGENCY_MESSAGE, hUserName)

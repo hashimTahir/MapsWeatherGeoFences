@@ -6,7 +6,9 @@ package com.hashim.mapswithgeofencing.di
 
 import com.google.gson.Gson
 import com.hashim.mapswithgeofencing.network.RetroService
+import com.hashim.mapswithgeofencing.network.model.ForecastDtoMapper
 import com.hashim.mapswithgeofencing.network.model.NearByPlacesDtoMapper
+import com.hashim.mapswithgeofencing.network.model.WeatherDtoMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,6 +30,19 @@ object NetworkModule {
     fun hProvidesNearByPlacesDtoMapper(): NearByPlacesDtoMapper {
         return NearByPlacesDtoMapper()
     }
+
+    @Singleton
+    @Provides
+    fun hProvidesWeatherDtoMapper(): WeatherDtoMapper {
+        return WeatherDtoMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun hProvidesForecastDtoMapper(): ForecastDtoMapper {
+        return ForecastDtoMapper()
+    }
+
 
     @Singleton
     @Provides

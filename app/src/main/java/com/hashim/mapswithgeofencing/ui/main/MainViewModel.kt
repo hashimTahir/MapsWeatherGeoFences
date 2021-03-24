@@ -32,6 +32,7 @@ class MainViewModel @Inject constructor(
         @ApplicationContext private val hContext: Context,
 ) : ViewModel() {
     private val _hMainStateEvent = MutableLiveData<MainStateEvent>()
+
     private var hCurrentLocation: Location? = null
 
     /*Data setter for the view packged into a single object*/

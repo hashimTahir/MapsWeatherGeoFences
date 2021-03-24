@@ -48,11 +48,11 @@ import pub.devrel.easypermissions.PermissionRequest;
 
 @SuppressWarnings("unchecked")
 public class ContactsActivity extends AppCompatActivity
-        implements OnItemClickListener, DeleteCallBack,
+      /*  implements OnItemClickListener, DeleteCallBack,
         RecyclerInterface, DialogResponseInterface,
-        EasyPermissions.PermissionCallbacks, onActionModeListener {
+        EasyPermissions.PermissionCallbacks, onActionModeListener */{
 
-
+/*
     private static final String hTag = LogToastSnackHelper.hMakeTag(ContactsActivity.class);
     private static final int H_SHOW_SAVE_CONTACTS_LAYOUT = 222;
     private static final int H_SHOW_RECYCLER_LAYOUT = 123;
@@ -654,5 +654,5 @@ public class ContactsActivity extends AppCompatActivity
         if (requestCode == H_CONTACTS_PERMISSION_CODE) {
             hAskForPermissions(Constants.H_LOCATION_PERMISSION);
         }
-    }
+    }*/
 }

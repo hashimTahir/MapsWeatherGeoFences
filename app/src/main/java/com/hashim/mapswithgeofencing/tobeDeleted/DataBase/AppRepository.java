@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class AppRepository {
-    private static final String hTag = LogToastSnackHelper.hMakeTag(AppRepository.class);
     private static AppDataBase hAppDataBase;
     private int hId;
     private static ExecutorService hExecuter = Executors.newSingleThreadExecutor();
@@ -88,7 +87,6 @@ public class AppRepository {
 
             hAppDataBase.getLocationDao().hInsertAllLocationEntity(hSampleData.gethLocationEntitiyList());
             hAppDataBase.getContactsDao().hInsertAllContactsEntity(hSampleData.gethContactsEntityList());
-            LogToastSnackHelper.hLogField(hTag, "Execution Successfull");
         });
     }
 

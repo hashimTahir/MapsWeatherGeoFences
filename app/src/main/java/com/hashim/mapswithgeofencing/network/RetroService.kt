@@ -5,9 +5,9 @@
 package com.hashim.mapswithgeofencing.network
 
 import com.hashim.mapswithgeofencing.network.response.directions.DirectionsResponse
-import com.hashim.mapswithgeofencing.network.response.forecast.ForecastResponse
+import com.hashim.mapswithgeofencing.network.response.forecast.ForecastDto
 import com.hashim.mapswithgeofencing.network.response.nearybyplaces.NearByPlacesDto
-import com.hashim.mapswithgeofencing.network.response.weather.WeatherResponse
+import com.hashim.mapswithgeofencing.network.response.weather.WeatherDto
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_DIRECTIONS_URL
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_GET_FORECAST_URL
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_GET_WEATHER_URL
@@ -22,7 +22,7 @@ interface RetroService {
             @Query("lon") lng: String,
             @Query("APPID") key: String,
             @Query("units") unit: String
-    ): WeatherResponse
+    ): WeatherDto
 
 
     @GET(H_GET_FORECAST_URL)
@@ -31,7 +31,7 @@ interface RetroService {
             @Query("lon") lng: String,
             @Query("APPID") key: String,
             @Query("units") unit: String
-    ): ForecastResponse
+    ): ForecastDto
 
 
     @GET(H_NEARBY_PLACES_URL)
