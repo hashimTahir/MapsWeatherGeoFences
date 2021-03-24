@@ -130,7 +130,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6"
-            tools:context=".Activities.MapsActivity" />
+            tools:context=".tobeDeleted.Activities.MapsActivity" />
 
         <TextView
             android:id="@+id/hContactsTv"

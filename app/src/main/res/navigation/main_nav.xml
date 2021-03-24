@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/hMainFragment"
-        android:name="com.hashim.mapswithgeofencing.tokotlin.ui.main.MainFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.main.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/hWeatherFragment"
-        android:name="com.hashim.mapswithgeofencing.tokotlin.ui.weather.WeatherFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.weather.WeatherFragment"
         android:label="WeatherFragment"
         tools:layout="@layout/weather_fragment" />
 </navigation>

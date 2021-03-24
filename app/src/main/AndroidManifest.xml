@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
   -->
 
@@ -23,7 +22,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <application
-        android:name=".tokotlin.BaseApplication"
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -43,7 +42,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".tokotlin.ui.main.MainActivity">
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,30 +54,8 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3644811374692683~5877392619" />
 
-        <activity
-            android:name=".Activities.MapsActivity"
-            android:label="@string/title_activity_maps"
-            tools:ignore="InnerclassSeparator" />
-        <activity
-            android:name=".Activities.MainActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme"
-            tools:ignore="InnerclassSeparator"></activity>
-        <activity
-            android:name=".Activities.ViewAllActivity"
-            tools:ignore="InnerclassSeparator" />
-        <activity
-            android:name=".Activities.SettingsActivity"
-            tools:ignore="InnerclassSeparator" />
-        <activity
-            android:name=".Activities.CompassActivity"
-            tools:ignore="InnerclassSeparator" />
-        <activity
-            android:name=".Activities.CalculateActivity"
-            tools:ignore="InnerclassSeparator" />
-
         <provider
-            android:name=".HfileProvider"
+            android:name=".tobeDeleted.HfileProvider"
             android:authorities="${applicationId}.my.package.name.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -87,17 +64,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity
-            android:name=".Contacts.ContactsActivity"
-            android:theme="@style/MyAppTheme"
-            tools:ignore="InnerclassSeparator" />
-        <activity
-            android:name=".Activities.TemplatesActivity"
-            tools:ignore="InnerclassSeparator" />
-        <activity
-            android:name=".EmergencyContacts.EmergencyContactsActivity"
-            tools:ignore="InnerclassSeparator" />
-        <activity android:name=".TrackMe.TrackMeActivity" />
     </application>
 
 </manifest>
