@@ -4,58 +4,10 @@
 
 package com.hashim.mapswithgeofencing.tobeDeleted.Activities;
 
-import android.Manifest;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.material.tabs.TabLayout;
-import com.hashim.mapswithgeofencing.DirectionsApi.DirectionFinder;
-import com.hashim.mapswithgeofencing.DirectionsApi.DirectionFinderListener;
-import com.hashim.mapswithgeofencing.DirectionsApi.Route;
-import com.hashim.mapswithgeofencing.tobeDeleted.Helper.AnimHelper;
-import com.hashim.mapswithgeofencing.R;
-import com.hashim.mapswithgeofencing.databinding.AcitivityCalculateRouteBinding;
-import com.hashim.mapswithgeofencing.SettingsPrefrences;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class CalculateActivity extends AppCompatActivity implements
+public class CalculateActivity extends AppCompatActivity {/*implements
         TabLayout.BaseOnTabSelectedListener, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -125,7 +77,7 @@ public class CalculateActivity extends AppCompatActivity implements
         hTabs.getTabAt(2).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
 
 
-        /*Todo initilize later*/
+        *//*Todo initilize later*//*
         hPlaceAutocompleteFragment = null;
         hPlaceAutocompleteFragment.setOnPlaceSelectedListener(this);
 
@@ -208,7 +160,7 @@ public class CalculateActivity extends AppCompatActivity implements
 
     }
 
-    /*Todo: Call later from on create*/
+    *//*Todo: Call later from on create*//*
 
     private void hSetupListeners() {
         hAcitivityCalculateRouteBinding.hToTV.setOnClickListener(v -> {
@@ -529,5 +481,5 @@ public class CalculateActivity extends AppCompatActivity implements
 
     }
 
-
+*/
 }

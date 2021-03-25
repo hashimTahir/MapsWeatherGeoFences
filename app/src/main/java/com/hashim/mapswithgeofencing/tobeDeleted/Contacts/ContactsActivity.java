@@ -47,7 +47,9 @@ import pub.devrel.easypermissions.EasyPermissions;
 import pub.devrel.easypermissions.PermissionRequest;
 
 @SuppressWarnings("unchecked")
-public class ContactsActivity extends AppCompatActivity
+public class ContactsActivity extends AppCompatActivity{
+    /*
+}
         implements OnItemClickListener, DeleteCallBack,
         RecyclerInterface, DialogResponseInterface,
         EasyPermissions.PermissionCallbacks, onActionModeListener {
@@ -654,5 +656,5 @@ public class ContactsActivity extends AppCompatActivity
         if (requestCode == H_CONTACTS_PERMISSION_CODE) {
             hAskForPermissions(Constants.H_LOCATION_PERMISSION);
         }
-    }
+    }*/
 }

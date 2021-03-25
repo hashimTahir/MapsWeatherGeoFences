@@ -10,14 +10,13 @@ import androidx.lifecycle.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
+import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.*
 import com.hashim.mapswithgeofencing.ui.events.MainViewState
-import com.hashim.mapswithgeofencing.ui.events.MainViewState.MainFields
-import com.hashim.mapswithgeofencing.ui.events.MainViewState.NearByFields
+import com.hashim.mapswithgeofencing.ui.events.MainViewState.*
 import com.hashim.mapswithgeofencing.utils.DataState
 import com.hashim.mapswithgeofencing.utils.MarkerUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +33,6 @@ class MainViewModel @Inject constructor(
     private val _hMainStateEvent = MutableLiveData<MainStateEvent>()
     private var hCurrentLocation: Location? = null
 
-    /*Data setter for the view packged into a single object*/
     private val _hMainViewState = MutableLiveData<MainViewState>()
     public val hMainViewState: LiveData<MainViewState>
         get() = _hMainViewState
@@ -52,7 +50,7 @@ class MainViewModel @Inject constructor(
         when (stateEvent) {
             is OnCurrentLocationFound -> {
                 hCurrentLocation = stateEvent.location
-                return hSubmitCurrentLocationData(hCurrentLocation)
+                hSubmitCurrentLocationData(hCurrentLocation)
             }
             is OnMapReady -> {
             }
@@ -88,7 +86,14 @@ class MainViewModel @Inject constructor(
                     )
             )
         }
-        _hMainViewState.value = MainViewState(MainFields(), NearByFields(hMarkerList))
+        _hMainViewState.value = MainViewState(
+                hMainFields = MainFields(
+                        hCurrentLocationVS = null,
+                        hNearByPlacesVS = NearByPlacesVS(
+                                hMarkerList = hMarkerList
+                        )
+                )
+        )
     }
 
 
@@ -114,26 +119,25 @@ class MainViewModel @Inject constructor(
     }
 
 
-    private fun hSubmitCurrentLocationData(location: Location?): LiveData<DataState<MainViewState>>? {
+    private fun hSubmitCurrentLocationData(location: Location?) {
         location?.let { location ->
-            val mutableLiveData = MutableLiveData<DataState<MainViewState>>()
-            mutableLiveData.value = DataState.hData(
-                    message = null,
-                    data = MainViewState(
-                            hMainFields = MainFields(
+
+
+            _hMainViewState.value = MainViewState(
+                    hMainFields = MainFields(
+                            hCurrentLocationVS = CurrentLocationVS(
                                     currentLocation = location,
                                     currentMarkerOptions = hCreateMarkerOptions(
                                             hLat = location.latitude,
                                             hLng = location.longitude,
                                             hCategory = null
                                     ),
-                                    cameraZoom = 12.0F
-                            )
+                                    cameraZoom = 12.0F,
+                            ),
+                            hNearByPlacesVS = null,
                     )
             )
-            return mutableLiveData
         }
-        return null
     }
 
 
@@ -141,22 +145,19 @@ class MainViewModel @Inject constructor(
         _hMainStateEvent.value = mainStateEvent
     }
 
-    fun hSetMainData(it: MainFields) {
-        var hUpdate = hGetCurrentViewStateOrNew()
-        hUpdate.hMainFields = it
+    fun hSetCurrentLocationData(currentLocationVS: CurrentLocationVS) {
+        val hUpdate = hGetCurrentViewStateOrNew()
+        hUpdate.hMainFields.hCurrentLocationVS = currentLocationVS
         _hMainViewState.value = hUpdate
     }
 
     fun hGetCurrentViewStateOrNew(): MainViewState {
-        val hValue = hMainViewState.value?.let {
-            it
-        } ?: MainViewState()
-        return hValue
+        return hMainViewState.value ?: MainViewState()
     }
 
-    fun hSetMarkerData(it: NearByFields) {
-        var hUpdate = hGetCurrentViewStateOrNew()
-        hUpdate.hNearbyFields = it
+    fun hSetNearByPlacesData(nearByPlacesVS: NearByPlacesVS) {
+        val hUpdate = hGetCurrentViewStateOrNew()
+        hUpdate.hMainFields.hNearByPlacesVS = nearByPlacesVS
         _hMainViewState.value = hUpdate
     }
 }

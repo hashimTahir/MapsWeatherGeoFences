@@ -27,8 +27,8 @@ import com.hashim.mapswithgeofencing.location.LocationUtis
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.OnCurrentLocationFound
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.OnMapReady
-import com.hashim.mapswithgeofencing.ui.events.MainViewState.MainFields
-import com.hashim.mapswithgeofencing.ui.events.MainViewState.NearByFields
+import com.hashim.mapswithgeofencing.ui.events.MainViewState.CurrentLocationVS
+import com.hashim.mapswithgeofencing.ui.events.MainViewState.NearByPlacesVS
 import com.hashim.mapswithgeofencing.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -113,48 +113,40 @@ class MainFragment : Fragment() {
     }
 
     private fun hSubscribeObservers() {
-        hMainViewModel.hDataState.observe(viewLifecycleOwner) {
-            Timber.d("Data State is ${it}")
-            it.hData?.let {
-                it.hMainFields?.let {
-                    hMainViewModel.hSetMainData(it)
+        hMainViewModel.hDataState.observe(viewLifecycleOwner) { dataState ->
+            dataState.hData?.let { mainViewState ->
+                mainViewState.hMainFields.hCurrentLocationVS?.let { currentLocationVS ->
+                    hMainViewModel.hSetCurrentLocationData(currentLocationVS)
+
                 }
-            }
-            it.hData.let {
-                it?.hNearbyFields?.let {
-                    hMainViewModel.hSetMarkerData(it)
+                mainViewState.hMainFields.hNearByPlacesVS?.let { nearByPlacesVS ->
+                    hMainViewModel.hSetNearByPlacesData(nearByPlacesVS)
+
                 }
             }
         }
 
         hMainViewModel.hMainViewState.observe(viewLifecycleOwner) { mainviewstate ->
-            Timber.d("Setting Data to view")
-            mainviewstate.hMainFields.let { mainFields ->
-                mainFields.currentLocation?.let {
-                    hSetCurrentMarker(mainFields)
-                }
+            mainviewstate.hMainFields.hNearByPlacesVS?.let { nearByPlacesVS ->
+                hCreateNearByMarker(nearByPlacesVS)
             }
-
-
-            mainviewstate.hNearbyFields.let { nearByFields ->
-                nearByFields.hMarkerList.let {
-                    hCreateNearByMarker(nearByFields)
-                }
+            mainviewstate.hMainFields.hCurrentLocationVS?.let { currentLocationVS ->
+                hSetCurrentMarker(currentLocationVS)
             }
 
         }
     }
 
-    private fun hCreateNearByMarker(nearByFields: NearByFields) {
+    private fun hCreateNearByMarker(nearByPlacesVS: NearByPlacesVS) {
         Timber.d("Create markers")
         hGoogleMap?.clear()
-        nearByFields.hMarkerList?.forEach {
+        nearByPlacesVS.hMarkerList?.forEach {
             Timber.d("Adding Marking")
             hGoogleMap?.addMarker(it)
         }
     }
 
-    private fun hSetCurrentMarker(mainfields: MainFields) {
+    private fun hSetCurrentMarker(mainfields: CurrentLocationVS) {
         hGoogleMap?.addMarker(mainfields.currentMarkerOptions)?.showInfoWindow()
         hGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 LatLng(

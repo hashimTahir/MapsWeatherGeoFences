@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TemplatesActivity extends AppCompatActivity implements DialogResponseInterface, RecyclerInterface {
+public class TemplatesActivity extends AppCompatActivity {
+    /*implements
+} DialogResponseInterface, RecyclerInterface {
 
     private String hTag = LogToastSnackHelper.hMakeTag(TemplatesActivity.class);
 
@@ -114,5 +116,5 @@ public class TemplatesActivity extends AppCompatActivity implements DialogRespon
     public void hOnClickListener(View v, int position, String hText) {
         LogToastSnackHelper.hLogField(hTag, String.valueOf(position));
         hSettingsPrefrences.hSaveCustomTemplate(hText);
-    }
+    }*/
 }

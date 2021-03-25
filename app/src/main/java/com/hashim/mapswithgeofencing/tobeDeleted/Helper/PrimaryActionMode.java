@@ -16,18 +16,19 @@ import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.tobeDeleted.TrackMe.TrackMeActivity;
 
 
-public class PrimaryActionMode implements ActionMode.Callback {
-
-
-    private onActionModeListener hOnActionModeListener;
-
-    private ActionMode hActionMode;
-    private int hMenuId = 0;
-    private String hTtitle = null;
-    private String hSubtitle;
-    Context hContext;
-    int hWhatToShow;
-
+public class PrimaryActionMode {
+//        implements ActionMode.Callback {
+//
+//
+//    private onActionModeListener hOnActionModeListener;
+//
+//    private ActionMode hActionMode;
+//    private int hMenuId = 0;
+//    private String hTtitle = null;
+//    private String hSubtitle;
+//    Context hContext;
+//    int hWhatToShow;
+/*
     public PrimaryActionMode(Context context, onActionModeListener
             onActionModeListener, int menuResId, String title, String subtitle, int whatToShow) {
         this.hContext = context;
@@ -88,5 +89,5 @@ public class PrimaryActionMode implements ActionMode.Callback {
     public void setTitle(String s) {
         this.hTtitle = s;
         hActionMode.setTitle(hTtitle);
-    }
+    }*/
 }

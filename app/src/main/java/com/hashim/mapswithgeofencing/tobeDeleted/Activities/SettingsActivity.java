@@ -4,47 +4,9 @@
 
 package com.hashim.mapswithgeofencing.tobeDeleted.Activities;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.telephony.SmsManager;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 
-import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsModelWithIds;
-import com.hashim.mapswithgeofencing.tobeDeleted.CustomView.HcustomDialog1;
-import com.hashim.mapswithgeofencing.tobeDeleted.EmergencyContacts.EmergencyContactsActivity;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.DialogResponseInterface;
-import com.hashim.mapswithgeofencing.Models.HLatLngModel;
-import com.hashim.mapswithgeofencing.R;
-import com.hashim.mapswithgeofencing.tobeDeleted.TrackMe.TrackMeActivity;
-import com.hashim.mapswithgeofencing.databinding.ActivitySettingsBinding;
-import com.hashim.mapswithgeofencing.SettingsPrefrences;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
-import pub.devrel.easypermissions.EasyPermissions;
-import pub.devrel.easypermissions.PermissionRequest;
-
-public class SettingsActivity extends AppCompatActivity implements
+public class SettingsActivity extends AppCompatActivity{/* implements
         AdapterView.OnItemSelectedListener, DialogResponseInterface,
         SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener {
 
@@ -480,6 +442,6 @@ public class SettingsActivity extends AppCompatActivity implements
     public void hSubmitCloseResponse(boolean b) {
 
     }
-
+*/
 
 }

@@ -4,59 +4,12 @@
 
 package com.hashim.mapswithgeofencing.tobeDeleted.EmergencyContacts;
 
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Paint;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsActivity;
-import com.hashim.mapswithgeofencing.tobeDeleted.DataBase.AppRepository;
-import com.hashim.mapswithgeofencing.tobeDeleted.DataBase.ContactsEntity;
-import com.hashim.mapswithgeofencing.tobeDeleted.DataBase.LocationEntitiy;
-import com.hashim.mapswithgeofencing.tobeDeleted.Helper.GeoFenceUtil;
-import com.hashim.mapswithgeofencing.tobeDeleted.Helper.ListUtils;
-import com.hashim.mapswithgeofencing.tobeDeleted.Helper.PrimaryActionMode;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.OnFragmentInteractionListener;
-import com.hashim.mapswithgeofencing.Models.HLatLngModel;
-import com.hashim.mapswithgeofencing.R;
-import com.hashim.mapswithgeofencing.databinding.FragmentAddLocationBinding;
-import com.hashim.mapswithgeofencing.SettingsPrefrences;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import static android.app.Activity.RESULT_OK;
-
-
-public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
+public class AddLocationFragment extends Fragment {
+    /*implements
+} OnMapReadyCallback,
         GoogleMap.OnMapClickListener, TextWatcher {
     //        DeleteCallBack, OnItemClickListener, onActionModeListener
     private static final String H_LOCATION_ID = "H_LOCATION_ID";
@@ -705,5 +658,5 @@ public class AddLocationFragment extends Fragment implements OnMapReadyCallback,
             cursor.close();
             return hContactsModelWithIds;
         }
-    }
+    }*/
 }

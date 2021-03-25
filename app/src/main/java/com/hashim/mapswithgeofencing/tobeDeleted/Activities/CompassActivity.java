@@ -4,21 +4,12 @@
 
 package com.hashim.mapswithgeofencing.tobeDeleted.Activities;
 
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.hashim.mapswithgeofencing.databinding.ActivityCompassBinding;
 
-
-public class CompassActivity extends AppCompatActivity implements SensorEventListener {
+public class CompassActivity extends AppCompatActivity {
+    /*implements
+} SensorEventListener {
 
 
     private Sensor hAccelerometerSensor;
@@ -134,5 +125,5 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
+    }*/
 }
