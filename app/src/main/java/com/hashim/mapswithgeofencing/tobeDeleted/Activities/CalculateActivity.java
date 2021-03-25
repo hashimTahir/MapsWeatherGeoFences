@@ -144,8 +144,8 @@ public class CalculateActivity extends AppCompatActivity /*implements
             onBackPressed();
         }
         if (item.getItemId() == R.id.settings) {
-            Intent hIntent = new Intent(this, SettingsActivity.class);
-            startActivity(hIntent);
+//            Intent hIntent = new Intent(this, SettingsActivity.class);
+//            startActivity(hIntent);
 
         }
         return super.onOptionsItemSelected(item);

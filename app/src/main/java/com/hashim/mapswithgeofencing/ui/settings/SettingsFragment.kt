@@ -1,49 +1,39 @@
 /*
- * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ * Copyright (c) 2021/  3/ 25.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.tobeDeleted.Activities;
+package com.hashim.mapswithgeofencing.ui.settings
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.telephony.SmsManager;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.hashim.mapswithgeofencing.databinding.FragmentSettingsBinding
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 
-import com.hashim.mapswithgeofencing.R;
-import com.hashim.mapswithgeofencing.SettingsPrefrences;
-import com.hashim.mapswithgeofencing.databinding.ActivitySettingsBinding;
-import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsModelWithIds;
-import com.hashim.mapswithgeofencing.tobeDeleted.CustomView.HcustomDialog1;
-import com.hashim.mapswithgeofencing.tobeDeleted.EmergencyContacts.EmergencyContactsActivity;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.DialogResponseInterface;
-import com.hashim.mapswithgeofencing.tobeDeleted.TrackMe.TrackMeActivity;
-import com.hashim.mapswithgeofencing.utils.Constants;
+class SettingsFragment : Fragment() {
 
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
+    lateinit var hFragmentSettingsBinding: FragmentSettingsBinding
 
-import pub.devrel.easypermissions.EasyPermissions;
-import pub.devrel.easypermissions.PermissionRequest;
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
+        hFragmentSettingsBinding = FragmentSettingsBinding.inflate(
+                layoutInflater,
+                container,
+                false
+        )
+        return hFragmentSettingsBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    /*
+    *
 public class SettingsActivity extends AppCompatActivity /*implements
         AdapterView.OnItemSelectedListener, DialogResponseInterface,
         SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener*/ {
@@ -52,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity /*implements
     private boolean hIsFromTrackMe = false;
     private int hCounter = 1;
     private SettingsPrefrences hSettingsPrefrences;
-//    private String hTag = LogToastSnackHelper.hMakeTag(SettingsActivity.class);
+    //    private String hTag = LogToastSnackHelper.hMakeTag(SettingsActivity.class);
     private boolean hIsEnableDisableEmergencySettings;
     private boolean hIsEnableDisableTrackMeSettings;
     private String CHANNEL_ID = "Hashim_channel";
@@ -76,12 +66,12 @@ public class SettingsActivity extends AppCompatActivity /*implements
 
         }
     };
-    private ActivitySettingsBinding hActivitySettingsBinding;
+//    private ActivitySettingsBinding hActivitySettingsBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hActivitySettingsBinding = ActivitySettingsBinding.inflate(getLayoutInflater());
+//        hActivitySettingsBinding = ActivitySettingsBinding.inflate(getLayoutInflater());
 
 //        setContentView(hActivitySettingsBinding.getRoot());
 //        UIHelper.hOreoOrientationCheck(this);
@@ -98,8 +88,6 @@ public class SettingsActivity extends AppCompatActivity /*implements
 
 
     }
-
-
 
 
 //
@@ -466,5 +454,9 @@ public class SettingsActivity extends AppCompatActivity /*implements
 //
 //    }
 
+
+}
+
+    * */
 
 }

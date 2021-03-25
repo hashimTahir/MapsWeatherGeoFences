@@ -67,6 +67,9 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                 R.id.hExit -> {
                     Timber.d("hExit")
                 }
+                R.id.hSettingMenu -> {
+                    hNavController.navigate(R.id.action_hMainFragment_to_hSettingsFragment)
+                }
             }
 
             false
