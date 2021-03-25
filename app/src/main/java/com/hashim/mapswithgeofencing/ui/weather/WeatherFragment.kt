@@ -18,29 +18,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.request.RequestOptions
-import com.hashim.mapswithgeofencing.Domain.model.Weather
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.WeatherFragmentBinding
 import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent.OnFetchForecast
 import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent.OnFetchWeather
-import com.hashim.mapswithgeofencing.utils.Constants
+import com.hashim.mapswithgeofencing.ui.events.WeatherViewState
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import java.text.SimpleDateFormat
-import java.util.*
 
 @AndroidEntryPoint
 class WeatherFragment : Fragment() {
-    private val hLat: Double? = null
-    private val hLng: Double? = null
-    private val hOnlyDateFormat = "dd"
-    private val hYearMonthDayHrsMinsSecFormat = "yyyy-MM-dd HH:mm:ss"
-    private val hYearMonthDayFormat = "yyyy-MM-dd"
-    private val hHrsMinSecsFormat = "HH:mm:ss"
-    private val hJstDayNameFormat = "EEEE"
-    private val hDayNameMonthDate = "EEEE, MMMM d"
-    private val hHrsMinTime = " h:mm aa"
-    private val hLastDayName: String? = null
+
 /*
 
 
@@ -78,76 +66,6 @@ class WeatherFragment : Fragment() {
 //    }
 //
 
-
-//    private void hSetForeCast(WeatherMainReturnResponse hWeatherMainReturnResponse) {
-//        List<WeatherList> hWeatherLists = hWeatherMainReturnResponse.getWeatherList();
-//        List<WeatherModelToShow> hTodaysList = new ArrayList<>();
-//        List<WeatherModelToShow> hWeeklyList = new ArrayList<>();
-//
-//        Calendar hCalendarToday = Calendar.getInstance();
-//        SimpleDateFormat hdateFormatter = new SimpleDateFormat(hOnlyDateFormat, Locale.getDefault());
-//        int hTodaysDate = Integer.parseInt(hdateFormatter.format(hCalendarToday.getTime()));
-//        for (WeatherList weatherList : hWeatherLists) {
-//
-////            "2018-11-08 12:00:00"
-//
-//            //format date from api
-//
-//            SimpleDateFormat hMainDayMonthSimpleDateFormat = new SimpleDateFormat(hYearMonthDayHrsMinsSecFormat, Locale.getDefault());
-//            SimpleDateFormat hDayMonthSimpleDateFormat = new SimpleDateFormat(hYearMonthDayFormat, Locale.getDefault());
-//            SimpleDateFormat hTimeFormatter = new SimpleDateFormat(hHrsMinTime, Locale.getDefault());
-//            SimpleDateFormat hNameDayFormatter = new SimpleDateFormat(hJstDayNameFormat, Locale.getDefault());
-//
-//
-//            Calendar hCalendar = Calendar.getInstance();
-//            try {
-//                hCalendar.setTime(hMainDayMonthSimpleDateFormat.parse(weatherList.getDtTxt()));
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//
-//            int hLiveDate = Integer.parseInt(hdateFormatter.format(hCalendar.getTime()));
-//
-//
-//            if (hLiveDate <= hTodaysDate) {
-//                String hDescription = weatherList.getWeather().get(0).getDescription();
-//                String hdate1 = hDayMonthSimpleDateFormat.format(hCalendar.getTime());
-//                String hTime = hTimeFormatter.format(hCalendar.getTime());
-//                String hIcon = weatherList.getWeather().get(0).getIcon();
-//                String hMaxTemp = String.valueOf(weatherList.getMain().getTempMax().intValue());
-//                hTodaysList.add(new WeatherModelToShow(hdate1, hTime, hIcon, hMaxTemp, hDescription));
-//
-//            } else {
-//                String hDayName = hNameDayFormatter.format(hCalendar.getTime());
-//                if (hDayName.equals(hLastDayName)) {
-//                    continue;
-//                } else {
-//                    String hTime = hTimeFormatter.format(hCalendar.getTime());
-//                    String hDescription = weatherList.getWeather().get(0).getDescription();
-//
-//
-//                    String hIcon = weatherList.getWeather().get(0).getIcon();
-//                    String hMinTemp = String.valueOf(weatherList.getMain().getTempMin().intValue());
-//                    String hMaxTemp = String.valueOf(weatherList.getMain().getTempMax().intValue());
-//                    hWeeklyList.add(new WeatherModelToShow(hDayName, hTime, hIcon, hMaxTemp, hMinTemp, hDescription));
-//                }
-//                hLastDayName = hDayName;
-//            }
-//        }
-//        if (hTodaysList.size() > 0) {
-//            hSetUpRecyclerView(Constants.H_TODAYS_RECYCLER, hTodaysList);
-//        } else {
-//            LogToastSnackHelper.hMakeLongToast(this, "Unable to Retrieve weather,Plz try again");
-//        }
-//        if (hWeeklyList.size() > 0) {
-//            hSetUpRecyclerView(Constants.H_WEEKLY_RECYCLER, hWeeklyList);
-//        } else {
-//            LogToastSnackHelper.hMakeLongToast(this, "Unable to Retrieve weather,Plz try again");
-//
-//        }
-//   
-
-
     */
 
 
@@ -169,6 +87,8 @@ class WeatherFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         hWeatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
 
+        hSetupView()
+
         hSubscribeObservers()
 
         hInitRecyclerView()
@@ -188,6 +108,17 @@ class WeatherFragment : Fragment() {
                     )
             )
         }, 500)
+
+    }
+
+    private fun hSetupView() {
+
+        hWeatherFragmentBinding.hTodayWeatherTv.setPaintFlags(hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+        hWeatherFragmentBinding.hWeekWeatherTv.setPaintFlags(hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+
+        hWeatherFragmentBinding.hTodayWeatherTv.text = getString(R.string.today_s_weather)
+        hWeatherFragmentBinding.hWeekWeatherTv.text = getString(R.string.weekly_weather)
+
 
     }
 
@@ -228,60 +159,48 @@ class WeatherFragment : Fragment() {
 
         hWeatherViewModel.hWeatherViewState.observe(viewLifecycleOwner) { weatherViewState ->
 
-            Timber.d("Setting Data to view $weatherViewState")
             weatherViewState.hForecastFields.let { forecastFields ->
-                forecastFields.hForecast?.let {
-                    Timber.d("Forecast is $it")
+                forecastFields.hTodaysList?.let { hTodaysForecast ->
+                    hSetTodaysForeCast(hTodaysForecast)
+                }
+                forecastFields.hWeeksList.let { hWeeksForecast ->
+                    hSetWeeksForecast(hWeeksForecast)
                 }
             }
 
             weatherViewState.hWeatherFields.let { weatherFields ->
-                weatherFields.hWeather?.let {
+                weatherFields.let {
                     hSetNowWeather(it)
-
                 }
             }
         }
     }
 
-    private fun hSetNowWeather(weather: Weather) {
+    private fun hSetWeeksForecast(hWeeksForecast: List<WeatherViewState.WeekForecast>?) {
+        Timber.d("hSetWeeksForecast ${hWeeksForecast?.size}")
+    }
 
-        val hCalendar = Calendar.getInstance()
+    private fun hSetTodaysForeCast(hTodaysForeCast: List<WeatherViewState.TodaysForeCast>) {
+        Timber.d("hSetTodaysForeCast ${hTodaysForeCast.size}")
+    }
 
-
-        hWeatherFragmentBinding.hTodayWeatherTv.setPaintFlags(hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
-        hWeatherFragmentBinding.hWeekWeatherTv.setPaintFlags(hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
-
-        hWeatherFragmentBinding.hTodayWeatherTv.text = getString(R.string.today_s_weather)
-        hWeatherFragmentBinding.hWeekWeatherTv.text = getString(R.string.weekly_weather)
-
-
-        val hDayMonthSimpleDateFormat = SimpleDateFormat(hDayNameMonthDate, Locale.getDefault())
-        val hTimeSimpleDateFormat = SimpleDateFormat(hHrsMinTime, Locale.getDefault())
+    private fun hSetNowWeather(weather: WeatherViewState.WeatherFields) {
 
 
-        val hDayMonthString = hDayMonthSimpleDateFormat.format(hCalendar.time)
-        val hTimeString = hTimeSimpleDateFormat.format(hCalendar.time)
-        val hIcon: String = weather.icon!!
-        val hIconUrl = String.format(Constants.H_ICON_URL, hIcon)
-        val hPressure: String = weather.pressure.toString()
-        val hHumidity: String = weather.humidity.toString()
-        val hCountry: String = weather.country
+        hWeatherFragmentBinding.hWeatherHeader.hPressureDetailTv.text = "${weather.hPressure} Pa"
+        hWeatherFragmentBinding.hWeatherHeader.hHumidityTv.text = "${weather.hHumidity} g/ ${getString(R.string.cubic_meter)}"
 
-        hWeatherFragmentBinding.hWeatherHeader.hPressureDetailTv.text = "$hPressure Pa"
-        hWeatherFragmentBinding.hWeatherHeader.hHumidityTv.text = "$hHumidity g/ ${getString(R.string.cubic_meter)}"
-
-        hWeatherFragmentBinding.hWeatherHeader.hCurrrentDateTv.text = hDayMonthString
-        hWeatherFragmentBinding.hWeatherHeader.hCurrentTimeTv.text = hTimeString
-        hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherDetailTv.text = weather.description
-        hWeatherFragmentBinding.hWeatherHeader.hCurrrentTempTv.text = weather.temp.toString()
+        hWeatherFragmentBinding.hWeatherHeader.hCurrrentDateTv.text = weather.hDay
+        hWeatherFragmentBinding.hWeatherHeader.hCurrentTimeTv.text = weather.hTime
+        hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherDetailTv.text = weather.hDescription
+        hWeatherFragmentBinding.hWeatherHeader.hCurrrentTempTv.text = weather.hTemperature
 
         val hRequestOptions = RequestOptions()
                 .override(200, 200)
                 .centerCrop()
                 .priority(Priority.HIGH)
-       Glide.with(requireContext())
-                .load(hIconUrl)
+        Glide.with(requireContext())
+                .load(weather.hIconUrl)
                 .apply(hRequestOptions)
                 .into(hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherIcon)
     }

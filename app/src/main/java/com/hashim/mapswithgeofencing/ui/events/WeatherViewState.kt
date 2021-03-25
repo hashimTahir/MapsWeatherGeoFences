@@ -4,23 +4,42 @@
 
 package com.hashim.mapswithgeofencing.ui.events
 
-import android.os.Parcelable
-import com.hashim.mapswithgeofencing.Domain.model.Forecast
-import com.hashim.mapswithgeofencing.Domain.model.Weather
-import kotlinx.android.parcel.Parcelize
-
 
 data class WeatherViewState(
         var hWeatherFields: WeatherFields = WeatherFields(),
-        var hForecastFields: ForecastFields = ForecastFields(),
-)  {
+        var hForecastFields: ForecastFields = ForecastFields()
+) {
 
     data class WeatherFields(
-            val hWeather: Weather? = null
+            val hDay: String? = null,
+            val hTime: String? = null,
+            val hIconUrl: String? = null,
+            val hPressure: String? = null,
+            val hHumidity: String? = null,
+            val hCountry: String? = null,
+            val hDescription: String? = null,
+            val hTemperature: String? = null,
     )
-
 
     data class ForecastFields(
-            val hForecast: Forecast? = null
+            val hTodaysList: List<TodaysForeCast>? = null,
+            val hWeeksList: List<WeekForecast>? = null,
     )
+
+    data class TodaysForeCast(
+            val description: String? = null,
+            val icon: String? = null,
+            val tempMax: Double? = null,
+            val date: String? = null,
+            val time: String? = null
+    )
+
+    data class WeekForecast(
+            val description: String? = null,
+            val icon: String? = null,
+            val tempMax: Double? = null,
+            val tempMin: Double? = null,
+            val time: String? = null
+    )
+
 }
