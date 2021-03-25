@@ -6,9 +6,9 @@ package com.hashim.mapswithgeofencing.di
 
 import com.google.gson.Gson
 import com.hashim.mapswithgeofencing.network.RetroService
-import com.hashim.mapswithgeofencing.network.model.ForecastDtoMapper
-import com.hashim.mapswithgeofencing.network.model.NearByPlacesDtoMapper
-import com.hashim.mapswithgeofencing.network.model.WeatherDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

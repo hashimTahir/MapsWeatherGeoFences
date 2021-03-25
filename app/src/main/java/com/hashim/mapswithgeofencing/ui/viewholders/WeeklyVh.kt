@@ -8,7 +8,5 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerWeather1Binding
 
 class WeeklyVh(
-        itemRecyclerWeather1Binding: ItemRecyclerWeather1Binding
-) : RecyclerView.ViewHolder(itemRecyclerWeather1Binding.root) {
-    val hItemRecyclerWeather1Binding = itemRecyclerWeather1Binding
-}
+        var hItemRecyclerWeather1Binding: ItemRecyclerWeather1Binding
+) : RecyclerView.ViewHolder(hItemRecyclerWeather1Binding.root)

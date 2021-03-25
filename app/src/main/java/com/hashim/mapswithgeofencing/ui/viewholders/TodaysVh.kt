@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerWeatherBinding
 
 class TodaysVh(
-        itemRecyclerWeatherBinding: ItemRecyclerWeatherBinding
-) : RecyclerView.ViewHolder(itemRecyclerWeatherBinding.root) {
-    val hItemRecyclerWeatherBinding = itemRecyclerWeatherBinding
-}
+        var hItemRecyclerWeatherBinding: ItemRecyclerWeatherBinding
+) : RecyclerView.ViewHolder(hItemRecyclerWeatherBinding.root)
+

@@ -15,60 +15,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.Priority
-import com.bumptech.glide.request.RequestOptions
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.WeatherFragmentBinding
 import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent.OnFetchForecast
 import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent.OnFetchWeather
-import com.hashim.mapswithgeofencing.ui.events.WeatherViewState
+import com.hashim.mapswithgeofencing.ui.events.WeatherViewState.*
+import com.hashim.mapswithgeofencing.ui.weather.WeatherAdapter.Companion.H_TODAYS_RECYCLER
+import com.hashim.mapswithgeofencing.ui.weather.WeatherAdapter.Companion.H_WEEKLY_RECYCLER
+import com.hashim.mapswithgeofencing.utils.GlideUtils
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class WeatherFragment : Fragment() {
 
-/*
-
-
-
-
-
-
-//    private void hGeoCodeLatLng() {
-//        try {
-//            Geocoder geo = new Geocoder(this, Locale.getDefault());
-//            List<Address> addresses = geo.getFromLocation(hLat, hLng, 1);
-//            if (addresses.isEmpty()) {
-//
-//            } else {
-//
-//                if (addresses.size() > 0) {
-//
-//
-////                    String address = addresses.get(0).getAddressLine(0);
-//
-//                    String city = addresses.get(0).getLocality();
-//                    String country = addresses.get(0).getCountryName();
-////                    String state = addresses.get(0).getAdminArea();
-////                    String postalCode = addresses.get(0).getPostalCode();
-////                    String knownName = addresses.get(0).getFeatureName(); // On
-////                    Address returnAddress = addresses.get(0);
-//
-//                    hWeatherFragmentBinding.hWeatherHeader.hCurrrentCityTv, city + ", " + country);
-//                }
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-//
-
-    */
-
-
+    private lateinit var hTodaysAdapter: WeatherAdapter
+    private lateinit var hWeeklyAdapter: WeatherAdapter
     private lateinit var hWeatherViewModel: WeatherViewModel
     private lateinit var hWeatherFragmentBinding: WeatherFragmentBinding
     val hArguments: WeatherFragmentArgs by navArgs()
@@ -113,8 +74,13 @@ class WeatherFragment : Fragment() {
 
     private fun hSetupView() {
 
-        hWeatherFragmentBinding.hTodayWeatherTv.setPaintFlags(hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
-        hWeatherFragmentBinding.hWeekWeatherTv.setPaintFlags(hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+        hWeatherFragmentBinding.hTodayWeatherTv.setPaintFlags(
+                hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags()
+                        or Paint.UNDERLINE_TEXT_FLAG
+        )
+        hWeatherFragmentBinding.hWeekWeatherTv.setPaintFlags(
+                hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags()
+                        or Paint.UNDERLINE_TEXT_FLAG)
 
         hWeatherFragmentBinding.hTodayWeatherTv.text = getString(R.string.today_s_weather)
         hWeatherFragmentBinding.hWeekWeatherTv.text = getString(R.string.weekly_weather)
@@ -122,7 +88,10 @@ class WeatherFragment : Fragment() {
 
     }
 
+
     private fun hInitRecyclerView() {
+        hTodaysAdapter = WeatherAdapter(H_TODAYS_RECYCLER, requireContext())
+        hWeeklyAdapter = WeatherAdapter(H_WEEKLY_RECYCLER, requireContext())
 
         hWeatherFragmentBinding.hTodaysRv.apply {
             layoutManager = LinearLayoutManager(
@@ -130,7 +99,7 @@ class WeatherFragment : Fragment() {
                     LinearLayoutManager.HORIZONTAL,
                     false
             )
-            adapter = null
+            adapter = hTodaysAdapter
         }
         hWeatherFragmentBinding.hWeeklyRv.apply {
             layoutManager = LinearLayoutManager(
@@ -138,7 +107,7 @@ class WeatherFragment : Fragment() {
                     LinearLayoutManager.HORIZONTAL,
                     false
             )
-            adapter = null
+            adapter = hWeeklyAdapter
         }
 
     }
@@ -146,63 +115,101 @@ class WeatherFragment : Fragment() {
     private fun hSubscribeObservers() {
         hWeatherViewModel.hDataState.observe(viewLifecycleOwner) {
             it.hData?.let {
-                it.hForecastFields?.let {
-                    hWeatherViewModel.hSetForecastData(it)
-                }
-            }
-            it.hData.let {
-                it?.hWeatherFields?.let {
-                    hWeatherViewModel.hSetWeatherData(it)
+                it.hWeatherFields.let {
+                    it.hWeatherVS.let {
+                        hWeatherViewModel.hSetWeatherData(it)
+
+                    }
+                    it.hForecastVS.let {
+                        if (it != null) {
+                            hWeatherViewModel.hSetForecastData(it)
+                        }
+                    }
                 }
             }
         }
 
         hWeatherViewModel.hWeatherViewState.observe(viewLifecycleOwner) { weatherViewState ->
 
-            weatherViewState.hForecastFields.let { forecastFields ->
-                forecastFields.hTodaysList?.let { hTodaysForecast ->
-                    hSetTodaysForeCast(hTodaysForecast)
-                }
-                forecastFields.hWeeksList.let { hWeeksForecast ->
-                    hSetWeeksForecast(hWeeksForecast)
-                }
+            weatherViewState.hWeatherFields.hWeatherVS?.let {
+                hSetNowWeather(it)
             }
-
-            weatherViewState.hWeatherFields.let { weatherFields ->
-                weatherFields.let {
-                    hSetNowWeather(it)
+            weatherViewState.hWeatherFields.hForecastVS?.let {
+                it.hWeeksList?.let {
+                    hSetWeeksForecast(it)
+                }
+                it.hTodaysList?.let {
+                    hSetTodaysForeCast(it)
                 }
             }
         }
     }
 
-    private fun hSetWeeksForecast(hWeeksForecast: List<WeatherViewState.WeekForecast>?) {
-        Timber.d("hSetWeeksForecast ${hWeeksForecast?.size}")
+    private fun hSetWeeksForecast(hWeeksForecast: List<WeekForecast>) {
+        hWeeklyAdapter.hSetData(hWeeksForecast)
     }
 
-    private fun hSetTodaysForeCast(hTodaysForeCast: List<WeatherViewState.TodaysForeCast>) {
-        Timber.d("hSetTodaysForeCast ${hTodaysForeCast.size}")
+    private fun hSetTodaysForeCast(hTodaysForeCast: List<TodaysForeCast>) {
+        hTodaysAdapter.hSetData(hTodaysForeCast)
     }
 
-    private fun hSetNowWeather(weather: WeatherViewState.WeatherFields) {
+    private fun hSetNowWeather(weatherVS: WeatherVS) {
 
 
-        hWeatherFragmentBinding.hWeatherHeader.hPressureDetailTv.text = "${weather.hPressure} Pa"
-        hWeatherFragmentBinding.hWeatherHeader.hHumidityTv.text = "${weather.hHumidity} g/ ${getString(R.string.cubic_meter)}"
+        hWeatherFragmentBinding.hWeatherHeader.hPressureDetailTv.text = "${weatherVS.hPressure} Pa"
+        hWeatherFragmentBinding.hWeatherHeader.hHumidityTv.text = "${weatherVS.hHumidity} g/ ${getString(R.string.cubic_meter)}"
 
-        hWeatherFragmentBinding.hWeatherHeader.hCurrrentDateTv.text = weather.hDay
-        hWeatherFragmentBinding.hWeatherHeader.hCurrentTimeTv.text = weather.hTime
-        hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherDetailTv.text = weather.hDescription
-        hWeatherFragmentBinding.hWeatherHeader.hCurrrentTempTv.text = weather.hTemperature
+        hWeatherFragmentBinding.hWeatherHeader.hCurrrentDateTv.text = weatherVS.hDay
+        hWeatherFragmentBinding.hWeatherHeader.hCurrentTimeTv.text = weatherVS.hTime
+        hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherDetailTv.text = weatherVS.hDescription
+        hWeatherFragmentBinding.hWeatherHeader.hCurrrentTempTv.text = weatherVS.hTemperature
 
-        val hRequestOptions = RequestOptions()
-                .override(200, 200)
-                .centerCrop()
-                .priority(Priority.HIGH)
-        Glide.with(requireContext())
-                .load(weather.hIconUrl)
-                .apply(hRequestOptions)
-                .into(hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherIcon)
+        weatherVS.hIconUrl?.let {
+            GlideUtils.hSetImage(
+                    hContext = requireContext(),
+                    hUrl = it,
+                    hImageView = hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherIcon
+            )
+        }
     }
 
 }
+
+/*
+
+
+
+
+
+
+//    private void hGeoCodeLatLng() {
+//        try {
+//            Geocoder geo = new Geocoder(this, Locale.getDefault());
+//            List<Address> addresses = geo.getFromLocation(hLat, hLng, 1);
+//            if (addresses.isEmpty()) {
+//
+//            } else {
+//
+//                if (addresses.size() > 0) {
+//
+//
+////                    String address = addresses.get(0).getAddressLine(0);
+//
+//                    String city = addresses.get(0).getLocality();
+//                    String country = addresses.get(0).getCountryName();
+////                    String state = addresses.get(0).getAdminArea();
+////                    String postalCode = addresses.get(0).getPostalCode();
+////                    String knownName = addresses.get(0).getFeatureName(); // On
+////                    Address returnAddress = addresses.get(0);
+//
+//                    hWeatherFragmentBinding.hWeatherHeader.hCurrrentCityTv, city + ", " + country);
+//                }
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
+
+    */

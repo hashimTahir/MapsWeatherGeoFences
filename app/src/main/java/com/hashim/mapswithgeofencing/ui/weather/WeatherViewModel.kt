@@ -83,16 +83,19 @@ class WeatherViewModel @Inject constructor(
 
         _hWeatherViewState.value = WeatherViewState(
                 hWeatherFields = WeatherFields(
-                        hDay = DateFormatter.hGetSimpleFormatter(DAYNAME_MONTH_DATE).format(hCalendar.time),
-                        hTime = DateFormatter.hGetSimpleFormatter(HRS_MINS).format(hCalendar.time),
-                        hPressure = weather.pressure.toString(),
-                        hHumidity = weather.humidity.toString(),
-                        hDescription = weather.description,
-                        hCountry = weather.country,
-                        hIconUrl = String.format(Constants.H_ICON_URL, hIcon),
-                        hTemperature = weather.tempMax.toString()
-                ),
-                hForecastFields = ForecastFields()
+                        hWeatherVS = WeatherVS(
+                                hDay = DateFormatter.hGetSimpleFormatter(DAYNAME_MONTH_DATE).format(hCalendar.time),
+                                hTime = DateFormatter.hGetSimpleFormatter(HRS_MINS).format(hCalendar.time),
+                                hPressure = weather.pressure.toString(),
+                                hHumidity = weather.humidity.toString(),
+                                hDescription = weather.description,
+                                hCountry = weather.country,
+                                hIconUrl = String.format(Constants.H_ICON_URL, hIcon),
+                                hTemperature = weather.tempMax.toString()
+                        ),
+                        hForecastVS = null
+
+                )
         )
     }
 
@@ -114,7 +117,7 @@ class WeatherViewModel @Inject constructor(
                 hTodaysList.add(
                         TodaysForeCast(
                                 description = x.weather.get(0).description,
-                                icon = x.weather.get(0).icon,
+                                icon = String.format(Constants.H_ICON_URL, x.weather.get(0).icon),
                                 tempMax = x.main.tempMax,
                                 date = DateFormatter.hGetSimpleFormatter(YEAR_MONTH_DAY).format(hCalendar.time),
                                 time = DateFormatter.hGetSimpleFormatter(HRS_MINS).format(hCalendar.time),
@@ -128,7 +131,7 @@ class WeatherViewModel @Inject constructor(
                     hWeeklyList.add(
                             WeekForecast(
                                     description = x.weather.get(0).description,
-                                    icon = x.weather.get(0).icon,
+                                    icon = String.format(Constants.H_ICON_URL, x.weather.get(0).icon),
                                     tempMax = x.main.tempMax,
                                     tempMin = x.main.tempMin,
                                     time = DateFormatter.hGetSimpleFormatter(HRS_MINS).format(hCalendar.time),
@@ -139,10 +142,12 @@ class WeatherViewModel @Inject constructor(
             }
         }
         _hWeatherViewState.value = WeatherViewState(
-                hWeatherFields = WeatherFields(),
-                hForecastFields = ForecastFields(
-                        hTodaysList = hTodaysList,
-                        hWeeksList = hWeeklyList
+                hWeatherFields = WeatherFields(
+                        hWeatherVS = null,
+                        hForecastVS = ForecastVS(
+                                hWeeksList = hWeeklyList,
+                                hTodaysList = hTodaysList
+                        )
                 )
         )
 
@@ -164,15 +169,15 @@ class WeatherViewModel @Inject constructor(
         _hWeatherStateEvent.value = weatherStateEvent
     }
 
-    fun hSetForecastData(forecastFields: ForecastFields) {
+    fun hSetForecastData(forecastVS: ForecastVS) {
         val hUpdate = hGetCurrentViewStateOrNew()
-        hUpdate.hForecastFields = forecastFields
+        hUpdate.hWeatherFields.hForecastVS = forecastVS
         _hWeatherViewState.value = hUpdate
     }
 
-    fun hSetWeatherData(weatherFields: WeatherFields) {
+    fun hSetWeatherData(weatherVSFields: WeatherViewState.WeatherVS?) {
         var hUpdate = hGetCurrentViewStateOrNew()
-        hUpdate.hWeatherFields = weatherFields
+        hUpdate.hWeatherFields.hWeatherVS = weatherVSFields
         _hWeatherViewState.value = hUpdate
     }
 

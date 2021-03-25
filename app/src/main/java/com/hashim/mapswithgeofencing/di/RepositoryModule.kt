@@ -7,9 +7,9 @@ package com.hashim.mapswithgeofencing.di
 import android.content.Context
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.network.RetroService
-import com.hashim.mapswithgeofencing.network.model.ForecastDtoMapper
-import com.hashim.mapswithgeofencing.network.model.NearByPlacesDtoMapper
-import com.hashim.mapswithgeofencing.network.model.WeatherDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepoImpl
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_MAPS_KEYTYPE

@@ -7,10 +7,15 @@ package com.hashim.mapswithgeofencing.ui.events
 
 data class WeatherViewState(
         var hWeatherFields: WeatherFields = WeatherFields(),
-        var hForecastFields: ForecastFields = ForecastFields()
 ) {
 
     data class WeatherFields(
+            var hWeatherVS: WeatherVS? = null,
+            var hForecastVS: ForecastVS? = null
+    )
+
+
+    data class WeatherVS(
             val hDay: String? = null,
             val hTime: String? = null,
             val hIconUrl: String? = null,
@@ -21,7 +26,8 @@ data class WeatherViewState(
             val hTemperature: String? = null,
     )
 
-    data class ForecastFields(
+
+    data class ForecastVS(
             val hTodaysList: List<TodaysForeCast>? = null,
             val hWeeksList: List<WeekForecast>? = null,
     )

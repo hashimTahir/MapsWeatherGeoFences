@@ -9,9 +9,9 @@ import com.hashim.mapswithgeofencing.Domain.model.Forecast
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.Domain.model.Weather
 import com.hashim.mapswithgeofencing.network.RetroService
-import com.hashim.mapswithgeofencing.network.model.ForecastDtoMapper
-import com.hashim.mapswithgeofencing.network.model.NearByPlacesDtoMapper
-import com.hashim.mapswithgeofencing.network.model.WeatherDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
 import com.hashim.mapswithgeofencing.ui.main.Category
 
 class RemoteRepoImpl(

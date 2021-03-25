@@ -4,16 +4,21 @@
 
 package com.hashim.mapswithgeofencing.ui.weather
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerWeather1Binding
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerWeatherBinding
-import com.hashim.mapswithgeofencing.tobeDeleted.ViewHolders.TodaysWeatherVH
-import com.hashim.mapswithgeofencing.tobeDeleted.ViewHolders.WeeklyWeatherVH
+import com.hashim.mapswithgeofencing.ui.events.WeatherViewState.TodaysForeCast
+import com.hashim.mapswithgeofencing.ui.events.WeatherViewState.WeekForecast
+import com.hashim.mapswithgeofencing.ui.viewholders.TodaysVh
+import com.hashim.mapswithgeofencing.ui.viewholders.WeeklyVh
+import com.hashim.mapswithgeofencing.utils.GlideUtils
 
-class WeatherAdapter(val adapterType: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+class WeatherAdapter(val adapterType: Int, val hContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var hList = mutableListOf<Any>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (adapterType) {
             H_TODAYS_RECYCLER -> return hGetTodaysVh(parent)
@@ -22,8 +27,8 @@ class WeatherAdapter(val adapterType: Int) : RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    private fun hGetWeeklyVh(parent: ViewGroup): WeeklyWeatherVH {
-        return WeeklyWeatherVH(
+    private fun hGetWeeklyVh(parent: ViewGroup): WeeklyVh {
+        return WeeklyVh(
                 ItemRecyclerWeather1Binding.inflate(
                         LayoutInflater.from(parent.getContext()),
                         parent,
@@ -32,8 +37,8 @@ class WeatherAdapter(val adapterType: Int) : RecyclerView.Adapter<RecyclerView.V
         )
     }
 
-    private fun hGetTodaysVh(parent: ViewGroup): TodaysWeatherVH {
-        return TodaysWeatherVH(
+    private fun hGetTodaysVh(parent: ViewGroup): TodaysVh {
+        return TodaysVh(
                 ItemRecyclerWeatherBinding.inflate(
                         LayoutInflater.from(parent.context),
                         parent,
@@ -45,77 +50,53 @@ class WeatherAdapter(val adapterType: Int) : RecyclerView.Adapter<RecyclerView.V
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (adapterType) {
             H_TODAYS_RECYCLER -> {
-                hBindTodaysVh()
+                hBindTodaysVh(holder as TodaysVh, hList.get(position) as TodaysForeCast)
             }
             H_WEEKLY_RECYCLER -> {
-                hBindWeeklyVh()
+                hBindWeeklyVh(holder as WeeklyVh, hList.get(position) as WeekForecast)
             }
         }
     }
 
-    private fun hBindWeeklyVh() {
-//        WeatherModelToShow hWeatherModelToShow = hWeatherModelToShowList.get(position);
-//        String hMaxTemp = hWeatherModelToShow.gethMaxTemp();
-//        String hMinTemp = hWeatherModelToShow.gethMinTemp();
-//        String hIcon = hWeatherModelToShow.gethIcon();
-//        String hTime = hWeatherModelToShow.gethTime();
-//        String hdate = hWeatherModelToShow.getHdate();
-//        String hDescription = hWeatherModelToShow.gethDescription();
-//        UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1DayTv, hdate);
-//        switch (hTempUnit) {
-//            case Constants.H_CELCIUS_UNIT:
-//            UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1MaxTempTv,
-//                    "Temp:\n" + hMaxTemp + hContext.getString(R.string.degree_symbol));
-//            break;
-//            case Constants.H_FARENHEIT_UNIT:
-//            UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1MaxTempTv,
-//                    "Temp:\n" + hMaxTemp + hContext.getString(R.string.farenheit_symbol));
-//            break;
-//            case Constants.H_KELVIL_UNIT:
-//            UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1MaxTempTv,
-//                    "Temp:\n" + hMaxTemp + hContext.getString(R.string.kelvin_symbol));
-//            break;
-//        }
-//        UIHelper.hMakeVisibleInVisible(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1TimeTv, Constants.H_INVISIBLE);
-//        UIHelper.hSetTextToTextView(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1DescriptionTv, hDescription);
-//        Picasso.get()
-//                .load(Constants.H_ICON_URL + hIcon + ".png")
-//                .resize(200, 200)
-//                .centerCrop()
-//                .into(hWeeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1ImageV);
+    private fun hBindWeeklyVh(weeklyWeatherVH: WeeklyVh, weekForecast: WeekForecast) {
+        weeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1DayTv.text = weekForecast.time
+//        TODO: Use temp unit here
+
+        weeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1MaxTempTv.text = weekForecast.tempMax.toString()
+        weeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1DescriptionTv.text = weekForecast.description
+        weeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1TimeTv.visibility = View.INVISIBLE
+
+        weekForecast.icon?.let {
+            GlideUtils.hSetImage(
+                    hUrl = it,
+                    hContext = hContext,
+                    hImageView = weeklyWeatherVH.hItemRecyclerWeather1Binding.hIrw1ImageV
+            )
+        }
     }
 
-    private fun hBindTodaysVh() {
-        //        WeatherModelToShow hWeatherModelToShow = hWeatherModelToShowList.get(position);
-//        String hTemp = hWeatherModelToShow.gethMaxTemp();
-//        String hIcon = hWeatherModelToShow.gethIcon();
-//        String hTime = hWeatherModelToShow.gethTime();
-//        String hDescription = hWeatherModelToShow.gethDescription();
-//        UIHelper.hSetTextToTextView(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwTimeTv, hTime);
-//        UIHelper.hSetTextToTextView(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwDescriptionTv, hDescription);
-//        switch (hTempUnit) {
-//            case Constants.H_CELCIUS_UNIT:
-//                UIHelper.hSetTextToTextView(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwTempTv,
-//                        "Temp:\n" + hTemp.concat(hContext.getString(R.string.degree_symbol)));
-//                break;
-//            case Constants.H_FARENHEIT_UNIT:
-//                UIHelper.hSetTextToTextView(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwTempTv,
-//                        "Temp:\n" + hTemp.concat(hContext.getString(R.string.farenheit_symbol)));
-//                break;
-//            case Constants.H_KELVIL_UNIT:
-//                UIHelper.hSetTextToTextView(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwTempTv,
-//                        "Temp:\n" + hTemp.concat(hContext.getString(R.string.kelvin_symbol)));
-//                break;
-//        }
-//        Picasso.get()
-//                .load(Constants.H_ICON_URL + hIcon + ".png")
-//                .resize(200, 200)
-//                .centerCrop()
-//                .into(todaysWeatherVh.hItemRecyclerWeatherBinding.hIrwImageV);
+    private fun hBindTodaysVh(todaysWeatherVH: TodaysVh, todaysForeCast: TodaysForeCast) {
+        todaysWeatherVH.hItemRecyclerWeatherBinding.hIrwTimeTv.text = todaysForeCast.time
+        todaysWeatherVH.hItemRecyclerWeatherBinding.hIrwDescriptionTv.text = todaysForeCast.description
+        todaysWeatherVH.hItemRecyclerWeatherBinding.hIrwTempTv.text = todaysForeCast.tempMax.toString()
+        /*Todo:Use Temperatue*/
+
+        todaysForeCast.icon?.let {
+            GlideUtils.hSetImage(
+                    hContext = hContext,
+                    hImageView = todaysWeatherVH.hItemRecyclerWeatherBinding.hIrwImageV,
+                    hUrl = it
+            )
+        }
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return hList.size
+    }
+
+    fun hSetData(list: List<Any>) {
+        hList = list as MutableList<Any>
+        notifyDataSetChanged()
     }
 
     companion object {

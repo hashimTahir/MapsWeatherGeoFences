@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2021/  3/ 24.  Created by Hashim Tahir
+ * Copyright (c) 2021/  3/ 25.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.network.model
+package com.hashim.mapswithgeofencing.repository.mappers
 
 import com.hashim.mapswithgeofencing.Domain.model.Weather
 import com.hashim.mapswithgeofencing.Domain.util.DomainMapper
