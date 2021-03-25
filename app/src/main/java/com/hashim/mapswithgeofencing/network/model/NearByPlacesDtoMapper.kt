@@ -10,17 +10,16 @@ import com.hashim.mapswithgeofencing.network.response.nearybyplaces.NearyByPlace
 
 class NearByPlacesDtoMapper : DomainMapper<NearyByPlacesResultDto, NearByPlaces> {
     override fun hMapToDomainModel(model: NearyByPlacesResultDto): NearByPlaces {
-
         return NearByPlaces(
-                model.userRatingsTotal,
-                model.icon,
-                model.name,
-                model.placeId,
-                model.photos,
-                model.rating,
-                model.types,
-                model.geometry.location.lat,
-                model.geometry.location.lng,
+                userRatingsTotal = model.userRatingsTotal,
+                icon = model.icon,
+                name = model.name,
+                placeId = model.placeId,
+                photos = model.photos,
+                rating = model.rating,
+                types = model.types,
+                lat = model.geometry.location.lat,
+                lng = model.geometry.location.lng,
         )
     }
 

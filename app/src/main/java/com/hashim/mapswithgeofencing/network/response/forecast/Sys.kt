@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021/  3/ 21.  Created by Hashim Tahir
+ * Copyright (c) 2021/  3/ 25.  Created by Hashim Tahir
  */
 
 package com.hashim.mapswithgeofencing.network.response.forecast
@@ -8,6 +8,6 @@ package com.hashim.mapswithgeofencing.network.response.forecast
 import com.google.gson.annotations.SerializedName
 
 data class Sys(
-    @SerializedName("pod")
-    val pod: String
+        @SerializedName("pod")
+        val pod: String
 )

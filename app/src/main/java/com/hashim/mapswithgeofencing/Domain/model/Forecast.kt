@@ -4,4 +4,7 @@
 
 package com.hashim.mapswithgeofencing.Domain.model
 
-data class Forecast(val temp: String)
+import com.hashim.mapswithgeofencing.network.response.forecast.City
+import com.hashim.mapswithgeofencing.network.response.forecast.ForecastList
+
+data class Forecast(val city: City, val list: List<ForecastList>)

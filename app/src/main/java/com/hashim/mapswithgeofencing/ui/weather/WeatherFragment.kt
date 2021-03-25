@@ -6,6 +6,8 @@ package com.hashim.mapswithgeofencing.ui.weather
 
 import android.graphics.Paint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +16,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Priority
+import com.bumptech.glide.request.RequestOptions
 import com.hashim.mapswithgeofencing.Domain.model.Weather
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.WeatherFragmentBinding
+import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent.OnFetchForecast
 import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent.OnFetchWeather
 import com.hashim.mapswithgeofencing.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -173,6 +179,16 @@ class WeatherFragment : Fragment() {
                         hLng = hArguments?.hCurrentLocation?.hLng
                 )
         )
+
+        Handler(Looper.myLooper()!!).postDelayed(Runnable {
+            hWeatherViewModel.hSetStateEvent(
+                    OnFetchForecast(
+                            hLat = hArguments?.hCurrentLocation?.hLat,
+                            hLng = hArguments?.hCurrentLocation?.hLng
+                    )
+            )
+        }, 500)
+
     }
 
     private fun hInitRecyclerView() {
@@ -198,7 +214,33 @@ class WeatherFragment : Fragment() {
 
     private fun hSubscribeObservers() {
         hWeatherViewModel.hDataState.observe(viewLifecycleOwner) {
+            it.hData?.let {
+                it.hForecastFields?.let {
+                    hWeatherViewModel.hSetForecastData(it)
+                }
+            }
+            it.hData.let {
+                it?.hWeatherFields?.let {
+                    hWeatherViewModel.hSetWeatherData(it)
+                }
+            }
+        }
 
+        hWeatherViewModel.hWeatherViewState.observe(viewLifecycleOwner) { weatherViewState ->
+
+            Timber.d("Setting Data to view $weatherViewState")
+            weatherViewState.hForecastFields.let { forecastFields ->
+                forecastFields.hForecast?.let {
+                    Timber.d("Forecast is $it")
+                }
+            }
+
+            weatherViewState.hWeatherFields.let { weatherFields ->
+                weatherFields.hWeather?.let {
+                    hSetNowWeather(it)
+
+                }
+            }
         }
     }
 
@@ -221,8 +263,10 @@ class WeatherFragment : Fragment() {
         val hDayMonthString = hDayMonthSimpleDateFormat.format(hCalendar.time)
         val hTimeString = hTimeSimpleDateFormat.format(hCalendar.time)
         val hIcon: String = weather.icon!!
+        val hIconUrl = String.format(Constants.H_ICON_URL, hIcon)
         val hPressure: String = weather.pressure.toString()
         val hHumidity: String = weather.humidity.toString()
+        val hCountry: String = weather.country
 
         hWeatherFragmentBinding.hWeatherHeader.hPressureDetailTv.text = "$hPressure Pa"
         hWeatherFragmentBinding.hWeatherHeader.hHumidityTv.text = "$hHumidity g/ ${getString(R.string.cubic_meter)}"
@@ -230,11 +274,15 @@ class WeatherFragment : Fragment() {
         hWeatherFragmentBinding.hWeatherHeader.hCurrrentDateTv.text = hDayMonthString
         hWeatherFragmentBinding.hWeatherHeader.hCurrentTimeTv.text = hTimeString
         hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherDetailTv.text = weather.description
+        hWeatherFragmentBinding.hWeatherHeader.hCurrrentTempTv.text = weather.temp.toString()
 
-
-        val into = Glide.with(requireContext())
-                .load(Constants.H_ICON_URL + hIcon + ".png")
-//                .resize(200, 200).centerCrop()
+        val hRequestOptions = RequestOptions()
+                .override(200, 200)
+                .centerCrop()
+                .priority(Priority.HIGH)
+       Glide.with(requireContext())
+                .load(hIconUrl)
+                .apply(hRequestOptions)
                 .into(hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherIcon)
     }
 

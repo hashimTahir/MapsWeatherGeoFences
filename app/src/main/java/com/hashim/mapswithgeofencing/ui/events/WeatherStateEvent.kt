@@ -12,7 +12,10 @@ sealed class WeatherStateEvent {
             val hLng: Double?
     ) : WeatherStateEvent()
 
-    class OnFetchForecast(val category: Category) : WeatherStateEvent()
+    class OnFetchForecast(
+            val hLat: Double?,
+            val hLng: Double?
+    ) : WeatherStateEvent()
 
     class None : WeatherStateEvent()
 }

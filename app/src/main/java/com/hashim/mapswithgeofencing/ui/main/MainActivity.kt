@@ -6,6 +6,7 @@ package com.hashim.mapswithgeofencing.ui.main
 
 import android.location.Location
 import android.os.Bundle
+import android.view.View.GONE
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                     Timber.d("hNavigateToMenu")
                 }
                 R.id.hWeatherMenu -> {
+                    hActivityMainBinding.hSearchBar.visibility = GONE
                     val hSettingsPrefrences = SettingsPrefrences(this)
                     val actionHMainFragmentToHWeatherFragment = MainFragmentDirections.actionHMainFragmentToHWeatherFragment(
                             hSettingsPrefrences.hGetCurrentLocation()

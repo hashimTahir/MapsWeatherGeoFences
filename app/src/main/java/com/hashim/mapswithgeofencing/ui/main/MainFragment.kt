@@ -114,7 +114,6 @@ class MainFragment : Fragment() {
 
     private fun hSubscribeObservers() {
         hMainViewModel.hDataState.observe(viewLifecycleOwner) {
-            Timber.d("Data State is ${it}")
             it.hData?.let {
                 it.hMainFields?.let {
                     hMainViewModel.hSetMainData(it)

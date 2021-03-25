@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021/  3/ 21.  Created by Hashim Tahir
+ * Copyright (c) 2021/  3/ 25.  Created by Hashim Tahir
  */
 
 package com.hashim.mapswithgeofencing.network.response.forecast
@@ -9,19 +9,19 @@ import com.google.gson.annotations.SerializedName
 
 data class City(
         @SerializedName("coord")
-    val coord: Coord,
+        val coord: Coord,
         @SerializedName("country")
-    val country: String,
+        val country: String,
         @SerializedName("id")
-    val id: Int,
+        val id: Int,
         @SerializedName("name")
-    val name: String,
+        val name: String,
         @SerializedName("population")
-    val population: Int,
+        val population: Int,
         @SerializedName("sunrise")
-    val sunrise: Int,
+        val sunrise: Int,
         @SerializedName("sunset")
-    val sunset: Int,
+        val sunset: Int,
         @SerializedName("timezone")
-    val timezone: Int
+        val timezone: Int
 )

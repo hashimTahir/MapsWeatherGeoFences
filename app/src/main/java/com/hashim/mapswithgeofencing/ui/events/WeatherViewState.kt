@@ -5,23 +5,22 @@
 package com.hashim.mapswithgeofencing.ui.events
 
 import android.os.Parcelable
+import com.hashim.mapswithgeofencing.Domain.model.Forecast
+import com.hashim.mapswithgeofencing.Domain.model.Weather
 import kotlinx.android.parcel.Parcelize
 
 
-@Parcelize
 data class WeatherViewState(
         var hWeatherFields: WeatherFields = WeatherFields(),
         var hForecastFields: ForecastFields = ForecastFields(),
-) : Parcelable {
+)  {
 
-    @Parcelize
     data class WeatherFields(
-            val temp: String? = null
-    ) : Parcelable
+            val hWeather: Weather? = null
+    )
 
 
-    @Parcelize
     data class ForecastFields(
-            val temp: String? = null
-    ) : Parcelable
+            val hForecast: Forecast? = null
+    )
 }

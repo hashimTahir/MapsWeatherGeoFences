@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021/  3/ 21.  Created by Hashim Tahir
+ * Copyright (c) 2021/  3/ 25.  Created by Hashim Tahir
  */
 
 package com.hashim.mapswithgeofencing.network.response.forecast
@@ -17,7 +17,9 @@ data class ForecastList(
         @SerializedName("main")
         val main: Main,
         @SerializedName("pop")
-        val pop: Int,
+        val pop: Double,
+        @SerializedName("rain")
+        val rain: Rain,
         @SerializedName("sys")
         val sys: Sys,
         @SerializedName("visibility")

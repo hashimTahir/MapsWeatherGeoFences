@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021/  3/ 21.  Created by Hashim Tahir
+ * Copyright (c) 2021/  3/ 25.  Created by Hashim Tahir
  */
 
 package com.hashim.mapswithgeofencing.network.response.forecast
@@ -8,12 +8,12 @@ package com.hashim.mapswithgeofencing.network.response.forecast
 import com.google.gson.annotations.SerializedName
 
 data class Weather(
-    @SerializedName("description")
-    val description: String,
-    @SerializedName("icon")
-    val icon: String,
-    @SerializedName("id")
-    val id: Int,
-    @SerializedName("main")
-    val main: String
+        @SerializedName("description")
+        val description: String,
+        @SerializedName("icon")
+        val icon: String,
+        @SerializedName("id")
+        val id: Int,
+        @SerializedName("main")
+        val main: String
 )

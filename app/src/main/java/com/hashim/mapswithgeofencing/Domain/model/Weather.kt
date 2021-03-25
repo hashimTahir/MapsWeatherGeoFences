@@ -11,7 +11,7 @@ data class Weather(
         val icon: String? = null,
         val main: String? = null,
         val temp: Double? = null,
-        val tempMax: Int? = null,
+        val tempMax: Double? = null,
         val tempMin: Double? = null,
         val feelsLike: Double? = null,
         val humidity: Int? = null,
@@ -19,4 +19,5 @@ data class Weather(
         val speed: Double? = null,
         val sunrise: Int? = null,
         val sunset: Int? = null,
+        val country: String
 )

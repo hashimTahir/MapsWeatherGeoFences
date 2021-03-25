@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021/  3/ 21.  Created by Hashim Tahir
+ * Copyright (c) 2021/  3/ 25.  Created by Hashim Tahir
  */
 
 package com.hashim.mapswithgeofencing.network.response.forecast
@@ -19,4 +19,3 @@ data class ForecastDto(
         @SerializedName("message")
         val message: Int
 )
-
