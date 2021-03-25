@@ -4,6 +4,7 @@
 
 package com.hashim.mapswithgeofencing.ui.weather
 
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,14 +12,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.hashim.mapswithgeofencing.Domain.model.Weather
+import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.WeatherFragmentBinding
 import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent.OnFetchWeather
+import com.hashim.mapswithgeofencing.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class WeatherFragment : Fragment() {
-
-/*
     private val hLat: Double? = null
     private val hLng: Double? = null
     private val hOnlyDateFormat = "dd"
@@ -29,19 +35,13 @@ class WeatherFragment : Fragment() {
     private val hDayNameMonthDate = "EEEE, MMMM d"
     private val hHrsMinTime = " h:mm aa"
     private val hLastDayName: String? = null
+/*
 
 
 
 
-    private void hLoadWeather() {
-//        RequestWeatherTask hRequestWeatherTask =
-//                new RequestWeatherTask(this, hLat, hLng, Constants.H_GET_WEATHER);
-//        hRequestWeatherTask.execute();
-//
-//        RequestWeatherTask hRequestWeatherTask1 =
-//                new RequestWeatherTask(this, hLat, hLng, Constants.H_GET_FORECAST);
-//        hRequestWeatherTask1.execute();
-    }
+
+
 //    private void hGeoCodeLatLng() {
 //        try {
 //            Geocoder geo = new Geocoder(this, Locale.getDefault());
@@ -62,7 +62,7 @@ class WeatherFragment : Fragment() {
 ////                    String knownName = addresses.get(0).getFeatureName(); // On
 ////                    Address returnAddress = addresses.get(0);
 //
-//                    UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrrentCityTv, city + ", " + country);
+//                    hWeatherFragmentBinding.hWeatherHeader.hCurrrentCityTv, city + ", " + country);
 //                }
 //            }
 //        } catch (IOException e) {
@@ -71,58 +71,8 @@ class WeatherFragment : Fragment() {
 //
 //    }
 //
-//    private void hSetUpRecyclerView(int recyclerNumber, List<WeatherModelToShow> hWeatherModelToShowList) {
-//        switch (recyclerNumber) {
-//            case Constants.H_TODAYS_RECYCLER:
-//                LinearLayoutManager layoutManager = new LinearLayoutManager(this,
-//                        LinearLayoutManager.HORIZONTAL, false);
-//                WeatherRecyclerAdapter weatherRecyclerAdapter = new WeatherRecyclerAdapter(this,
-//                        hWeatherModelToShowList, Constants.H_TODAYS_RECYCLER);
-//              hActivityWeatherBinding.  hTodaysRv.setLayoutManager(layoutManager);
-//                hActivityWeatherBinding.    hTodaysRv.setAdapter(weatherRecyclerAdapter);
-//                break;
-//            case Constants.H_WEEKLY_RECYCLER:
-//                LinearLayoutManager layoutManager1 = new LinearLayoutManager(this,
-//                        LinearLayoutManager.HORIZONTAL, false);
-//                WeatherRecyclerAdapter weatherRecyclerAdapter1 = new WeatherRecyclerAdapter(this,
-//                        hWeatherModelToShowList, Constants.H_WEEKLY_RECYCLER);
-//                hActivityWeatherBinding.   hWeeklyRv.setLayoutManager(layoutManager1);
-//                hActivityWeatherBinding.   hWeeklyRv.setAdapter(weatherRecyclerAdapter1);
-//                break;
-//        }
-//
-//
-//    }
-//
-//
-//    private void hGetIntentData() {
-//        Bundle hBundle = getIntent().getExtras();
-//        if (hBundle != null) {
-//            hLat = hBundle.getDouble(Constants.H_LATITUDE);
-//            hLng = hBundle.getDouble(Constants.H_LONGITUDE);
-//        }
-//    }
-//
-////    @Override
-////    public void onWeatherFetch(Object object, String hDecodedString) {
-////        if (object instanceof LatLonReturnModel) {
-////            LatLonReturnModel hLatLonReturnModel = (LatLonReturnModel) object;
-////            hSetCurrentWeatherData(hLatLonReturnModel);
-////        }
-////        if (object instanceof WeatherMainReturnResponse) {
-////            WeatherMainReturnResponse hWeatherMainReturnResponse = (WeatherMainReturnResponse) object;
-////            hSetForeCast(hWeatherMainReturnResponse);
-////        }
-////
-////    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        UIHelper.hOreoOrientationCheck(this);
-//        hLoadWeather();
-//    }
-//
+
+
 //    private void hSetForeCast(WeatherMainReturnResponse hWeatherMainReturnResponse) {
 //        List<WeatherList> hWeatherLists = hWeatherMainReturnResponse.getWeatherList();
 //        List<WeatherModelToShow> hTodaysList = new ArrayList<>();
@@ -189,61 +139,7 @@ class WeatherFragment : Fragment() {
 //            LogToastSnackHelper.hMakeLongToast(this, "Unable to Retrieve weather,Plz try again");
 //
 //        }
-//    }
-//
-//    private void hSetCurrentWeatherData(LatLonReturnModel hLatLonReturnModel) {
-//
-//        Calendar hCalendar = Calendar.getInstance();
-//
-//
-//        hActivityWeatherBinding.  hTodayWeatherTv.setPaintFlags(   hActivityWeatherBinding.hTodayWeatherTv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-//        hActivityWeatherBinding.  hWeekWeatherTv.setPaintFlags(   hActivityWeatherBinding.hTodayWeatherTv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-//
-//        UIHelper.hSetTextToTextView(   hActivityWeatherBinding.hTodayWeatherTv, getString(R.string.today_s_weather));
-//        UIHelper.hSetTextToTextView(   hActivityWeatherBinding.hWeekWeatherTv, getString(R.string.weekly_weather));
-//
-//
-//        SimpleDateFormat hDayMonthSimpleDateFormat = new SimpleDateFormat(hDayNameMonthDate, Locale.getDefault());
-//        SimpleDateFormat hTimeSimpleDateFormat = new SimpleDateFormat(hHrsMinTime, Locale.getDefault());
-//
-//
-//        String hDayMonthString = hDayMonthSimpleDateFormat.format(hCalendar.getTime());
-//        String hTimeString = hTimeSimpleDateFormat.format(hCalendar.getTime());
-//        String hIcon = hLatLonReturnModel.getWeather().get(0).getIcon();
-//
-//        String hPressure = String.valueOf(hLatLonReturnModel.getMain().getPressure());
-//        String hHumidity = String.valueOf(hLatLonReturnModel.getMain().getHumidity());
-//        UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hPressureDetailTv, hPressure + " Pa");
-//        UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hHumidityTv, hHumidity + "g/" + getString(R.string.cubic_meter));
-//
-//        UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrrentDateTv, hDayMonthString);
-//        UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrentTimeTv, hTimeString);
-//        UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrentWeatherDetailTv,
-//                hLatLonReturnModel.getWeather().get(0).getDescription());
-//        SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(this);
-//        switch (hSettingsPrefrences.hGetTempUnit()) {
-//            case Constants.H_FARENHEIT_UNIT:
-//                UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrrentTempTv,
-//                        String.valueOf(hLatLonReturnModel.getMain().getTemp().intValue()).
-//                                concat(getString(R.string.farenheit_symbol)));
-//                break;
-//            case Constants.H_CELCIUS_UNIT:
-//                UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrrentTempTv,
-//                        String.valueOf(hLatLonReturnModel.getMain().getTemp().intValue()).
-//                                concat(getString(R.string.degree_symbol)));
-//                break;
-//            case Constants.H_KELVIL_UNIT:
-//                UIHelper.hSetTextToTextView(hActivityWeatherBinding.hWeatherHeader.hCurrrentTempTv,
-//                        String.valueOf(hLatLonReturnModel.getMain().getTemp().intValue()).
-//                                concat(getString(R.string.kelvin_symbol)));
-//                break;
-//        }
-//        Picasso.get().load(Constants.H_ICON_URL + hIcon + ".png")
-//                .resize(200, 200).centerCrop()
-//                .into(hActivityWeatherBinding.hWeatherHeader.hCurrentWeatherIcon);
-//
-//    }
-//
+//   
 
 
     */
@@ -269,6 +165,7 @@ class WeatherFragment : Fragment() {
 
         hSubscribeObservers()
 
+        hInitRecyclerView()
 
         hWeatherViewModel.hSetStateEvent(
                 OnFetchWeather(
@@ -278,10 +175,67 @@ class WeatherFragment : Fragment() {
         )
     }
 
+    private fun hInitRecyclerView() {
+
+        hWeatherFragmentBinding.hTodaysRv.apply {
+            layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+            )
+            adapter = null
+        }
+        hWeatherFragmentBinding.hWeeklyRv.apply {
+            layoutManager = LinearLayoutManager(
+                    requireContext(),
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+            )
+            adapter = null
+        }
+
+    }
+
     private fun hSubscribeObservers() {
         hWeatherViewModel.hDataState.observe(viewLifecycleOwner) {
 
         }
+    }
+
+    private fun hSetNowWeather(weather: Weather) {
+
+        val hCalendar = Calendar.getInstance()
+
+
+        hWeatherFragmentBinding.hTodayWeatherTv.setPaintFlags(hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+        hWeatherFragmentBinding.hWeekWeatherTv.setPaintFlags(hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags() or Paint.UNDERLINE_TEXT_FLAG)
+
+        hWeatherFragmentBinding.hTodayWeatherTv.text = getString(R.string.today_s_weather)
+        hWeatherFragmentBinding.hWeekWeatherTv.text = getString(R.string.weekly_weather)
+
+
+        val hDayMonthSimpleDateFormat = SimpleDateFormat(hDayNameMonthDate, Locale.getDefault())
+        val hTimeSimpleDateFormat = SimpleDateFormat(hHrsMinTime, Locale.getDefault())
+
+
+        val hDayMonthString = hDayMonthSimpleDateFormat.format(hCalendar.time)
+        val hTimeString = hTimeSimpleDateFormat.format(hCalendar.time)
+        val hIcon: String = weather.icon!!
+        val hPressure: String = weather.pressure.toString()
+        val hHumidity: String = weather.humidity.toString()
+
+        hWeatherFragmentBinding.hWeatherHeader.hPressureDetailTv.text = "$hPressure Pa"
+        hWeatherFragmentBinding.hWeatherHeader.hHumidityTv.text = "$hHumidity g/ ${getString(R.string.cubic_meter)}"
+
+        hWeatherFragmentBinding.hWeatherHeader.hCurrrentDateTv.text = hDayMonthString
+        hWeatherFragmentBinding.hWeatherHeader.hCurrentTimeTv.text = hTimeString
+        hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherDetailTv.text = weather.description
+
+
+        val into = Glide.with(requireContext())
+                .load(Constants.H_ICON_URL + hIcon + ".png")
+//                .resize(200, 200).centerCrop()
+                .into(hWeatherFragmentBinding.hWeatherHeader.hCurrentWeatherIcon)
     }
 
 }

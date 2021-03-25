@@ -6,6 +6,7 @@ package com.hashim.mapswithgeofencing.repository.remote
 
 import android.location.Location
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
+import com.hashim.mapswithgeofencing.Domain.model.Weather
 import com.hashim.mapswithgeofencing.network.RetroService
 import com.hashim.mapswithgeofencing.network.model.ForecastDtoMapper
 import com.hashim.mapswithgeofencing.network.model.NearByPlacesDtoMapper
@@ -21,13 +22,14 @@ class RemoteRepoImpl(
         private val hWeatherKey: String
 ) : RemoteRepo {
 
-    override suspend fun hGetWeather(location: Location, unitType: String) {
-        var hGetWeather = hRetroService.hGetWeather(
+    override suspend fun hGetWeather(location: Location, unitType: String): Weather {
+        val hGetWeather = hRetroService.hGetWeather(
                 lat = location.latitude.toString(),
                 lng = location.longitude.toString(),
                 key = hWeatherKey,
                 unit = unitType,
         )
+        return hWeatherDtoMapper.hMapToDomainModel(hGetWeather)
     }
 
     override suspend fun hGetForecast(location: Location, unitType: String) {
@@ -52,7 +54,7 @@ class RemoteRepoImpl(
 
     override suspend fun hFindNearybyPlaces(category: Category, location: Location): List<NearByPlaces> {
 
-        var hFindNearByPlaces = hRetroService.hFindNearByPlaces(
+        val hFindNearByPlaces = hRetroService.hFindNearByPlaces(
                 location = "${location.latitude},${location.longitude}",
                 radius = "1000",
                 type = category.name,

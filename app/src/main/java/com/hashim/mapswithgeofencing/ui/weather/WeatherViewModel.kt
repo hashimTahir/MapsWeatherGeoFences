@@ -5,16 +5,15 @@
 package com.hashim.mapswithgeofencing.ui.weather
 
 import android.location.Location
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import android.location.LocationManager
+import androidx.lifecycle.*
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent
 import com.hashim.mapswithgeofencing.ui.events.WeatherViewState
+import com.hashim.mapswithgeofencing.utils.Constants
 import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import timber.log.Timber
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,8 +43,17 @@ class WeatherViewModel @Inject constructor(
             is WeatherStateEvent.OnFetchForecast -> {
             }
             is WeatherStateEvent.OnFetchWeather -> {
-                Timber.d("Weather State Event ${weatherStateEvent.hLat}")
-//                hRemoteRepo.hGetWeather()
+                val hLocation = Location(LocationManager.GPS_PROVIDER)
+                hLocation.latitude = weatherStateEvent.hLat!!
+                hLocation.longitude = weatherStateEvent.hLng!!
+                viewModelScope.launch {
+                    val hWeather = hRemoteRepo.hGetWeather(
+                            location = hLocation,
+                            Constants.H_CELCIUS_UNIT,
+                    )
+                    hWeather
+                }
+
             }
             is WeatherStateEvent.None -> {
             }

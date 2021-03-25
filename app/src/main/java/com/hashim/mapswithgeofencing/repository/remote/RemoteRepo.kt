@@ -6,11 +6,12 @@ package com.hashim.mapswithgeofencing.repository.remote
 
 import android.location.Location
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
+import com.hashim.mapswithgeofencing.Domain.model.Weather
 import com.hashim.mapswithgeofencing.ui.main.Category
 
 interface RemoteRepo {
 
-    suspend fun hGetWeather(location: Location, unitType: String)
+    suspend fun hGetWeather(location: Location, unitType: String): Weather
 
     suspend fun hGetForecast(location: Location, unitType: String)
 
