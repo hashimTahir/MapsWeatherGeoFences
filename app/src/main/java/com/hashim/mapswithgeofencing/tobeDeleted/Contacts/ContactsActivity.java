@@ -4,47 +4,7 @@
 
 package com.hashim.mapswithgeofencing.tobeDeleted.Contacts;
 
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.hashim.mapswithgeofencing.tobeDeleted.Adapters.ContactsAdapter;
-import com.hashim.mapswithgeofencing.tobeDeleted.DataBase.AppRepository;
-import com.hashim.mapswithgeofencing.tobeDeleted.DataBase.ContactsEntity;
-import com.hashim.mapswithgeofencing.tobeDeleted.Helper.ListUtils;
-import com.hashim.mapswithgeofencing.tobeDeleted.Helper.PrimaryActionMode;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.DeleteCallBack;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.DialogResponseInterface;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.OnItemClickListener;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.RecyclerInterface;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.onActionModeListener;
-import com.hashim.mapswithgeofencing.R;
-import com.hashim.mapswithgeofencing.databinding.ActivityContactsBinding;
-import com.hashim.mapswithgeofencing.SettingsPrefrences;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import dmax.dialog.SpotsDialog;
-import pub.devrel.easypermissions.EasyPermissions;
-import pub.devrel.easypermissions.PermissionRequest;
 
 @SuppressWarnings("unchecked")
 public class ContactsActivity extends AppCompatActivity
@@ -57,8 +17,7 @@ public class ContactsActivity extends AppCompatActivity
     private static final int H_SHOW_SAVE_CONTACTS_LAYOUT = 222;
     private static final int H_SHOW_RECYCLER_LAYOUT = 123;
     private static final int H_SHOW_ALERT_LAYOUT = 456;
-    public static final int H_SAVED_LIST = 678;
-    public static final int H_ALL_LIST = 910;
+
     private ContactsAdapter hContactsAdapter;
     private SpotsDialog hAlertDialog;
     private boolean hContactsRetrieved;
