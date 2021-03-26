@@ -48,10 +48,14 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
     private fun hSetupListeners() {
 
+        hActivityMainBinding.hHomeFab.setOnClickListener {
+
+        }
+
         hActivityMainBinding.hBottomNav.setOnNavigationItemSelectedListener { menuItem ->
 
             when (menuItem.itemId) {
-                R.id.hNavigateToMenu -> {
+                R.id.hCompassMenu -> {
                     Timber.d("hNavigateToMenu")
                 }
                 R.id.hWeatherMenu -> {
@@ -61,10 +65,10 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                     )
                     hNavController.navigate(actionHMainFragmentToHWeatherFragment)
                 }
-                R.id.hDirectionsMenu -> {
+                R.id.hCalculateRounteMenu -> {
                     Timber.d("hDirectionsMenu")
                 }
-                R.id.hExit -> {
+                R.id.hSettingMenu -> {
                     Timber.d("hExit")
                 }
                 R.id.hSettingMenu -> {

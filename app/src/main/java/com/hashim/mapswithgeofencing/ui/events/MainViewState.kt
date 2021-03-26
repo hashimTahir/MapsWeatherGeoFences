@@ -11,20 +11,25 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class MainViewState(
-        var hMainFields: MainFields = MainFields(),
-        var hNearbyFields: NearByFields = NearByFields(),
+        val hMainFields: MainFields = MainFields(),
 ) : Parcelable {
 
     @Parcelize
     data class MainFields(
-            var currentLocation: Location? = null,
-            var currentMarkerOptions: MarkerOptions? = null,
-            var cameraZoom: Float? = null,
+            var hCurrentLocationVS: CurrentLocationVS? = null,
+            var hNearByPlacesVS: NearByPlacesVS? = null
     ) : Parcelable
 
 
     @Parcelize
-    data class NearByFields(
+    data class CurrentLocationVS(
+            val currentLocation: Location? = null,
+            val currentMarkerOptions: MarkerOptions? = null,
+            val cameraZoom: Float? = null,
+    ) : Parcelable
+
+    @Parcelize
+    data class NearByPlacesVS(
             val hMarkerList: List<MarkerOptions>? = null
     ) : Parcelable
 }

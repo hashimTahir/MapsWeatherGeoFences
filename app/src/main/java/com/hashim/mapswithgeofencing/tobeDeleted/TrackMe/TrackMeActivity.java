@@ -7,10 +7,12 @@ package com.hashim.mapswithgeofencing.tobeDeleted.TrackMe;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class TrackMeActivity extends AppCompatActivity /*implements
-        OnItemClickListener, DialogResponseInterface, DeleteCallBack, onActionModeListener*/ {
+public class TrackMeActivity extends AppCompatActivity {
+    /*
+} implements
+        OnItemClickListener, DialogResponseInterface, DeleteCallBack, onActionModeListener {
 
-/*
+
     private ContactsAdapter1 hContactsAdapter;
     private List<ContactsModelWithIds> hSavedContacatsList;
     private List<ContactsModelWithIds> hAllContactsList = new ArrayList<>();
@@ -29,6 +31,7 @@ public class TrackMeActivity extends AppCompatActivity /*implements
     SettingsPrefrences hSettingsPrefrences;
     private boolean hIsAllSendingClicked = false;
     private boolean hIsSelectedList = false;
+    public static final int MENU_ITEM_MESSAGE = 34;
     ActivityTrackMeBinding hActivityTrackMeBinding;
 
     @Override

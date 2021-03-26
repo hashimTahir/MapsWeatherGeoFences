@@ -65,8 +65,8 @@ public class ContactsAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHold
             return false;
         });
         hContactsVH.hItemRecyclerContactsBinding.title.setText(hNewList.get(position).getContactName());
-        /*UIHelper.hSetTextToTextView(
-                hContactsVH.hItemRecyclerContactsBinding.numberTextView, hNewList.get(position).getContactNumber());*/
+//        UIHelper.hSetTextToTextView(
+//                hContactsVH.hItemRecyclerContactsBinding.numberTextView, hNewList.get(position).getContactNumber());
         int id = hNewList.get(position).gethId();
 
         if (selectedIds.contains(id)) {
