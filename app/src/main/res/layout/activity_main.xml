@@ -23,15 +23,13 @@
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
-            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:contentInsetEnd="@dimen/_0dp"
             app:contentInsetStart="@dimen/_0dp"
-            app:fabCradleMargin="@dimen/_10dp"
-            app:fabCradleRoundedCornerRadius="@dimen/_10dp"
-            app:fabCradleVerticalOffset="@dimen/_10dp">
+            app:fabCradleMargin="@dimen/_8dp"
+            app:fabCradleRoundedCornerRadius="@dimen/_8dp">
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/hBottomNav"

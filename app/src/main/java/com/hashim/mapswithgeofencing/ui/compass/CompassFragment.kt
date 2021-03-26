@@ -41,15 +41,15 @@ class CompassFragment : Fragment(), SensorEventListener2 {
     private var hIsLastAccelerometerSet: Boolean = false
     private var hIsLastMagnetometerSet: Boolean = false
 
-    private var mCurrentDegree = 0f;
+    private var mCurrentDegree = 0f
     private var hLastUpdate: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
-        hAccelerometerSensor = hSensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!;
-        hMagnetometerSensor = hSensorManager?.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)!!;
+        hAccelerometerSensor = hSensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
+        hMagnetometerSensor = hSensorManager?.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -64,35 +64,35 @@ class CompassFragment : Fragment(), SensorEventListener2 {
 
     override fun onSensorChanged(event: SensorEvent?) {
         if (event?.sensor == hAccelerometerSensor) {
-            System.arraycopy(event.values, 0, hLastAccelerometerReading, 0, event.values.size);
-            hIsLastAccelerometerSet = true;
+            System.arraycopy(event.values, 0, hLastAccelerometerReading, 0, event.values.size)
+            hIsLastAccelerometerSet = true
         } else if (event?.sensor == hMagnetometerSensor) {
-            System.arraycopy(event.values, 0, hLastMagnetometerReading, 0, event.values.size);
-            hIsLastMagnetometerSet = true;
+            System.arraycopy(event.values, 0, hLastMagnetometerReading, 0, event.values.size)
+            hIsLastMagnetometerSet = true
         }
         if (hIsLastAccelerometerSet && hIsLastMagnetometerSet) {
-            SensorManager.getRotationMatrix(mR, null, hLastAccelerometerReading, hLastMagnetometerReading);
-            SensorManager.getOrientation(mR, mOrientation);
-            val azimuthInRadians = mOrientation[0];
+            SensorManager.getRotationMatrix(mR, null, hLastAccelerometerReading, hLastMagnetometerReading)
+            SensorManager.getOrientation(mR, mOrientation)
+            val azimuthInRadians = mOrientation[0]
             val azimuthInDegress = (Math.toDegrees(azimuthInRadians.toDouble()) + 360) % 360.toFloat()
             val ra = RotateAnimation(
                     mCurrentDegree,
                     -azimuthInDegress.toFloat(),
                     Animation.RELATIVE_TO_SELF, 0.5f,
                     Animation.RELATIVE_TO_SELF,
-                    0.5f);
+                    0.5f)
 
-            ra.setDuration(1000);
+            ra.duration = 1000
 
-            ra.setFillAfter(true);
+            ra.fillAfter = true
 
-            hFragmentCompassBinding.imageViewCompass.startAnimation(ra);
+            hFragmentCompassBinding.imageViewCompass.startAnimation(ra)
             mCurrentDegree = (-azimuthInDegress).toFloat()
 
 
             val hCurrentTime = System.currentTimeMillis()
             if ((hCurrentTime - hLastUpdate) > 1000) {
-                hLastUpdate = hCurrentTime;
+                hLastUpdate = hCurrentTime
 //                UIHelper.hSetTextToTextView(hActivityCompassBinding.tvHeading, "Value : " + String.valueOf((int) mCurrentDegree));
 
             }
@@ -111,8 +111,8 @@ class CompassFragment : Fragment(), SensorEventListener2 {
 
     override fun onResume() {
         super.onResume()
-        hSensorManager?.registerListener(this, hAccelerometerSensor, SensorManager.SENSOR_STATUS_ACCURACY_LOW);
-        hSensorManager?.registerListener(this, hMagnetometerSensor, SensorManager.SENSOR_STATUS_ACCURACY_LOW);
+        hSensorManager?.registerListener(this, hAccelerometerSensor, SensorManager.SENSOR_STATUS_ACCURACY_LOW)
+        hSensorManager?.registerListener(this, hMagnetometerSensor, SensorManager.SENSOR_STATUS_ACCURACY_LOW)
     }
 
     override fun onPause() {

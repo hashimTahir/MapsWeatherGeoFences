@@ -13,9 +13,6 @@
         android:layout_height="match_parent"
         tools:layout_editor_absoluteY="25dp">
 
-        <include
-            android:id="@+id/hAcrAppBar"
-            layout="@layout/appbar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"

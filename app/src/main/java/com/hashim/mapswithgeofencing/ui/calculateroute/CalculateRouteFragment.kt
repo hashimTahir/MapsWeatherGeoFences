@@ -25,10 +25,6 @@ class CalculateRouteFragment : Fragment() {
         return hFragmentCalculateRouteBinding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     /*
     *
 public class CalculateActivity extends AppCompatActivity /*implements

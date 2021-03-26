@@ -26,7 +26,7 @@ class SettingsViewModel @Inject constructor(
     private val _hSettingViewState = MutableLiveData<SettingViewState>()
 
     enum class Settings
-    public val hSettingViewState: LiveData<SettingViewState>
+    val hSettingViewState: LiveData<SettingViewState>
         get() = _hSettingViewState
 
 

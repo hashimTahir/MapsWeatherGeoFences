@@ -82,6 +82,9 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
 
     private fun hInitNavView() {
+
+        hActivityMainBinding.hBottomNav.background = null
+
         hNavHostFragments = supportFragmentManager
                 .findFragmentById(R.id.hMainFragmentContainer)
                 as NavHostFragment

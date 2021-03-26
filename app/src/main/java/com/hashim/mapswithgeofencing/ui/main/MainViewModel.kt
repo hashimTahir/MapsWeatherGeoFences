@@ -12,6 +12,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.R
+import com.hashim.mapswithgeofencing.SettingsPrefrences
+import com.hashim.mapswithgeofencing.SettingsPrefrences.HlatLng
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.*
@@ -36,9 +38,8 @@ class MainViewModel @Inject constructor(
     @Inject
     lateinit var hSettingsPrefrences: SettingsPrefrences
 
-    /*Data setter for the view packged into a single object*/
     private val _hMainViewState = MutableLiveData<MainViewState>()
-    public val hMainViewState: LiveData<MainViewState>
+    val hMainViewState: LiveData<MainViewState>
         get() = _hMainViewState
 
 
@@ -59,7 +60,7 @@ class MainViewModel @Inject constructor(
                         hLng = hCurrentLocation?.longitude,
                         hLat = hCurrentLocation?.latitude,
                 ))
-                return hSubmitCurrentLocationData(hCurrentLocation)
+                hSubmitCurrentLocationData(hCurrentLocation)
             }
             is OnMapReady -> {
             }

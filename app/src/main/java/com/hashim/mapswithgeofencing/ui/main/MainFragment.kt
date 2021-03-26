@@ -49,11 +49,6 @@ class MainFragment : Fragment() {
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         hFragmentMainBinding = FragmentMainBinding.inflate(
@@ -159,7 +154,7 @@ class MainFragment : Fragment() {
         hGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 LatLng(
                         mainfields.currentLocation?.latitude!!,
-                        mainfields.currentLocation?.longitude!!
+                        mainfields.currentLocation.longitude
 
                 ), mainfields.cameraZoom!!))
 

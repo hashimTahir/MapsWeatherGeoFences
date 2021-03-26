@@ -5,30 +5,7 @@
 package com.hashim.mapswithgeofencing.tobeDeleted.EmergencyContacts;
 
 
-import android.content.Context;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.hashim.mapswithgeofencing.tobeDeleted.Adapters.RecyclerAdapter;
-import com.hashim.mapswithgeofencing.tobeDeleted.DataBase.AppRepository;
-import com.hashim.mapswithgeofencing.tobeDeleted.DataBase.ContactsEntity;
-import com.hashim.mapswithgeofencing.tobeDeleted.DataBase.LocationEntitiy;
-import com.hashim.mapswithgeofencing.tobeDeleted.Helper.DialogHelper;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.DeleteCallBack;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.HDialogResponseInterface;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.OnFragmentInteractionListener;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.RecyclerInterface;
-import com.hashim.mapswithgeofencing.databinding.FragmentMainTrackMeBinding;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainTrackMeFragment extends Fragment {

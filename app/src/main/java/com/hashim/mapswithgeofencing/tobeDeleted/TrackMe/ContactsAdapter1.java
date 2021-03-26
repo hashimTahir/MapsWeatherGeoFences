@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ContactsAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SectionIndexer {
 
-    private Context context;
+    private final Context context;
     private List<ContactsModelWithIds> hNewList;
     private List<Integer> selectedIds = new ArrayList<>();
     private int mRecentlyDeletedItemPosition;

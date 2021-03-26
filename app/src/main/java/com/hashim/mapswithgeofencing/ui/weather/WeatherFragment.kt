@@ -56,16 +56,16 @@ class WeatherFragment : Fragment() {
 
         hWeatherViewModel.hSetStateEvent(
                 OnFetchWeather(
-                        hLat = hArguments?.hCurrentLocation?.hLat,
-                        hLng = hArguments?.hCurrentLocation?.hLng
+                        hLat = hArguments.hCurrentLocation?.hLat,
+                        hLng = hArguments.hCurrentLocation?.hLng
                 )
         )
 
         Handler(Looper.myLooper()!!).postDelayed(Runnable {
             hWeatherViewModel.hSetStateEvent(
                     OnFetchForecast(
-                            hLat = hArguments?.hCurrentLocation?.hLat,
-                            hLng = hArguments?.hCurrentLocation?.hLng
+                            hLat = hArguments.hCurrentLocation?.hLat,
+                            hLng = hArguments.hCurrentLocation?.hLng
                     )
             )
         }, 500)
@@ -74,13 +74,10 @@ class WeatherFragment : Fragment() {
 
     private fun hSetupView() {
 
-        hWeatherFragmentBinding.hTodayWeatherTv.setPaintFlags(
-                hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags()
-                        or Paint.UNDERLINE_TEXT_FLAG
-        )
-        hWeatherFragmentBinding.hWeekWeatherTv.setPaintFlags(
-                hWeatherFragmentBinding.hTodayWeatherTv.getPaintFlags()
-                        or Paint.UNDERLINE_TEXT_FLAG)
+        hWeatherFragmentBinding.hTodayWeatherTv.paintFlags = (hWeatherFragmentBinding.hTodayWeatherTv.paintFlags
+                or Paint.UNDERLINE_TEXT_FLAG)
+        hWeatherFragmentBinding.hWeekWeatherTv.paintFlags = (hWeatherFragmentBinding.hTodayWeatherTv.paintFlags
+                or Paint.UNDERLINE_TEXT_FLAG)
 
         hWeatherFragmentBinding.hTodayWeatherTv.text = getString(R.string.today_s_weather)
         hWeatherFragmentBinding.hWeekWeatherTv.text = getString(R.string.weekly_weather)
