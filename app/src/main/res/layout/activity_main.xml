@@ -24,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/transparent" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -59,16 +60,39 @@
 
         </FrameLayout>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/hBottomNav"
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/white"
-            app:itemIconTint="@color/blue"
-            app:itemTextColor="@color/blue"
-            app:menu="@menu/main_bottom_nav" />
+            app:contentInsetEnd="@dimen/_0dp"
+            app:contentInsetStart="@dimen/_0dp"
+            app:fabCradleMargin="@dimen/_10dp"
+            app:fabCradleRoundedCornerRadius="@dimen/_10dp"
+            app:fabCradleVerticalOffset="@dimen/_10dp">
 
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/hBottomNav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/white"
+                app:itemIconTint="@color/blue"
+                app:itemTextColor="@color/blue"
+                app:menu="@menu/main_bottom_nav" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/hHomeFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_home"
+            android:tint="@color/blue"
+            app:layout_anchor="@id/bottomAppBar" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

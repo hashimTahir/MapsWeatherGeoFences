@@ -45,19 +45,23 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
         hActivityMainBinding.hSearchBar.setSpeechMode(true)
         hActivityMainBinding.hSearchBar.setOnSearchActionListener(this)
 
+        hActivityMainBinding.hHomeFab.setOnClickListener {
+
+        }
+
         hActivityMainBinding.hBottomNav.setOnNavigationItemSelectedListener { menuItem ->
 
             when (menuItem.itemId) {
-                R.id.hNavigateToMenu -> {
+                R.id.hCompassMenu -> {
                     Timber.d("hNavigateToMenu")
                 }
                 R.id.hWeatherMenu -> {
                     hNavController.navigate(R.id.action_hMainFragment_to_hWeatherFragment)
                 }
-                R.id.hDirectionsMenu -> {
+                R.id.hCalculateRounteMenu -> {
                     Timber.d("hDirectionsMenu")
                 }
-                R.id.hExit -> {
+                R.id.hSettingMenu -> {
                     Timber.d("hExit")
                 }
             }

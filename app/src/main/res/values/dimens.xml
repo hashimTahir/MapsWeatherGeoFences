@@ -24,7 +24,8 @@
     <dimen name="_2dp">2dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="search_view_inset">10dp</dimen>
-
+    <dimen name="_16sp">16sp</dimen>
+    <dimen name="_32dp">32dp</dimen>
     <dimen name="list_item_height">48dp</dimen>
     <dimen name="horizontal_margin">16dp</dimen>
     <dimen name="list_item_left_margin">72dp</dimen>
