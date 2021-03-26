@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_hMainFragment_to_hSettingsFragment"
             app:destination="@id/hSettingsFragment" />
+        <action
+            android:id="@+id/action_hMainFragment_to_hCompassFragment"
+            app:destination="@id/hCompassFragment" />
     </fragment>
     <fragment
         android:id="@+id/hWeatherFragment"
@@ -35,4 +38,19 @@
         android:name="com.hashim.mapswithgeofencing.ui.settings.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/hCalculateRouteFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.calculateroute.CalculateRouteFragment"
+        android:label="CalculateRouteFragment"
+        tools:layout="@layout/fragment_calculate_route" />
+    <fragment
+        android:id="@+id/hCompassFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.compass.CompassFragment"
+        android:label="CompassFragment"
+        tools:layout="@layout/fragment_compass" />
+    <fragment
+        android:id="@+id/hTemplatesFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.templates.TemplatesFragment"
+        android:label="TemplatesFragment"
+        tools:layout="@layout/fragment_templates" />
 </navigation>

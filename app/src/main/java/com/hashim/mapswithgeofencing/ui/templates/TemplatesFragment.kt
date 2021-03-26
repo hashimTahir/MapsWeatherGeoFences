@@ -1,29 +1,40 @@
 /*
- * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ * Copyright (c) 2021/  3/ 26.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.tobeDeleted.Activities;
+package com.hashim.mapswithgeofencing.ui.templates
 
-import android.os.Bundle;
-import android.view.View;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.hashim.mapswithgeofencing.tobeDeleted.Adapters.RecyclerAdapter;
-import com.hashim.mapswithgeofencing.tobeDeleted.CustomView.HcustomDialog;
-import com.hashim.mapswithgeofencing.tobeDeleted.Helper.ListUtils;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.DialogResponseInterface;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.RecyclerInterface;
-import com.hashim.mapswithgeofencing.R;
-import com.hashim.mapswithgeofencing.databinding.ActivityTemplatesBinding;
-import com.hashim.mapswithgeofencing.SettingsPrefrences;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.hashim.mapswithgeofencing.databinding.FragmentTemplatesBinding
 
 
+class TemplatesFragment : Fragment() {
+
+
+    lateinit var hFragmentTempBinding: FragmentTemplatesBinding
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+
+        hFragmentTempBinding = FragmentTemplatesBinding.inflate(
+                layoutInflater,
+                container,
+                false
+        )
+        return hFragmentTempBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+
+    /*
+    *
+    *
 public class TemplatesActivity extends AppCompatActivity implements DialogResponseInterface, RecyclerInterface {
 
 
@@ -112,4 +123,7 @@ public class TemplatesActivity extends AppCompatActivity implements DialogRespon
     public void hOnClickListener(View v, int position, String hText) {
         hSettingsPrefrences.hSaveCustomTemplate(hText);
     }
+}
+
+    * */
 }

@@ -1,37 +1,36 @@
 /*
- * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ * Copyright (c) 2021/  3/ 26.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.tobeDeleted.Activities;
+package com.hashim.mapswithgeofencing.ui.calculateroute
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.hashim.mapswithgeofencing.databinding.FragmentCalculateRouteBinding
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
-
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.hashim.mapswithgeofencing.R;
-import com.hashim.mapswithgeofencing.databinding.AcitivityCalculateRouteBinding;
-
-import java.util.ArrayList;
-import java.util.List;
+class CalculateRouteFragment : Fragment() {
 
 
+    lateinit var hFragmentCalculateRouteBinding: FragmentCalculateRouteBinding
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+        hFragmentCalculateRouteBinding = FragmentCalculateRouteBinding.inflate(
+                layoutInflater,
+                container,
+                false
+        )
+        return hFragmentCalculateRouteBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    /*
+    *
 public class CalculateActivity extends AppCompatActivity /*implements
         TabLayout.BaseOnTabSelectedListener, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -501,6 +500,5 @@ public class CalculateActivity extends AppCompatActivity /*implements
 //    public void onError(Status status) {
 //
 //    }
-
-
+*/
 }
