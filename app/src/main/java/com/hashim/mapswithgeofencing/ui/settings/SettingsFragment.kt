@@ -34,7 +34,6 @@ import com.hashim.mapswithgeofencing.utils.Constants
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.CHANNEL_ID
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_NOTIFICATION_ID
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.item_settings_add_remove_contacts.view.*
 import javax.inject.Inject
 
 
@@ -107,7 +106,7 @@ class SettingsFragment : Fragment() {
         hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationELayout.setOnClickListener {
 //            LogToastSnackHelper.hLogField(hTag, "Test Message T");
         }
-        hFragmentSettingsBinding.hAddRemoveLocationsTLayout.setOnClickListener {
+        hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveLocationsTV.setOnClickListener {
 //            startActivity(new Intent (this, EmergencyContactsActivity.class));
         }
 
@@ -238,7 +237,7 @@ class SettingsFragment : Fragment() {
                 hViewEnabledDisabled(
                         enable = hEnableDisableSettings,
                         textViews = arrayOf(
-                                hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveContactsTv,
+                                hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveLocationsTV,
                                 hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageTv,
                                 hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationTv
                         )
@@ -254,9 +253,11 @@ class SettingsFragment : Fragment() {
                 hViewsColors(
                         changeColor = changeColor,
                         textViews = arrayOf(
-                                hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsTv,
-                                hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv,
-                                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationTv,
+
+
+                                hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveLocationsTV,
+                                hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageTv,
+                                hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationTv,
                         )
 
                 )
@@ -265,9 +266,9 @@ class SettingsFragment : Fragment() {
                 hViewsColors(
                         changeColor = changeColor,
                         textViews = arrayOf(
-                                hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveContactsTv,
-                                hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageTv,
-                                hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationTv,
+                                hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsTv,
+                                hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv,
+                                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationTv,
                         ),
                 )
             }
