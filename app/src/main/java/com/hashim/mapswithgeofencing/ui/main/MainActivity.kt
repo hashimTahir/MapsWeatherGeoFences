@@ -18,6 +18,7 @@ import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding
 import com.mancj.materialsearchbar.MaterialSearchBar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -27,6 +28,9 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
     private lateinit var hActivityMainBinding: ActivityMainBinding
     private lateinit var hNavHostFragments: NavHostFragment
     private lateinit var hNavController: NavController
+
+    @Inject
+    lateinit var hSettingsPrefrences: SettingsPrefrences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,9 +47,6 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
 
     private fun hSetupListeners() {
-        hActivityMainBinding.hSearchBar.setHint("Search here")
-        hActivityMainBinding.hSearchBar.setSpeechMode(true)
-        hActivityMainBinding.hSearchBar.setOnSearchActionListener(this)
 
         hActivityMainBinding.hBottomNav.setOnNavigationItemSelectedListener { menuItem ->
 
@@ -54,7 +55,6 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                     Timber.d("hNavigateToMenu")
                 }
                 R.id.hWeatherMenu -> {
-                    hActivityMainBinding.hSearchBar.visibility = GONE
                     val hSettingsPrefrences = SettingsPrefrences(this)
                     val actionHMainFragmentToHWeatherFragment = MainFragmentDirections.actionHMainFragmentToHWeatherFragment(
                             hSettingsPrefrences.hGetCurrentLocation()

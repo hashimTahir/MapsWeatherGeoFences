@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2021/  3/ 25.  Created by Hashim Tahir
   -->
 
@@ -23,12 +22,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <include
-                    android:id="@+id/hSAppBar"
-                    layout="@layout/appbar"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -38,7 +31,7 @@
                     android:text="@string/location_settings"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/hSAppBar" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                     android:id="@+id/line1"

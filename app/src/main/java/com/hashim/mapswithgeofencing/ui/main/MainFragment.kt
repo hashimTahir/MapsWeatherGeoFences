@@ -92,6 +92,7 @@ class MainFragment : Fragment() {
 
         hInitCategoryRv()
 
+        hSetupListeners()
 
         if (hHasPermission()) {
             hInitMap()
@@ -109,6 +110,13 @@ class MainFragment : Fragment() {
             hRequestPermissions()
         }
 
+
+    }
+
+    private fun hSetupListeners() {
+        hFragmentMainBinding.hSearchBar.setHint("Search here")
+        hFragmentMainBinding.hSearchBar.setSpeechMode(true)
+//        hFragmentMainBinding.hSearchBar.setOnSearchActionListener(this)
 
     }
 

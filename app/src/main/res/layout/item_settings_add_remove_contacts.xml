@@ -12,9 +12,7 @@
         android:id="@+id/hAddRemoveContactsELayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-
-        tools:showIn="@layout/activity_settings">
+        android:layout_marginTop="8dp">
 
 
         <TextView

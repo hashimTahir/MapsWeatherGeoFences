@@ -8,6 +8,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hashim.mapswithgeofencing.BaseApplication
+import com.hashim.mapswithgeofencing.SettingsPrefrences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,5 +36,10 @@ object AppModule {
                 .create()
     }
 
+    @Singleton
+    @Provides
+    fun hProvidesSettingPrefrences(@ApplicationContext context: Context): SettingsPrefrences {
+        return SettingsPrefrences(context)
+    }
 
 }

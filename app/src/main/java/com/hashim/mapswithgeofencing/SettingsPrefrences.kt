@@ -19,7 +19,7 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.util.*
 
-class SettingsPrefrences {
+class SettingsPrefrences(context: Context) {
 
     private val H_TEMPLATES_DATA = "H_TEMPLATES_DATA"
     private val NOT_FIRST_RUN = "not_first_run"
@@ -37,7 +37,7 @@ class SettingsPrefrences {
     private var hEditor: SharedPreferences.Editor? = null
     private var hProfilePrefrences: SharedPreferences? = null
     private val H_CONTACTS_DATA = "H_SAVED_CONTACTS"
-    private var hContext: Context? = null
+    private var hContext: Context? = context
     private val H_FILE_NAME = "H_HASHIM_TEMPLATES.txt"
 
     private val H_CURRENT_LAT_LNG = "H_CURRENT_LAT_LNG"
@@ -45,8 +45,7 @@ class SettingsPrefrences {
     private val H_TRACK_ME_MESSAGE = "H_TRACK_ME_MESSAGE"
 
 
-    constructor(context: Context) {
-        hContext = context
+    init {
         val PRIVATE_MODE = Context.MODE_PRIVATE
         hProfilePrefrences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
         hEditor = hProfilePrefrences?.edit()

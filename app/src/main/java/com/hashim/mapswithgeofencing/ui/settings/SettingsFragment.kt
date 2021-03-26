@@ -8,16 +8,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.hashim.mapswithgeofencing.R
+import com.hashim.mapswithgeofencing.SettingsPrefrences
 import com.hashim.mapswithgeofencing.databinding.FragmentSettingsBinding
+import com.hashim.mapswithgeofencing.utils.Constants
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.item_settings_add_remove_contacts.view.*
+import kotlinx.android.synthetic.main.item_settings_add_remove_locations.view.*
+import kotlinx.android.synthetic.main.item_settings_test_notification.view.*
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 class SettingsFragment : Fragment() {
+
+    @Inject
+    lateinit var hSettingsPrefrences: SettingsPrefrences
 
     lateinit var hFragmentSettingsBinding: FragmentSettingsBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
 
         hFragmentSettingsBinding = FragmentSettingsBinding.inflate(
                 layoutInflater,
@@ -29,6 +45,212 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        hInitView()
+
+        hSetupListeners()
+
+        hSubscribeObservers()
+    }
+
+    private fun hSetupListeners() {
+        hFragmentSettingsBinding.hDistanceSpinner.onItemSelectedListener =
+                object : OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        hSettingsPrefrences.hSaveDistanceUnit(position);
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                    }
+                }
+        hFragmentSettingsBinding.hLanguageSpinner.onItemSelectedListener =
+                object : OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        hSettingsPrefrences.hSaveLanguage(position);
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                    }
+                }
+        hFragmentSettingsBinding.hTempratureSpinner.onItemSelectedListener =
+                object : OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        hSettingsPrefrences.hSaveTempUnit(position);
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                    }
+                }
+        hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setOnClickListener {
+            hEnableDisableEmergencySettings();
+        }
+        hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout.setOnClickListener {
+//            startActivity(new Intent (SettingsActivity.this, TrackMeActivity.class));
+        }
+        hFragmentSettingsBinding.hEditMessageELayout.hEditMessageELayout.setOnClickListener {
+//            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
+        }
+        hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationELayout.setOnClickListener {
+//            if (!hIsTimerRunning) {
+//                hCountDownTimer.start();
+//                hSendMessageAndNotification();
+//
+//            } else {
+//                String hTimeRemaing = String . format (Locale.getDefault(), "%d min, %d sec",
+//                TimeUnit.MILLISECONDS.toMinutes(hTimeRemaining),
+//                TimeUnit.MILLISECONDS.toSeconds(hTimeRemaining) -
+//                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(hTimeRemaining))
+//                );
+//                LogToastSnackHelper.hMakeShortToast(this,
+//                        "Text can be sent again after ".concat(hTimeRemaing));
+//
+//            }
+        }
+        hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageELayout.setOnClickListener {
+//            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
+        }
+        hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationELayout.setOnClickListener {
+//            LogToastSnackHelper.hLogField(hTag, "Test Message T");
+        }
+        hFragmentSettingsBinding.hAddRemoveLocationsTLayout.setOnClickListener {
+//            startActivity(new Intent (this, EmergencyContactsActivity.class));
+        }
+    }
+
+    private fun hInitView() {
+        val hDistanceAdapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.unit_spinner_array,
+                android.R.layout.simple_spinner_dropdown_item
+        )
+        hDistanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        hFragmentSettingsBinding.hDistanceSpinner.setAdapter(hDistanceAdapter)
+        hFragmentSettingsBinding.hDistanceSpinner.setSelection(hSettingsPrefrences.hGetDistanceUnit())
+
+
+        val hLanguageAdapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.language_spinner_array,
+                android.R.layout.simple_spinner_dropdown_item
+        )
+        hLanguageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        hFragmentSettingsBinding.hLanguageSpinner.setAdapter(hLanguageAdapter);
+        hFragmentSettingsBinding.hLanguageSpinner.setSelection(hSettingsPrefrences.hGetLanguage())
+
+
+        val hTempAdapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.temprature_spinner_array,
+                android.R.layout.simple_spinner_dropdown_item
+        )
+        hFragmentSettingsBinding.hTempratureSpinner.setAdapter(hTempAdapter);
+        hFragmentSettingsBinding.hTempratureSpinner.setSelection(hSettingsPrefrences.hGetTempUnit())
+
+
+        val hIsEnableDisableEmergencySettings = hSettingsPrefrences.hGetEnableDisableEmergencySettings();
+        hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setChecked(hIsEnableDisableEmergencySettings);
+        hEnableDisableButtons(hIsEnableDisableEmergencySettings, Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
+
+    }
+
+    fun hEnableDisableButtons(hEnableDisableSettings: Boolean, hEnableDisableTrackMeSettings: String) {
+        when (hEnableDisableTrackMeSettings) {
+            Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS -> {
+                hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsTv
+                        .isEnabled = hEnableDisableSettings
+                hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv
+                        .isEnabled = hEnableDisableSettings
+                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationTv
+                        .isEnabled = hEnableDisableSettings
+
+                hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout
+                        .isEnabled = hEnableDisableSettings
+                hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv
+                        .isEnabled = hEnableDisableSettings
+                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationELayout
+                        .isEnabled = hEnableDisableSettings
+
+                hChangeEmergencyTextColors(hEnableDisableSettings)
+            }
+
+            Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS -> {
+
+                hFragmentSettingsBinding.hAddRemoveLocationsTLayout
+                        .isEnabled = hEnableDisableSettings
+                hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageELayout
+                        .isEnabled = hEnableDisableSettings
+                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationELayout
+                        .isEnabled = hEnableDisableSettings
+
+                hChangeTrackmeTextColors(hEnableDisableSettings)
+            }
+        }
+    }
+
+    private fun hChangeTrackmeTextColors(hEnableDisableSettings: Boolean) {
+        if (hEnableDisableSettings) {
+            hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveLocationsTV.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.black)
+            )
+            hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageTv.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.black)
+            )
+            hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationTv.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.black)
+            )
+
+        } else {
+            hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveLocationsTV.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.light_gray)
+            )
+            hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageTv.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.light_gray)
+            )
+            hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationTv.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.light_gray)
+            )
+        }
+    }
+
+    private fun hChangeEmergencyTextColors(hEnableDisableSettings: Boolean) {
+        if (hEnableDisableSettings) {
+            hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout.hAddRemoveContactsTv
+                    .setTextColor(
+                            ContextCompat.getColor(requireContext(), R.color.black)
+                    )
+            hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.black)
+            )
+            hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationELayout.hTestNotificationTv.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.black)
+            )
+        } else {
+            hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout.hAddRemoveContactsTv
+                    .setTextColor(
+                            ContextCompat.getColor(requireContext(), R.color.light_gray)
+                    )
+            hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.light_gray)
+            )
+            hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationELayout.hTestNotificationTv
+                    .setTextColor(
+                            ContextCompat.getColor(requireContext(), R.color.light_gray)
+                    )
+        }
+    }
+
+    private fun hEnableDisableEmergencySettings() {
+//        if (EasyPermissions.hasPermissions(this, Constants.H_CONTACTS_PERMISSION)) {
+            val hIsEnableDisableEmergencySettings = hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked();
+            hSettingsPrefrences.hSetEnableDisableEmergencySettings(hIsEnableDisableEmergencySettings);
+            hEnableDisableButtons(hIsEnableDisableEmergencySettings, Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
+//        } else {
+//            hAskForPermissions(Constants.H_CONTACTS_PERMISSION);
+//        }
+    }
+
+    private fun hSubscribeObservers() {
 
     }
 
@@ -66,60 +288,10 @@ public class SettingsActivity extends AppCompatActivity /*implements
 
         }
     };
-//    private ActivitySettingsBinding hActivitySettingsBinding;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-//        hActivitySettingsBinding = ActivitySettingsBinding.inflate(getLayoutInflater());
-
-//        setContentView(hActivitySettingsBinding.getRoot());
-//        UIHelper.hOreoOrientationCheck(this);
-//
-//        hSettingsPrefrences = new SettingsPrefrences(this);
-//
-//        ToolBarHelper hToolBarHelper = new ToolBarHelper(this);
-//        hToolBarHelper.hSetToolbar(hActivitySettingsBinding.hSAppBar.toolbar);
-//        hToolBarHelper.hSetToolbarTitle(hActivitySettingsBinding.hSAppBar.toolbarTitle, "Settings");
-//
-//        hGetIntentData();
-//
-//        hInitView();
-
-
-    }
 
 
 //
-//    private void hInitView() {
-//
-//        //spinner listeners
-//        hActivitySettingsBinding.hDistanceSpinner.setOnItemSelectedListener(this);
-//        hActivitySettingsBinding.hLanguageSpinner.setOnItemSelectedListener(this);
-//        hActivitySettingsBinding.hTempratureSpinner.setOnItemSelectedListener(this);
-//
-//
-//        ArrayAdapter<CharSequence> hDistanceAdapter = ArrayAdapter.createFromResource(this,
-//                R.array.unit_spinner_array, android.R.layout.simple_spinner_item);
-//        hDistanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        hActivitySettingsBinding.hDistanceSpinner.setAdapter(hDistanceAdapter);
-//        hActivitySettingsBinding.hDistanceSpinner.setSelection(hSettingsPrefrences.hGetDistanceUnit());
-//
-//        ArrayAdapter<CharSequence> hLanguageAdapter = ArrayAdapter.createFromResource(this,
-//                R.array.language_spinner_array, android.R.layout.simple_spinner_item);
-//        hLanguageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        hActivitySettingsBinding.hLanguageSpinner.setAdapter(hLanguageAdapter);
-//
-//        ArrayAdapter<CharSequence> hTempAdapter = ArrayAdapter.createFromResource(this,
-//                R.array.temprature_spinner_array, android.R.layout.simple_spinner_item);
-//        hTempAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        hActivitySettingsBinding.hTempratureSpinner.setAdapter(hTempAdapter);
-//        hActivitySettingsBinding.hTempratureSpinner.setSelection(hSettingsPrefrences.hGetTempUnit());
-//
-//        //Emergency Settings
-//        hIsEnableDisableEmergencySettings = hSettingsPrefrences.hGetEnableDisableEmergencySettings();
-//        hActivitySettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setChecked(hIsEnableDisableEmergencySettings);
-//        hEnableDisableButtons(hIsEnableDisableEmergencySettings, Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
+/
 //
 //        //Track Me Settings
 //        hIsEnableDisableTrackMeSettings = hSettingsPrefrences.hGetEnableDisableTrackMeSettings();
@@ -139,7 +311,7 @@ public class SettingsActivity extends AppCompatActivity /*implements
 //
 //    private void hEnableDisableTrackMeSettings() {
 //        if (EasyPermissions.hasPermissions(this, Constants.H_CONTACTS_PERMISSION)) {
-//            hIsEnableDisableTrackMeSettings = hActivitySettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked();
+//            hIsEnableDisableTrackMeSettings = hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked();
 //            hSettingsPrefrences.hSetEnableDisableTrackMeSettings(hIsEnableDisableTrackMeSettings);
 //            hEnableDisableButtons(hIsEnableDisableTrackMeSettings, Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
 //        } else {
@@ -147,28 +319,6 @@ public class SettingsActivity extends AppCompatActivity /*implements
 //        }
 //    }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        UIHelper.hOreoOrientationCheck(this);
-//    }
-//
-//    @Override
-//    public void onBackPressed() {
-//
-//        super.onBackPressed();
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        if (item.getItemId() == android.R.id.home) {
-//            onBackPressed();
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//
 //    private void hGetIntentData() {
 //        Bundle hBundle = getIntent().getExtras();
 //        if (hBundle != null) {
@@ -179,28 +329,7 @@ public class SettingsActivity extends AppCompatActivity /*implements
 //        }
 //    }
 //
-//    @Override
-//    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        switch (parent.getId()) {
-//            case R.id.hDistanceSpinner:
-//                hSettingsPrefrences.hSaveDistanceUnit(position);
-//                break;
-//            case R.id.hLanguageSpinner:
-//                hSettingsPrefrences.hSaveLanguage(position);
-////                LogToastSnackHelper.hMakeShortToast(this, "Language settings saved");
-//                break;
-//            case R.id.hTempratureSpinner:
-//                hSettingsPrefrences.hSaveTempUnit(position);
-//        }
-//
-//
-//    }
-//
-//    @Override
-//    public void onNothingSelected(AdapterView<?> parent) {
-//
-//    }
-//
+
 //    @Override
 //    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 //        hSettingsPrefrences.hSaveRadius(progress);
@@ -226,45 +355,7 @@ public class SettingsActivity extends AppCompatActivity /*implements
 //
 //        }
 //    }
-//
-//
-//    public void hSetupListeners(View view) {
-//        hActivitySettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setOnClickListener(v -> {
-//            hEnableDisableEmergencySettings();
-//        });
-//        hActivitySettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout.setOnClickListener(v -> {
-//            startActivity(new Intent(SettingsActivity.this, TrackMeActivity.class));
-//        });
-//        hActivitySettingsBinding.hEditMessageELayout.hEditMessageELayout.setOnClickListener(v -> {
-//            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
-//        });
-//        hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationELayout.setOnClickListener(v -> {
-//            if (!hIsTimerRunning) {
-//                hCountDownTimer.start();
-//                hSendMessageAndNotification();
-//
-//            } else {
-//                String hTimeRemaing = String.format(Locale.getDefault(), "%d min, %d sec",
-//                        TimeUnit.MILLISECONDS.toMinutes(hTimeRemaining),
-//                        TimeUnit.MILLISECONDS.toSeconds(hTimeRemaining) -
-//                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(hTimeRemaining))
-//                );
-//                LogToastSnackHelper.hMakeShortToast(this,
-//                        "Text can be sent again after ".concat(hTimeRemaing));
-//
-//            }
-//        });
-//        hActivitySettingsBinding.hEditMessageTLayout.hEditMessageELayout.setOnClickListener(v -> {
-//            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
-//        });
-//        hActivitySettingsBinding.hTestNotificationTLayout.hTestNotificationELayout.setOnClickListener(v -> {
-//            LogToastSnackHelper.hLogField(hTag, "Test Message T");
-//        });
-//        hActivitySettingsBinding.hAddRemoveLocationsTLayout.setOnClickListener(v -> {
-//            startActivity(new Intent(this, EmergencyContactsActivity.class));
-//        });
-//
-//    }
+
 //
 //    private void hSendMessageAndNotification() {
 //        List<ContactsModelWithIds> hContactsModelWithIdsList = hSettingsPrefrences.hGetSavedContacts();
@@ -357,15 +448,7 @@ public class SettingsActivity extends AppCompatActivity /*implements
 //
 //    }
 //
-//    private void hEnableDisableEmergencySettings() {
-//        if (EasyPermissions.hasPermissions(this, Constants.H_CONTACTS_PERMISSION)) {
-//            hIsEnableDisableEmergencySettings = hActivitySettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked();
-//            hSettingsPrefrences.hSetEnableDisableEmergencySettings(hIsEnableDisableEmergencySettings);
-//            hEnableDisableButtons(hIsEnableDisableEmergencySettings, Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
-//        } else {
-//            hAskForPermissions(Constants.H_CONTACTS_PERMISSION);
-//        }
-//    }
+
 //
 //
 //    public void hSendSmsMessage(String number, String messager) {
@@ -373,51 +456,7 @@ public class SettingsActivity extends AppCompatActivity /*implements
 //        smsManager.sendTextMessage(number, null, messager, null, null);
 //    }
 //
-//    private void hEnableDisableButtons(boolean hEnableDisableSettings, String hEnableDisableTrackMeSettings) {
-//        switch (hEnableDisableTrackMeSettings) {
-//            case Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS:
-//
-//                hActivitySettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsTv.setEnabled(hEnableDisableSettings);
-//                hActivitySettingsBinding.hEditMessageELayout.hEditMessageTv.setEnabled(hEnableDisableSettings);
-//                hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationTv.setEnabled(hEnableDisableSettings);
-//
-//                hActivitySettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout.setEnabled(hEnableDisableSettings);
-//                hActivitySettingsBinding.hEditMessageELayout.hEditMessageTv.setEnabled(hEnableDisableSettings);
-//                hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationELayout.setEnabled(hEnableDisableSettings);
-//
-//                if (hEnableDisableSettings) {
-//                    UIHelper.hChangeColor(ContextCompat.getColor(this, R.color.black),
-//                            hActivitySettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout, hActivitySettingsBinding.hEditMessageELayout.hEditMessageTv,
-//                            hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationELayout);
-//                } else {
-//                    UIHelper.hChangeColor(ContextCompat.getColor(this, R.color.light_gray),
-//                            hActivitySettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout, hActivitySettingsBinding.hEditMessageELayout.hEditMessageTv,
-//                            hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationELayout);
-//                }
-//
-//                break;
-//            case Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS:
-//
-//                hAddRemoveLocationsTTv.setEnabled(hEnableDisableSettings);
-//                hEditMessageTTv.setEnabled(hEnableDisableSettings);
-//                hTestNotificationTTv.setEnabled(hEnableDisableSettings);
-//
-//                hActivitySettingsBinding.hAddRemoveLocationsTLayout.setEnabled(hEnableDisableSettings);
-//                hActivitySettingsBinding.hEditMessageTLayout.hEditMessageELayout.setEnabled(hEnableDisableSettings);
-//                hActivitySettingsBinding.hTestNotificationELayout.hTestNotificationELayout.setEnabled(hEnableDisableSettings);
-//
-//                if (hEnableDisableSettings) {
-//                    UIHelper.hChangeColor(ContextCompat.getColor(this, R.color.black),
-//                            hAddRemoveLocationsTTv, hEditMessageTTv, hTestNotificationTTv);
-//                } else {
-//                    UIHelper.hChangeColor(ContextCompat.getColor(this, R.color.light_gray),
-//                            hAddRemoveLocationsTTv, hEditMessageTTv, hTestNotificationTTv);
-//                }
-//
-//                break;
-//        }
-//    }
-//
+
 //
 //    @Override
 //    public void hSubmitText(String hText) {

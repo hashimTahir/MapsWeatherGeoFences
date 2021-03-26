@@ -37,6 +37,9 @@ class MainViewModel @Inject constructor(
 
     private var hCurrentLocation: Location? = null
 
+    @Inject
+    lateinit var hSettingsPrefrences: SettingsPrefrences
+
     /*Data setter for the view packged into a single object*/
     private val _hMainViewState = MutableLiveData<MainViewState>()
     public val hMainViewState: LiveData<MainViewState>
@@ -55,7 +58,6 @@ class MainViewModel @Inject constructor(
         when (stateEvent) {
             is OnCurrentLocationFound -> {
                 hCurrentLocation = stateEvent.location
-                val hSettingsPrefrences = SettingsPrefrences(hContext)
                 hSettingsPrefrences.hSaveCurrentLocation(HlatLng(
                         hLng = hCurrentLocation?.longitude,
                         hLat = hCurrentLocation?.latitude,
