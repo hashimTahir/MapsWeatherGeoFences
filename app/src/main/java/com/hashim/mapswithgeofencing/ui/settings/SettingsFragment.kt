@@ -16,22 +16,25 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.SettingsPrefrences
 import com.hashim.mapswithgeofencing.databinding.FragmentSettingsBinding
 import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsModelWithIds
+import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent.*
+import com.hashim.mapswithgeofencing.ui.settings.SettingsType.EMERGENCY
+import com.hashim.mapswithgeofencing.ui.settings.SettingsType.TRACK_ME
 import com.hashim.mapswithgeofencing.utils.Constants
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.CHANNEL_ID
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_NOTIFICATION_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.item_settings_add_remove_contacts.view.*
-import kotlinx.android.synthetic.main.item_settings_add_remove_locations.view.*
-import kotlinx.android.synthetic.main.item_settings_test_notification.view.*
 import javax.inject.Inject
 
 
@@ -41,7 +44,9 @@ class SettingsFragment : Fragment() {
     @Inject
     lateinit var hSettingsPrefrences: SettingsPrefrences
 
-    lateinit var hFragmentSettingsBinding: FragmentSettingsBinding
+    private lateinit var hFragmentSettingsBinding: FragmentSettingsBinding
+
+    private val hSettingViewModel: SettingsViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -65,36 +70,12 @@ class SettingsFragment : Fragment() {
     }
 
     private fun hSetupListeners() {
-        hFragmentSettingsBinding.hDistanceSpinner.onItemSelectedListener =
-                object : OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        hSettingsPrefrences.hSaveDistanceUnit(position);
-                    }
+        hInitSpinnersSelectListeners()
 
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                    }
-                }
-        hFragmentSettingsBinding.hLanguageSpinner.onItemSelectedListener =
-                object : OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        hSettingsPrefrences.hSaveLanguage(position);
-                    }
+        hInitSwitchListeners()
 
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                    }
-                }
-        hFragmentSettingsBinding.hTempratureSpinner.onItemSelectedListener =
-                object : OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        hSettingsPrefrences.hSaveTempUnit(position);
-                    }
 
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                    }
-                }
-        hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setOnClickListener {
-            hEnableDisableEmergencySettings();
-        }
+
         hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout.setOnClickListener {
 //            startActivity(new Intent (SettingsActivity.this, TrackMeActivity.class));
         }
@@ -117,9 +98,12 @@ class SettingsFragment : Fragment() {
 //
 //            }
         }
-        hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageELayout.setOnClickListener {
-            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
-        }
+        hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageELayout
+                .setOnClickListener {
+                    hEditEmergencyTrackeMeMessage(
+                            Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS
+                    );
+                }
         hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationELayout.setOnClickListener {
 //            LogToastSnackHelper.hLogField(hTag, "Test Message T");
         }
@@ -127,13 +111,86 @@ class SettingsFragment : Fragment() {
 //            startActivity(new Intent (this, EmergencyContactsActivity.class));
         }
 
+
+    }
+
+    private fun hInitSwitchListeners() {
+        hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setOnClickListener {
+            val hIsEnableDisableEmergencySettings = hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked()
+            hSettingsPrefrences.hSetEnableDisableEmergencySettings(hIsEnableDisableEmergencySettings);
+            hEnableDisableButtons(hIsEnableDisableEmergencySettings, EMERGENCY)
+            hChangeTextColors(hIsEnableDisableEmergencySettings, EMERGENCY)
+
+        }
+
         hFragmentSettingsBinding.hEnableDisableTLayout.hEnableDisableSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            val hIsEnableDisableTrackMeSettings = hFragmentSettingsBinding.hEnableDisableTLayout.hEnableDisableSwitch.isChecked()
+            hSettingsPrefrences.hSetEnableDisableTrackMeSettings(hIsEnableDisableTrackMeSettings);
+            hEnableDisableButtons(hIsEnableDisableTrackMeSettings, TRACK_ME)
+            hChangeTextColors(hIsEnableDisableTrackMeSettings, TRACK_ME)
 
         }
 
     }
 
+
+    private fun hInitSpinnersSelectListeners() {
+        hFragmentSettingsBinding.hDistanceSpinner.onItemSelectedListener =
+                object : OnItemSelectedListener {
+                    override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                    ) {
+                        hSettingViewModel.hSetStateEvent(OnDistanceSettingsChanged(position))
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                    }
+                }
+        hFragmentSettingsBinding.hLanguageSpinner.onItemSelectedListener =
+                object : OnItemSelectedListener {
+                    override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long
+                    ) {
+                        hSettingViewModel.hSetStateEvent(OnLanguageSettingsChanged(position))
+
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                    }
+                }
+        hFragmentSettingsBinding.hTempratureSpinner.onItemSelectedListener =
+                object : OnItemSelectedListener {
+                    override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View?,
+                            position: Int,
+                            id: Long) {
+                        hSettingViewModel.hSetStateEvent(OnTempratureSettingsChanged(position))
+
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                    }
+                }
+    }
+
     private fun hInitView() {
+        hInitSpinners()
+
+
+        val hIsEnableDisableEmergencySettings = hSettingsPrefrences.hGetEnableDisableEmergencySettings();
+        hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setChecked(hIsEnableDisableEmergencySettings);
+        hEnableDisableButtons(hIsEnableDisableEmergencySettings, EMERGENCY);
+
+    }
+
+    private fun hInitSpinners() {
         val hDistanceAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.unit_spinner_array,
@@ -162,113 +219,91 @@ class SettingsFragment : Fragment() {
         )
         hFragmentSettingsBinding.hTempratureSpinner.setAdapter(hTempAdapter);
         hFragmentSettingsBinding.hTempratureSpinner.setSelection(hSettingsPrefrences.hGetTempUnit())
-
-
-        val hIsEnableDisableEmergencySettings = hSettingsPrefrences.hGetEnableDisableEmergencySettings();
-        hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setChecked(hIsEnableDisableEmergencySettings);
-        hEnableDisableButtons(hIsEnableDisableEmergencySettings, Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
-
     }
 
-    fun hEnableDisableButtons(hEnableDisableSettings: Boolean, hEnableDisableTrackMeSettings: String) {
-        when (hEnableDisableTrackMeSettings) {
-            Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS -> {
-                hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsTv
-                        .isEnabled = hEnableDisableSettings
-                hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv
-                        .isEnabled = hEnableDisableSettings
-                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationTv
-                        .isEnabled = hEnableDisableSettings
+    fun hEnableDisableButtons(hEnableDisableSettings: Boolean, settingsType: SettingsType) {
+        when (settingsType) {
+            EMERGENCY -> {
+                hViewEnabledDisabled(
+                        enable = hEnableDisableSettings,
+                        textViews = arrayOf(
+                                hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsTv,
+                                hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv,
+                                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationTv
+                        )
+                )
 
-                hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout
-                        .isEnabled = hEnableDisableSettings
-                hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv
-                        .isEnabled = hEnableDisableSettings
-                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationELayout
-                        .isEnabled = hEnableDisableSettings
-
-                hChangeEmergencyTextColors(hEnableDisableSettings)
             }
-
-            Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS -> {
-
-                hFragmentSettingsBinding.hAddRemoveLocationsTLayout
-                        .isEnabled = hEnableDisableSettings
-                hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageELayout
-                        .isEnabled = hEnableDisableSettings
-                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationELayout
-                        .isEnabled = hEnableDisableSettings
-
-                hChangeTrackmeTextColors(hEnableDisableSettings)
+            TRACK_ME -> {
+                hViewEnabledDisabled(
+                        enable = hEnableDisableSettings,
+                        textViews = arrayOf(
+                                hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveContactsTv,
+                                hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageTv,
+                                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationTv
+                        )
+                )
             }
         }
-
     }
 
-    private fun hChangeTrackmeTextColors(hEnableDisableSettings: Boolean) {
-        if (hEnableDisableSettings) {
-            hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveLocationsTV.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.black)
-            )
-            hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageTv.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.black)
-            )
-            hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationTv.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.black)
-            )
 
-        } else {
-            hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveLocationsTV.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.light_gray)
-            )
-            hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageTv.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.light_gray)
-            )
-            hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationTv.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.light_gray)
-            )
+    private fun hChangeTextColors(changeColor: Boolean, settingsType: SettingsType) {
+        when (settingsType) {
+            TRACK_ME -> {
+                hViewsColors(
+                        changeColor = changeColor,
+                        textViews = arrayOf(
+                                hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsTv,
+                                hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv,
+                                hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationTv,
+                        )
+
+                )
+            }
+            EMERGENCY -> {
+                hViewsColors(
+                        changeColor = changeColor,
+                        textViews = arrayOf(
+                                hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveContactsTv,
+                                hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageTv,
+                                hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationTv,
+                        ),
+                )
+            }
+
         }
     }
 
-    private fun hChangeEmergencyTextColors(hEnableDisableSettings: Boolean) {
-        if (hEnableDisableSettings) {
-            hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout.hAddRemoveContactsTv
-                    .setTextColor(
-                            ContextCompat.getColor(requireContext(), R.color.black)
-                    )
-            hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.black)
-            )
-            hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationELayout.hTestNotificationTv.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.black)
-            )
-        } else {
-            hFragmentSettingsBinding.hAddRemoveContactsELayout.hAddRemoveContactsELayout.hAddRemoveContactsTv
-                    .setTextColor(
-                            ContextCompat.getColor(requireContext(), R.color.light_gray)
-                    )
-            hFragmentSettingsBinding.hEditMessageELayout.hEditMessageTv.setTextColor(
-                    ContextCompat.getColor(requireContext(), R.color.light_gray)
-            )
-            hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationELayout.hTestNotificationTv
-                    .setTextColor(
-                            ContextCompat.getColor(requireContext(), R.color.light_gray)
-                    )
+    fun hViewsColors(vararg textViews: TextView, changeColor: Boolean) {
+        for (textview in textViews) {
+            if (changeColor) {
+                textview.setTextColor(
+                        ContextCompat.getColor(requireContext(), R.color.black)
+                )
+            } else {
+                textview.setTextColor(
+                        ContextCompat.getColor(requireContext(), R.color.light_gray)
+                )
+            }
+
         }
     }
 
-    private fun hEnableDisableEmergencySettings() {
-//        if (EasyPermissions.hasPermissions(this, Constants.H_CONTACTS_PERMISSION)) {
-        val hIsEnableDisableEmergencySettings = hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked();
-        hSettingsPrefrences.hSetEnableDisableEmergencySettings(hIsEnableDisableEmergencySettings);
-        hEnableDisableButtons(hIsEnableDisableEmergencySettings, Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
-//        } else {
-//            hAskForPermissions(Constants.H_CONTACTS_PERMISSION);
-//        }
+
+    fun hViewEnabledDisabled(vararg textViews: TextView, enable: Boolean) {
+        for (textview in textViews) {
+            textview.isEnabled = enable
+        }
     }
 
     private fun hSubscribeObservers() {
+        hSettingViewModel.hDataState.observe(viewLifecycleOwner) {
 
+        }
+        hSettingViewModel.hSettingViewState.observe(viewLifecycleOwner) {
+
+        }
     }
 
     private fun hEditEmergencyTrackeMeMessage(hEnableDisableTrackMeSettings: String) {
