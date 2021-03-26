@@ -1,4 +1,4 @@
-# MapsWeatherGeofence
+# Maps Weather Geofences
 
 ### Architecture
 ## MVI-Model View Intent
@@ -8,15 +8,25 @@
  viewmodel.
 
 
-###Technologies Used
+### Technologies Used
 Dagger-Hilt
+
 Retrofit
+
 Coroutines
+
 Repository
+
 Google Maps Api
+
 Google Directions Api
+
 Google Places Api
+
 Goolge Geofences Api
+
 Open Weather api
+
 Database caching
+
 Navigation Components

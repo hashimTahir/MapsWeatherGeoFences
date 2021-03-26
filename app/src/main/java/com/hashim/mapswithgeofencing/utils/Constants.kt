@@ -6,6 +6,8 @@ package com.hashim.mapswithgeofencing.utils
 
 class Constants {
     companion object {
+        val CHANNEL_ID: String = "channelIdHere"
+        val H_NOTIFICATION_ID: Int = 1
         const val hTag = "hashimTimberTags %s"
         const val H_NEARBY_PLACES_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
         const val H_DIRECTIONS_URL = "https://maps.googleapis.com/maps/api/directions/json?"

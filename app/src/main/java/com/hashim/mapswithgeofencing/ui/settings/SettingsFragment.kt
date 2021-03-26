@@ -4,19 +4,30 @@
 
 package com.hashim.mapswithgeofencing.ui.settings
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.telephony.SmsManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.SettingsPrefrences
 import com.hashim.mapswithgeofencing.databinding.FragmentSettingsBinding
+import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsModelWithIds
 import com.hashim.mapswithgeofencing.utils.Constants
+import com.hashim.mapswithgeofencing.utils.Constants.Companion.CHANNEL_ID
+import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_NOTIFICATION_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.item_settings_add_remove_contacts.view.*
 import kotlinx.android.synthetic.main.item_settings_add_remove_locations.view.*
@@ -88,7 +99,7 @@ class SettingsFragment : Fragment() {
 //            startActivity(new Intent (SettingsActivity.this, TrackMeActivity.class));
         }
         hFragmentSettingsBinding.hEditMessageELayout.hEditMessageELayout.setOnClickListener {
-//            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
+            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
         }
         hFragmentSettingsBinding.hTestNotificationELayout.hTestNotificationELayout.setOnClickListener {
 //            if (!hIsTimerRunning) {
@@ -107,7 +118,7 @@ class SettingsFragment : Fragment() {
 //            }
         }
         hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageELayout.setOnClickListener {
-//            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
+            hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
         }
         hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationELayout.setOnClickListener {
 //            LogToastSnackHelper.hLogField(hTag, "Test Message T");
@@ -115,6 +126,11 @@ class SettingsFragment : Fragment() {
         hFragmentSettingsBinding.hAddRemoveLocationsTLayout.setOnClickListener {
 //            startActivity(new Intent (this, EmergencyContactsActivity.class));
         }
+
+        hFragmentSettingsBinding.hEnableDisableTLayout.hEnableDisableSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+
+        }
+
     }
 
     private fun hInitView() {
@@ -186,6 +202,7 @@ class SettingsFragment : Fragment() {
                 hChangeTrackmeTextColors(hEnableDisableSettings)
             }
         }
+
     }
 
     private fun hChangeTrackmeTextColors(hEnableDisableSettings: Boolean) {
@@ -242,9 +259,9 @@ class SettingsFragment : Fragment() {
 
     private fun hEnableDisableEmergencySettings() {
 //        if (EasyPermissions.hasPermissions(this, Constants.H_CONTACTS_PERMISSION)) {
-            val hIsEnableDisableEmergencySettings = hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked();
-            hSettingsPrefrences.hSetEnableDisableEmergencySettings(hIsEnableDisableEmergencySettings);
-            hEnableDisableButtons(hIsEnableDisableEmergencySettings, Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
+        val hIsEnableDisableEmergencySettings = hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked();
+        hSettingsPrefrences.hSetEnableDisableEmergencySettings(hIsEnableDisableEmergencySettings);
+        hEnableDisableButtons(hIsEnableDisableEmergencySettings, Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS);
 //        } else {
 //            hAskForPermissions(Constants.H_CONTACTS_PERMISSION);
 //        }
@@ -254,248 +271,100 @@ class SettingsFragment : Fragment() {
 
     }
 
-    /*
-    *
-public class SettingsActivity extends AppCompatActivity /*implements
-        AdapterView.OnItemSelectedListener, DialogResponseInterface,
-        SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener*/ {
+    private fun hEditEmergencyTrackeMeMessage(hEnableDisableTrackMeSettings: String) {
+//        HLatLngModel hLatLngModel = hSettingsPrefrences . hGetCurrentLocation ();
+//        String hMessage = String.format(getString(R.string.emergency_contact_message),
+//                hLatLngModel.getLatitude().concat(" ,").concat(hLatLngModel.getLongitude()));
+//        LogToastSnackHelper.hLogField(hTag, hMessage);
 
-
-    private boolean hIsFromTrackMe = false;
-    private int hCounter = 1;
-    private SettingsPrefrences hSettingsPrefrences;
-    //    private String hTag = LogToastSnackHelper.hMakeTag(SettingsActivity.class);
-    private boolean hIsEnableDisableEmergencySettings;
-    private boolean hIsEnableDisableTrackMeSettings;
-    private String CHANNEL_ID = "Hashim_channel";
-    private static final int H_NOTIFICATION_ID = 1100;
-    private final int H_CONTACTS_PERMISSION_CODE = 222;
-    private TextView hAddRemoveLocationsTTv;
-    private TextView hEditMessageTTv;
-    private TextView hTestNotificationTTv;
-    private long hTimeRemaining;
-    private boolean hIsTimerRunning = false;
-    private CountDownTimer hCountDownTimer = new CountDownTimer(60 * 1000, 1000) {
-        @Override
-        public void onTick(long millisUntilFinished) {
-            hIsTimerRunning = true;
-            hTimeRemaining = millisUntilFinished;
-        }
-
-        @Override
-        public void onFinish() {
-            hIsTimerRunning = false;
-
-        }
-    };
-
-
-//
-/
-//
-//        //Track Me Settings
-//        hIsEnableDisableTrackMeSettings = hSettingsPrefrences.hGetEnableDisableTrackMeSettings();
-//
-////
-////        hEnableDisableSwitchT.setChecked(hIsEnableDisableTrackMeSettings);
-////        hEnableDisableSwitchT.setOnClickListener(v -> {
-////            hEnableDisableTrackMeSettings();
-////
-////        });
-//
-//
-//        hEnableDisableButtons(hIsEnableDisableTrackMeSettings, Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
-//
-//
-//    }
-//
-//    private void hEnableDisableTrackMeSettings() {
-//        if (EasyPermissions.hasPermissions(this, Constants.H_CONTACTS_PERMISSION)) {
-//            hIsEnableDisableTrackMeSettings = hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked();
-//            hSettingsPrefrences.hSetEnableDisableTrackMeSettings(hIsEnableDisableTrackMeSettings);
-//            hEnableDisableButtons(hIsEnableDisableTrackMeSettings, Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS);
-//        } else {
-//            hAskForPermissions(Constants.H_CONTACTS_PERMISSION);
-//        }
-//    }
-
-//    private void hGetIntentData() {
-//        Bundle hBundle = getIntent().getExtras();
-//        if (hBundle != null) {
-//            if (hBundle.getString(Constants.H_SETTINGS_IC).equals(Constants.H_TRACK_ME)) {
-//                hIsFromTrackMe = true;
-//            }
-//
-//        }
-//    }
-//
-
-//    @Override
-//    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//        hSettingsPrefrences.hSaveRadius(progress);
-////        LogToastSnackHelper.hMakeShortToast(this, "Radius saved");
-//    }
-//
-//    @Override
-//    public void onStartTrackingTouch(SeekBar seekBar) {
-//    }
-//
-//    @Override
-//    public void onStopTrackingTouch(SeekBar seekBar) {
-//    }
-//
-//    @Override
-//    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-////        LogToastSnackHelper.hLogField(hTag, String.valueOf(hTrackSwitch.isChecked()));
-//        hSettingsPrefrences.hSaveTrackingValue(isChecked);
-//        if (isChecked) {
-////            LogToastSnackHelper.hMakeShortToast(this, "Tracking Enabled ");
-//        } else {
-////            LogToastSnackHelper.hMakeShortToast(this, "Tracking Disabled ");
-//
-//        }
-//    }
-
-//
-//    private void hSendMessageAndNotification() {
-//        List<ContactsModelWithIds> hContactsModelWithIdsList = hSettingsPrefrences.hGetSavedContacts();
-//        String message = hSettingsPrefrences.hGetEmergencyMessage();
-//
-//
-//        if (hContactsModelWithIdsList == null || hContactsModelWithIdsList.size() == 0) {
-//            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.no_saved_contacts_plz));
-//        }
-//        if (message == null) {
-//            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.no_saved_message));
-//        }
-//
-//        StringBuilder hStringBuilder = new StringBuilder();
-//        boolean hIsTextSent = false;
-//        if (hContactsModelWithIdsList != null && hContactsModelWithIdsList.size() != 0 && message != null) {
-//            for (ContactsModelWithIds contactsModelWithIds : hContactsModelWithIdsList) {
-//                //                    Todo: send Message
-//                hSendSmsMessage(contactsModelWithIds.getContactNumber(), message);
-//                hStringBuilder.append(contactsModelWithIds.getContactName().concat("\n"));
-//            }
-//            hIsTextSent = true;
-//        }
-//        if (hIsTextSent) {
-//            hCreateNotificationChannel();
-//            hCreateSendNotification(hStringBuilder.toString());
-//        } else {
-//            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.unable_to_send_text_message));
-//        }
-//    }
-//
-//    private void hCreateSendNotification(String names) {
-//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
-//                .setSmallIcon(R.mipmap.ic_launcher)
-//                .setContentTitle(getString(R.string.text_message_sent_to_following))
-//                .setContentText(names)
-//                .setStyle(new NotificationCompat.BigTextStyle()
-//                        .bigText(names))
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-//
-//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-//
-//
-//        notificationManager.notify(H_NOTIFICATION_ID, mBuilder.build());
-//
-//    }
-//
-//    public void hCreateNotificationChannel() {
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            CharSequence name = getString(R.string.channel_name);
-//            String description = getString(R.string.channel_description);
-//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-//            channel.setDescription(description);
-//            channel.enableLights(true);
-//            channel.setLightColor(Color.GREEN);
-//
-//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-//            notificationManager.createNotificationChannel(channel);
-//        }
-//    }
-//
-//    private void hEditEmergencyTrackeMeMessage(String hEnableDisableTrackMeSettings) {
-//        HLatLngModel hLatLngModel = hSettingsPrefrences.hGetCurrentLocation();
-////        String hMessage = String.format(getString(R.string.emergency_contact_message),
-////                hLatLngModel.getLatitude().concat(" ,").concat(hLatLngModel.getLongitude()));
-////        LogToastSnackHelper.hLogField(hTag, hMessage);
-//
-//        switch (hEnableDisableTrackMeSettings) {
-//            case Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS:
+        when (hEnableDisableTrackMeSettings) {
+            Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS -> {
 //                if (hLatLngModel != null) {
 ////                    HcustomDialog1 hcustomDialog = HcustomDialog1.newInstance(hMessage, true);
 ////                    hcustomDialog.show(getSupportFragmentManager(), "H_Dialog");
 //                } else {
 //
 //                }
-//                break;
-//            case Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS:
+            }
+            Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS -> {
 //                if (hLatLngModel != null) {
 ////                    HcustomDialog1 hcustomDialog = HcustomDialog1.newInstance(hMessage, false);
 ////                    hcustomDialog.show(getSupportFragmentManager(), "H_Dialog");
 //                } else {
 //
 //                }
-//                break;
-//
-//        }
-//
-//
-//    }
-//
-
-//
-//
-//    public void hSendSmsMessage(String number, String messager) {
-//        SmsManager smsManager = SmsManager.getDefault();
-//        smsManager.sendTextMessage(number, null, messager, null, null);
-//    }
-//
-
-//
-//    @Override
-//    public void hSubmitText(String hText) {
-//
-//    }
-//
-//    @Override
-//    public void hSubmitNegativeResponse(DialogFragment hDialogFragment) {
-//        hDialogFragment.dismiss();
-//
-//    }
-//
-//    @Override
-//    public void hSubmitNeutralResponse(DialogFragment hDialogFragment) {
-//
-//    }
-//
-//    @Override
-//    public void hSubmitPositiveResponse(DialogFragment hDialogFragment, String hUserName) {
-//        HcustomDialog1 hcustomDialog = (HcustomDialog1) hDialogFragment;
-//        boolean hIsEmergency = hcustomDialog.ishIsSendToAll();
-//        if (hIsEmergency) {
-//            hSettingsPrefrences.hSaveEmergencyMessage(hUserName);
-//        } else {
-//            hSettingsPrefrences.hSaveTrackMeMessage(hUserName);
-//        }
-//
-//        hcustomDialog.dismiss();
-//
-//    }
-//
-//    @Override
-//    public void hSubmitCloseResponse(boolean b) {
-//
-//    }
+            }
+        }
 
 
-}
+    }
 
-    * */
 
+    private fun hSendMessageAndNotification() {
+        val hContactsModelWithIdsList: List<ContactsModelWithIds> = hSettingsPrefrences.hGetSavedContacts() as List<ContactsModelWithIds>;
+        val message: String? = hSettingsPrefrences.hGetEmergencyMessage()
+
+
+        if (hContactsModelWithIdsList == null || hContactsModelWithIdsList.size == 0) {
+//            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.no_saved_contacts_plz))
+        }
+        if (message == null) {
+//            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.no_saved_message));
+        }
+
+        val hStringBuilder = StringBuilder()
+        var hIsTextSent: Boolean = false
+        if (hContactsModelWithIdsList != null && hContactsModelWithIdsList.size != 0 && message != null) {
+            for (contactsModelWithIds in hContactsModelWithIdsList) {
+                //                    Todo: send Message
+                hSendSmsMessage(contactsModelWithIds.getContactNumber(), message);
+                hStringBuilder.append(contactsModelWithIds.getContactName() + ("\n"));
+            }
+            hIsTextSent = true
+        }
+        if (hIsTextSent) {
+            hCreateNotificationChannel();
+            hCreateSendNotification(hStringBuilder.toString())
+        } else {
+//            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.unable_to_send_text_message));
+        }
+    }
+
+    private fun hCreateSendNotification(names: String) {
+        val hNotificationBuilder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(getString(R.string.text_message_sent_to_following))
+                .setContentText(names)
+                .setStyle(NotificationCompat.BigTextStyle()
+                        .bigText(names))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        val hNotificationManagerCompat = NotificationManagerCompat.from(requireContext());
+
+
+        hNotificationManagerCompat.notify(H_NOTIFICATION_ID, hNotificationBuilder.build());
+
+    }
+
+    private fun hCreateNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name: CharSequence = getString(R.string.channel_name)
+            val description: CharSequence = getString(R.string.channel_description)
+
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance);
+            channel.description = description as String?
+            channel.enableLights(true)
+            channel.lightColor = Color.GREEN
+
+            val hNotificationManager = getSystemService(requireContext(), NotificationManager::class.java)
+            hNotificationManager?.createNotificationChannel(channel)
+        }
+    }
+
+
+    fun hSendSmsMessage(number: String, messager: String) {
+        val hSmsManager = SmsManager.getDefault();
+        hSmsManager.sendTextMessage(number, null, messager, null, null);
+    }
 }
