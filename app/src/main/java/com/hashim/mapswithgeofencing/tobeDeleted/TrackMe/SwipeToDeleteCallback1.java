@@ -21,7 +21,7 @@ import com.hashim.mapswithgeofencing.R;
 public class SwipeToDeleteCallback1 extends ItemTouchHelper.SimpleCallback {
 
     ContactsAdapter1 hTestAdapter;
-    private Drawable icon;
+    private final Drawable icon;
     private final ColorDrawable background;
     DeleteCallBack hDeleteCallBack;
 

@@ -33,7 +33,7 @@ class WeatherViewModel @Inject constructor(
     private var hCurrentLocation: Location? = null
     private var hLastDayName: String? = null
     private val _hWeatherViewState = MutableLiveData<WeatherViewState>()
-    public val hWeatherViewState: LiveData<WeatherViewState>
+    val hWeatherViewState: LiveData<WeatherViewState>
         get() = _hWeatherViewState
 
 

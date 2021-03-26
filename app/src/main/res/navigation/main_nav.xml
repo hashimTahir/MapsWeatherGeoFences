@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
   -->
 
@@ -13,19 +12,45 @@
         android:id="@+id/hMainFragment"
         android:name="com.hashim.mapswithgeofencing.ui.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_hMainFragment_to_hWeatherFragment"
             app:destination="@id/hWeatherFragment" />
+        <action
+            android:id="@+id/action_hMainFragment_to_hSettingsFragment"
+            app:destination="@id/hSettingsFragment" />
+        <action
+            android:id="@+id/action_hMainFragment_to_hCompassFragment"
+            app:destination="@id/hCompassFragment" />
     </fragment>
     <fragment
         android:id="@+id/hWeatherFragment"
         android:name="com.hashim.mapswithgeofencing.ui.weather.WeatherFragment"
         android:label="WeatherFragment"
-        tools:layout="@layout/weather_fragment" >
+        tools:layout="@layout/weather_fragment">
         <argument
             android:name="hCurrentLocation"
             app:argType="com.hashim.mapswithgeofencing.SettingsPrefrences$HlatLng"
             app:nullable="true" />
     </fragment>
+    <fragment
+        android:id="@+id/hSettingsFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/hCalculateRouteFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.calculateroute.CalculateRouteFragment"
+        android:label="CalculateRouteFragment"
+        tools:layout="@layout/fragment_calculate_route" />
+    <fragment
+        android:id="@+id/hCompassFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.compass.CompassFragment"
+        android:label="CompassFragment"
+        tools:layout="@layout/fragment_compass" />
+    <fragment
+        android:id="@+id/hTemplatesFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.templates.TemplatesFragment"
+        android:label="TemplatesFragment"
+        tools:layout="@layout/fragment_templates" />
 </navigation>

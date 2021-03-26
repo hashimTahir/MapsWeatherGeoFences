@@ -4,45 +4,15 @@
 
 package com.hashim.mapswithgeofencing.tobeDeleted.TrackMe;
 
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
-import android.database.Cursor;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.telephony.SmsManager;
-import android.view.MenuItem;
-import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsModelWithIds;
-import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.Hcomparator1;
-import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.RecyclerItemClickListener;
-import com.hashim.mapswithgeofencing.tobeDeleted.CustomView.HcustomDialog;
-import com.hashim.mapswithgeofencing.tobeDeleted.Helper.ListUtils;
-import com.hashim.mapswithgeofencing.tobeDeleted.Helper.PrimaryActionMode;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.DeleteCallBack;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.DialogResponseInterface;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.OnItemClickListener;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.onActionModeListener;
-import com.hashim.mapswithgeofencing.R;
-import com.hashim.mapswithgeofencing.databinding.ActivityTrackMeBinding;
-import com.hashim.mapswithgeofencing.SettingsPrefrences;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 
-public class TrackMeActivity extends AppCompatActivity /*implements
-        OnItemClickListener, DialogResponseInterface, DeleteCallBack, onActionModeListener*/ {
+public class TrackMeActivity extends AppCompatActivity {
+    /*
+} implements
+        OnItemClickListener, DialogResponseInterface, DeleteCallBack, onActionModeListener {
 
-/*
+
     private ContactsAdapter1 hContactsAdapter;
     private List<ContactsModelWithIds> hSavedContacatsList;
     private List<ContactsModelWithIds> hAllContactsList = new ArrayList<>();

@@ -19,7 +19,9 @@ import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.DeleteCallBack;
 import com.hashim.mapswithgeofencing.R;
 
 
-public class SwipeToDeleteCallback1 extends ItemTouchHelper.SimpleCallback {
+public class SwipeToDeleteCallback1{
+    /*extends ItemTouchHelper.SimpleCallback
+} {
 
     RecyclerAdapter hTestAdapter;
     private Drawable icon;
@@ -87,5 +89,5 @@ public class SwipeToDeleteCallback1 extends ItemTouchHelper.SimpleCallback {
 
         background.draw(c);
         icon.draw(c);
-    }
+    }*/
 }

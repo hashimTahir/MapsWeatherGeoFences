@@ -7,7 +7,9 @@ package com.hashim.mapswithgeofencing.tobeDeleted.EmergencyContacts;
 import androidx.fragment.app.Fragment;
 
 
-public class AddLocationFragment extends Fragment { /*implements OnMapReadyCallback,
+public class AddLocationFragment extends Fragment {
+    /*implements
+} OnMapReadyCallback,
         GoogleMap.OnMapClickListener, TextWatcher {
     //        DeleteCallBack, OnItemClickListener, onActionModeListener
     private static final String H_LOCATION_ID = "H_LOCATION_ID";

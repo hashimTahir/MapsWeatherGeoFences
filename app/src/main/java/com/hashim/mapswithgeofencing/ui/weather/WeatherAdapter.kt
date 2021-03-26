@@ -30,7 +30,7 @@ class WeatherAdapter(val adapterType: Int, val hContext: Context) : RecyclerView
     private fun hGetWeeklyVh(parent: ViewGroup): WeeklyVh {
         return WeeklyVh(
                 ItemRecyclerWeather1Binding.inflate(
-                        LayoutInflater.from(parent.getContext()),
+                        LayoutInflater.from(parent.context),
                         parent,
                         false
                 )

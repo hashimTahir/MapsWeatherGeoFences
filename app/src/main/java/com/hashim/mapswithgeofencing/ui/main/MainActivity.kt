@@ -18,6 +18,7 @@ import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding
 import com.mancj.materialsearchbar.MaterialSearchBar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -27,6 +28,9 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
     private lateinit var hActivityMainBinding: ActivityMainBinding
     private lateinit var hNavHostFragments: NavHostFragment
     private lateinit var hNavController: NavController
+
+    @Inject
+    lateinit var hSettingsPrefrences: SettingsPrefrences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,29 +47,32 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
 
     private fun hSetupListeners() {
-        hActivityMainBinding.hSearchBar.setHint("Search here")
-        hActivityMainBinding.hSearchBar.setSpeechMode(true)
-        hActivityMainBinding.hSearchBar.setOnSearchActionListener(this)
+
+        hActivityMainBinding.hHomeFab.setOnClickListener {
+
+        }
 
         hActivityMainBinding.hBottomNav.setOnNavigationItemSelectedListener { menuItem ->
 
             when (menuItem.itemId) {
-                R.id.hNavigateToMenu -> {
+                R.id.hCompassMenu -> {
                     Timber.d("hNavigateToMenu")
                 }
                 R.id.hWeatherMenu -> {
-                    hActivityMainBinding.hSearchBar.visibility = GONE
                     val hSettingsPrefrences = SettingsPrefrences(this)
                     val actionHMainFragmentToHWeatherFragment = MainFragmentDirections.actionHMainFragmentToHWeatherFragment(
                             hSettingsPrefrences.hGetCurrentLocation()
                     )
                     hNavController.navigate(actionHMainFragmentToHWeatherFragment)
                 }
-                R.id.hDirectionsMenu -> {
+                R.id.hCalculateRounteMenu -> {
                     Timber.d("hDirectionsMenu")
                 }
-                R.id.hExit -> {
+                R.id.hSettingMenu -> {
                     Timber.d("hExit")
+                }
+                R.id.hSettingMenu -> {
+                    hNavController.navigate(R.id.action_hMainFragment_to_hSettingsFragment)
                 }
             }
 
@@ -75,6 +82,9 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
 
     private fun hInitNavView() {
+
+        hActivityMainBinding.hBottomNav.background = null
+
         hNavHostFragments = supportFragmentManager
                 .findFragmentById(R.id.hMainFragmentContainer)
                 as NavHostFragment

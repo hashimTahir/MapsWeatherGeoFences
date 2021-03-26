@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ContactsAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SectionIndexer {
 
-    private Context context;
+    private final Context context;
     private List<ContactsModelWithIds> hNewList;
     private List<Integer> selectedIds = new ArrayList<>();
     private int mRecentlyDeletedItemPosition;
@@ -65,8 +65,8 @@ public class ContactsAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHold
             return false;
         });
         hContactsVH.hItemRecyclerContactsBinding.title.setText(hNewList.get(position).getContactName());
-        /*UIHelper.hSetTextToTextView(
-                hContactsVH.hItemRecyclerContactsBinding.numberTextView, hNewList.get(position).getContactNumber());*/
+//        UIHelper.hSetTextToTextView(
+//                hContactsVH.hItemRecyclerContactsBinding.numberTextView, hNewList.get(position).getContactNumber());
         int id = hNewList.get(position).gethId();
 
         if (selectedIds.contains(id)) {

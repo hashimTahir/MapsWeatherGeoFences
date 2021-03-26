@@ -15,8 +15,10 @@ import com.hashim.mapswithgeofencing.R;
 import com.hashim.mapswithgeofencing.databinding.ActivityTrackMeSettingsBinding;
 
 
-public class EmergencyContactsActivity extends AppCompatActivity /*implements OnFragmentInteractionListener */{
-/*
+public class EmergencyContactsActivity extends AppCompatActivity {
+    /*implements
+} OnFragmentInteractionListener {
+
     private ActivityTrackMeSettingsBinding hActivityTrackMeSettingsBinding;
     private FragmentManager hFragmentManager;
 
