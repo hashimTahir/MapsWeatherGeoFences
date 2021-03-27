@@ -16,16 +16,7 @@ import java.util.*
 
 class AddMessageTemplateDialog : BottomSheetDialogFragment() {
 
-    private var hType: String? = null
-    private var hToDisplay: String? = null
     private lateinit var hAddMessageTemplateDialogBinding: AddMessageTemplateDialogBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        if (arguments != null) {
-//            hType = arguments!!.getString(H_TYPE)
-//            hToDisplay = arguments!!.getString(H_TO_DISPLAY)
-//        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -47,39 +38,30 @@ class AddMessageTemplateDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hSetupView()
         hSetupListeners()
     }
 
     private fun hSetupListeners() {
-//        hDialogEditBottomSheetBinding.hCancelB.setOnClickListener { v -> dismiss() }
-//        hDialogEditBottomSheetBinding.hSaveB.setOnClickListener { v ->
-//            hEditBottomSheetDialogCallback!!.hOnSave(
-//                    hType,
-//                    hDialogEditBottomSheetBinding.hTextInputET.getText()
-//                            .toString()
-//            )
-//            dismiss()
-//        }
-    }
-
-    private fun hSetupView() {
-//        hDialogEditBottomSheetBinding.hTitleTv.setText(hType)
-//        if (hToDisplay != null) {
-//            hDialogEditBottomSheetBinding.hTextInputET.setText(hToDisplay)
-//        }
-//        hDialogEditBottomSheetBinding.hTextInputET.requestFocus()
+        hAddMessageTemplateDialogBinding.hCancelB.setOnClickListener { v ->
+            dismiss()
+        }
+        hAddMessageTemplateDialogBinding.hSaveB.setOnClickListener { v ->
+            hCallBack.invoke(
+                    hAddMessageTemplateDialogBinding.hTextInputET.text.toString()
+            )
+            dismiss()
+        }
     }
 
 
     companion object {
-        const val H_TITLE = "hTitle"
+        private lateinit var hCallBack: (message: String) -> Unit
         const val H_MESSAGE = "hMessage"
-        fun newInstance(type: String?, toDisplay: String?): AddMessageTemplateDialog {
+        fun newInstance(message: String?, callback: (message: String) -> Unit): AddMessageTemplateDialog {
             val hAddMessageTemplateDialog = AddMessageTemplateDialog()
             val args = Bundle()
-            args.putString(H_TITLE, type)
-            args.putString(H_MESSAGE, toDisplay)
+            hCallBack = callback
+            args.putString(H_MESSAGE, message)
             hAddMessageTemplateDialog.arguments = args
             return hAddMessageTemplateDialog
         }

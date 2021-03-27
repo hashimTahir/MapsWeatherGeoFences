@@ -16,16 +16,7 @@ import java.util.*
 
 class SendMessageDialog : BottomSheetDialogFragment() {
 
-    private var hType: String? = null
-    private var hToDisplay: String? = null
     private lateinit var hSendMessageBottomDialogBinding: SendMessageBottomDialogBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        if (arguments != null) {
-//            hType = arguments!!.getString(H_TYPE)
-//            hToDisplay = arguments!!.getString(H_TO_DISPLAY)
-//        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -60,24 +51,17 @@ class SendMessageDialog : BottomSheetDialogFragment() {
     }
 
     private fun hSetupView() {
-//        hDialogEditBottomSheetBinding.hTitleTv.setText(hType)
-//        if (hToDisplay != null) {
-//            hDialogEditBottomSheetBinding.hTextInputET.setText(hToDisplay)
-//        }
-//        hDialogEditBottomSheetBinding.hTextInputET.requestFocus()
     }
 
 
     companion object {
         private lateinit var hSendMessageCallback: () -> Unit
-        const val H_TITLE = "hTitle"
-        const val H_MESSAGE = "hMessage"
-        fun newInstance(type: String?, toDisplay: String?, callback: () -> Unit): SendMessageDialog {
+
+        fun newInstance(callback: () -> Unit): SendMessageDialog {
             val hEditBottomSheetDialog = SendMessageDialog()
             hSendMessageCallback = callback
             val args = Bundle()
-            args.putString(H_TITLE, type)
-            args.putString(H_MESSAGE, toDisplay)
+
             hEditBottomSheetDialog.arguments = args
             return hEditBottomSheetDialog
         }

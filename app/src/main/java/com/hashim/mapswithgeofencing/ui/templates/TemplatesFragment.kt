@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.SettingsPrefrences
 import com.hashim.mapswithgeofencing.databinding.FragmentTemplatesBinding
+import com.hashim.mapswithgeofencing.ui.dialogs.AddMessageTemplateDialog
 import com.hashim.mapswithgeofencing.ui.templates.TemplatesAdapter.AdapterType.CUSTOM
 import com.hashim.mapswithgeofencing.ui.templates.TemplatesAdapter.AdapterType.DEFAULT
+import com.hashim.mapswithgeofencing.utils.Constants
 
 
 class TemplatesFragment : Fragment() {
@@ -31,15 +33,6 @@ class TemplatesFragment : Fragment() {
         )
         return hFragmentTempBinding.root
     }
-
-
-//    private List<String> hDefaultTempList;
-//    private List<String> hCustomTempList = new ArrayList<>();
-//    private RecyclerAdapter hDefaultTempAdapter;
-//    private RecyclerAdapter hCustomTempAdapter;
-//    private SettingsPrefrences hSettingsPrefrences;
-//    private ActivityTemplatesBinding hActivityTemplatesBinding;
-
 
     private fun hInitAdapters() {
         val hSettingsPrefrences = SettingsPrefrences(requireContext())
@@ -70,52 +63,13 @@ class TemplatesFragment : Fragment() {
 
     private fun hSetupListeners() {
         hFragmentTempBinding.hAddTextTemplate.setOnClickListener {
-
+            val hAddMessageTemplateDialog = AddMessageTemplateDialog.newInstance(null)
+            { message ->
+                /*Todo: Add message to the list save custom template*/
+            }
+            hAddMessageTemplateDialog.show(childFragmentManager, Constants.H_BOTTOM_DIALOG)
         }
     }
 
-//
-//    public void hSetupListeners() {
-//        hActivityTemplatesBinding.hAddTextTemplate.setOnClickListener(v -> {
-//            HcustomDialog dialog = new HcustomDialog();
-//            dialog.show(getSupportFragmentManager(), "H_Dialog");
-//        });
-//
-//    }
-//
-//    @Override
-//    public void hSubmitText(String hText) {
-//    }
-//
-//    @Override
-//    public void hSubmitNegativeResponse(DialogFragment hDialogFragment) {
-//        hDialogFragment.dismiss();
-//    }
-//
-//    @Override
-//    public void hSubmitNeutralResponse(DialogFragment hDialogFragment) {
-//    }
-//
-//    @Override
-//    public void hSubmitPositiveResponse(DialogFragment hDialogFragment, String string) {
-//        hCustomTempList.add(string);
-//        hCustomTempAdapter.notifyDataSetChanged();
-//        hSettingsPrefrences.hSaveCustomTemplate(string);
-//        hDialogFragment.dismiss();
-//    }
-//
-//    @Override
-//    public void hSubmitCloseResponse(boolean b) {
-//    }
-//
-//    @Override
-//    public void hOnClickListener(View hClickedView, int hClickedPosition) {
-//    }
-//
-//    @Override
-//    public void hOnClickListener(View v, int position, String hText) {
-//        hSettingsPrefrences.hSaveCustomTemplate(hText);
-//    }
-//}
 
 }

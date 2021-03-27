@@ -57,7 +57,6 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
             when (menuItem.itemId) {
                 R.id.hCompassMenu -> {
-                    hTestDialogs()
 
                 }
                 R.id.hWeatherMenu -> {
@@ -82,16 +81,6 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
         }
     }
 
-    private fun hTestDialogs() {
-
-        val hSendMessageDialog = SendMessageDialog.newInstance("test", "test") {
-            Timber.d("Dialog Callback")
-        }
-        hSendMessageDialog.show(
-                supportFragmentManager,
-                Constants.H_BOTTOM_DIALOG
-        )
-    }
 
 
     private fun hInitNavView() {
