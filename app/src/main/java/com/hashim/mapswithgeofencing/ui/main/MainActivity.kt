@@ -12,10 +12,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.hashim.mapswithgeofencing.R
-import com.hashim.mapswithgeofencing.SettingsPrefrences
 import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding
-import com.hashim.mapswithgeofencing.ui.dialogs.SendMessageDialog
-import com.hashim.mapswithgeofencing.utils.Constants
+import com.hashim.mapswithgeofencing.prefrences.HlatLng
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes.*
+import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 import com.mancj.materialsearchbar.MaterialSearchBar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -61,16 +62,17 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                 }
                 R.id.hWeatherMenu -> {
                     val hSettingsPrefrences = SettingsPrefrences(this)
+                    Timber.d("All Settings ${hSettingsPrefrences.hGetSettings(ALL_PT)}")
+
+                    val hCurrentLocation: HlatLng = hSettingsPrefrences.hGetSettings(CURRENT_LAT_LNG_PT) as HlatLng
+                    Timber.d("Gett Settting $hCurrentLocation")
                     val actionHMainFragmentToHWeatherFragment = MainFragmentDirections.actionHMainFragmentToHWeatherFragment(
-                            hSettingsPrefrences.hGetCurrentLocation()
+                            hCurrentLocation
                     )
                     hNavController.navigate(actionHMainFragmentToHWeatherFragment)
                 }
                 R.id.hCalculateRounteMenu -> {
                     Timber.d("hDirectionsMenu")
-                }
-                R.id.hSettingMenu -> {
-                    Timber.d("hExit")
                 }
                 R.id.hSettingMenu -> {
                     hNavController.navigate(R.id.action_hMainFragment_to_hSettingsFragment)
@@ -80,7 +82,6 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
             false
         }
     }
-
 
 
     private fun hInitNavView() {

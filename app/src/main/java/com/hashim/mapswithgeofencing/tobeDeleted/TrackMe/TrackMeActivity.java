@@ -28,7 +28,7 @@ public class TrackMeActivity extends AppCompatActivity {
     private boolean isMultiSelect = false;
     private List<Integer> hSelectedIds = new ArrayList();
     private boolean hIsAllSelected = false;
-    SettingsPrefrences hSettingsPrefrences;
+    SettingsPrefrences.kt hSettingsPrefrences;
     private boolean hIsAllSendingClicked = false;
     private boolean hIsSelectedList = false;
     public static final int MENU_ITEM_MESSAGE = 34;
@@ -47,7 +47,7 @@ public class TrackMeActivity extends AppCompatActivity {
         String title = String.format(getString(R.string.send_text), "All");
         UIHelper.hSetTextToTextView(hActivityTrackMeBinding.hSendMessage, title);
 
-        hSettingsPrefrences = new SettingsPrefrences(this);
+        hSettingsPrefrences = new SettingsPrefrences.kt(this);
 
         hSetLayout();
         hFetchContacts();

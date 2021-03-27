@@ -14,7 +14,8 @@ import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
-import com.hashim.mapswithgeofencing.SettingsPrefrences
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes.ALL_PT
+import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 
 
 class GeoFenceUtils(private val hContext: Context) {
@@ -67,7 +68,7 @@ class GeoFenceUtils(private val hContext: Context) {
     private fun getGeofence(lat: Double, lang: Double, key: String): Geofence {
         return Geofence.Builder()
                 .setRequestId(key)
-                .setCircularRegion(lat, lang, (hSettingsPrefrences.hGetRadius() * 1000).toFloat())
+                .setCircularRegion(lat, lang, (10/*hSettingsPrefrences.hGetSettings(ALL)*/ * 1000).toFloat())
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
                 .setLoiteringDelay(1)
@@ -79,7 +80,7 @@ class GeoFenceUtils(private val hContext: Context) {
                 .strokeColor(Color.argb(50, 70, 6, 70)) //Outer black border
                 .fillColor(Color.argb(100, 150, 150, 150)) //inside of the geofence will be transparent, change to whatever color you prefer like 0x88ff0000 for mid-transparent red
                 .center(LatLng(latitude, longitude)) // the LatLng Object of your geofence location
-                .radius((hSettingsPrefrences.hGetRadius() * 1000).toDouble())
+                .radius(/*hSettingsPrefrences.hGetRadius()*/(10 * 1000).toDouble())
         //        ; // The radius (in meters) of your geofence
         // Get back the mutable Circle
         //        Circle circle =
@@ -88,7 +89,8 @@ class GeoFenceUtils(private val hContext: Context) {
     init {
         hGeofencingClient = LocationServices.getGeofencingClient(hContext)
         hSettingsPrefrences = SettingsPrefrences(hContext)
-        hRadius = hSettingsPrefrences.hGetRadius()
+        hRadius = 10
+        hSettingsPrefrences.hGetSettings(ALL_PT)
         hRadius = hRadius * 1000
     }
 }

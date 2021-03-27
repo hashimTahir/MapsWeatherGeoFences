@@ -8,13 +8,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.hashim.mapswithgeofencing.SettingsPrefrences
-import com.hashim.mapswithgeofencing.ui.events.MainViewState
+import com.google.gson.Gson
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes
+import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.ui.events.SettingViewState
 import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent
 import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent.*
 import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,9 +28,12 @@ class SettingsViewModel @Inject constructor(
     private val _hSettingViewState = MutableLiveData<SettingViewState>()
 
     enum class Settings
+
     val hSettingViewState: LiveData<SettingViewState>
         get() = _hSettingViewState
 
+    @Inject
+    lateinit var hGson: Gson
 
     val hDataState: LiveData<DataState<SettingViewState>> = Transformations
             .switchMap(_hSettingsStateEvent) {
@@ -38,26 +43,30 @@ class SettingsViewModel @Inject constructor(
             }
 
 
-    init {
-
-    }
-
     private fun hHandleStateEvent(settingsStateEvent: SettingsStateEvent):
             LiveData<DataState<SettingViewState>>? {
+
         when (settingsStateEvent) {
             is OnAddRemoveContacts -> {
             }
             is OnDistanceSettingsChanged -> {
-//                hSettingsPrefrences.hSaveDistanceUnit(position)
-
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = PrefTypes.DISTANCE_UNIT_PT,
+                        value = settingsStateEvent.hDistance
+                )
             }
             is OnTempratureSettingsChanged -> {
-//                hSettingsPrefrences.hSaveTempUnit(position);
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = PrefTypes.TEMPRATURE_UNIT_PT,
+                        value = settingsStateEvent.hTemperature
+                )
 
             }
             is OnLanguageSettingsChanged -> {
-//                hSettingsPrefrences.hSaveLanguage(position);
-
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = PrefTypes.LANGUAGE_PT,
+                        value = settingsStateEvent.hLanguage
+                )
             }
             is OnEditMessage -> {
             }

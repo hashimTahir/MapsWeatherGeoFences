@@ -24,8 +24,9 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.hashim.mapswithgeofencing.R
-import com.hashim.mapswithgeofencing.SettingsPrefrences
 import com.hashim.mapswithgeofencing.databinding.FragmentSettingsBinding
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes.*
+import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsModelWithIds
 import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent.*
 import com.hashim.mapswithgeofencing.ui.settings.SettingsType.EMERGENCY
@@ -115,20 +116,29 @@ class SettingsFragment : Fragment() {
 
     private fun hInitSwitchListeners() {
         hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.setOnClickListener {
-            val hIsEnableDisableEmergencySettings = hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked
-            hSettingsPrefrences.hSetEnableDisableEmergencySettings(hIsEnableDisableEmergencySettings)
+            val hIsEnableDisableEmergencySettings = hFragmentSettingsBinding.hEnableDisableELayout
+                    .hEnableDisableSwitch.isChecked
+            hSettingsPrefrences.hSaveSettings(
+                    hPrefTypes = EMERGENCY_PT,
+                    value = hIsEnableDisableEmergencySettings
+            )
             hEnableDisableButtons(hIsEnableDisableEmergencySettings, EMERGENCY)
             hChangeTextColors(hIsEnableDisableEmergencySettings, EMERGENCY)
 
         }
 
-        hFragmentSettingsBinding.hEnableDisableTLayout.hEnableDisableSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            val hIsEnableDisableTrackMeSettings = hFragmentSettingsBinding.hEnableDisableTLayout.hEnableDisableSwitch.isChecked
-            hSettingsPrefrences.hSetEnableDisableTrackMeSettings(hIsEnableDisableTrackMeSettings)
-            hEnableDisableButtons(hIsEnableDisableTrackMeSettings, TRACK_ME)
-            hChangeTextColors(hIsEnableDisableTrackMeSettings, TRACK_ME)
+        hFragmentSettingsBinding.hEnableDisableTLayout.hEnableDisableSwitch
+                .setOnCheckedChangeListener { buttonView, isChecked ->
+                    val hIsEnableDisableTrackMeSettings = hFragmentSettingsBinding.hEnableDisableTLayout
+                            .hEnableDisableSwitch.isChecked
+                    hSettingsPrefrences.hSaveSettings(
+                            hPrefTypes = TRACKING_PT,
+                            value = hIsEnableDisableTrackMeSettings
+                    )
+                    hEnableDisableButtons(hIsEnableDisableTrackMeSettings, TRACK_ME)
+                    hChangeTextColors(hIsEnableDisableTrackMeSettings, TRACK_ME)
 
-        }
+                }
 
     }
 
@@ -183,7 +193,8 @@ class SettingsFragment : Fragment() {
         hInitSpinners()
 
 
-        val hIsEnableDisableEmergencySettings = hSettingsPrefrences.hGetEnableDisableEmergencySettings()
+        val hIsEnableDisableEmergencySettings = false
+        hSettingsPrefrences.hGetSettings(ALL_PT)
         hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked = hIsEnableDisableEmergencySettings
         hEnableDisableButtons(hIsEnableDisableEmergencySettings, EMERGENCY)
 
@@ -198,7 +209,8 @@ class SettingsFragment : Fragment() {
         hDistanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         hFragmentSettingsBinding.hDistanceSpinner.adapter = hDistanceAdapter
-        hFragmentSettingsBinding.hDistanceSpinner.setSelection(hSettingsPrefrences.hGetDistanceUnit())
+        hSettingsPrefrences.hGetSettings(ALL_PT)
+        hFragmentSettingsBinding.hDistanceSpinner.setSelection(0)
 
 
         val hLanguageAdapter = ArrayAdapter.createFromResource(
@@ -208,7 +220,7 @@ class SettingsFragment : Fragment() {
         )
         hLanguageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         hFragmentSettingsBinding.hLanguageSpinner.adapter = hLanguageAdapter
-        hFragmentSettingsBinding.hLanguageSpinner.setSelection(hSettingsPrefrences.hGetLanguage())
+        hFragmentSettingsBinding.hLanguageSpinner.setSelection(/*hSettingsPrefrences.hGetLanguage()*/0)
 
 
         val hTempAdapter = ArrayAdapter.createFromResource(
@@ -217,7 +229,7 @@ class SettingsFragment : Fragment() {
                 android.R.layout.simple_spinner_dropdown_item
         )
         hFragmentSettingsBinding.hTempratureSpinner.adapter = hTempAdapter
-        hFragmentSettingsBinding.hTempratureSpinner.setSelection(hSettingsPrefrences.hGetTempUnit())
+        hFragmentSettingsBinding.hTempratureSpinner.setSelection(/*hSettingsPrefrences.hGetTempUnit()*/0)
     }
 
     fun hEnableDisableButtons(hEnableDisableSettings: Boolean, settingsType: SettingsType) {
@@ -337,9 +349,11 @@ class SettingsFragment : Fragment() {
 
 
     private fun hSendMessageAndNotification() {
-        val hContactsModelWithIdsList: List<ContactsModelWithIds> = hSettingsPrefrences.hGetSavedContacts() as List<ContactsModelWithIds>
-        val message: String? = hSettingsPrefrences.hGetEmergencyMessage()
-
+        val hContactsModelWithIdsList: List<ContactsModelWithIds> = emptyList()
+        hSettingsPrefrences.hGetSettings(ALL_PT)
+//                as List<ContactsModelWithIds>
+        val message: String? = null
+        hSettingsPrefrences.hGetSettings(ALL_PT)
 
         if (hContactsModelWithIdsList == null || hContactsModelWithIdsList.size == 0) {
 //            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.no_saved_contacts_plz))

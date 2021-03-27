@@ -19,5 +19,5 @@ data class Weather(
         val speed: Double? = null,
         val sunrise: Int? = null,
         val sunset: Int? = null,
-        val country: String
+        val country: String? = null,
 )

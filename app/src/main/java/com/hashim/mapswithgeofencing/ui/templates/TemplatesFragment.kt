@@ -11,8 +11,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
-import com.hashim.mapswithgeofencing.SettingsPrefrences
 import com.hashim.mapswithgeofencing.databinding.FragmentTemplatesBinding
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes
+import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.ui.dialogs.AddMessageTemplateDialog
 import com.hashim.mapswithgeofencing.ui.templates.TemplatesAdapter.AdapterType.CUSTOM
 import com.hashim.mapswithgeofencing.ui.templates.TemplatesAdapter.AdapterType.DEFAULT
@@ -38,7 +39,8 @@ class TemplatesFragment : Fragment() {
         val hSettingsPrefrences = SettingsPrefrences(requireContext())
 
         val hDefaultTemplatesList = resources.getStringArray(R.array.default_templates_array).toMutableList()
-        val hCustomTemplatesList = hSettingsPrefrences.hGetCustomTemplates()
+        val hCustomTemplatesList = mutableListOf<String>()
+        hSettingsPrefrences.hGetSettings(PrefTypes.ALL_PT)
 
         val hDefaultTemplatesAdapter = TemplatesAdapter(requireContext(), DEFAULT)
         val hCustomTemplatesAdapter = TemplatesAdapter(requireContext(), CUSTOM)

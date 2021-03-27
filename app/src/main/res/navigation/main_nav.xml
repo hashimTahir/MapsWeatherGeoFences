@@ -30,7 +30,7 @@
         tools:layout="@layout/weather_fragment">
         <argument
             android:name="hCurrentLocation"
-            app:argType="com.hashim.mapswithgeofencing.SettingsPrefrences$HlatLng"
+            app:argType="com.hashim.mapswithgeofencing.prefrences.HlatLng"
             app:nullable="true" />
     </fragment>
     <fragment

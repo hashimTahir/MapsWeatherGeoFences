@@ -301,7 +301,7 @@ public class CalculateActivity extends AppCompatActivity /*implements
 //            // for ActivityCompat#requestPermissions for more details.
 //            return;
 //        }
-//        SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(this);
+//        SettingsPrefrences.kt hSettingsPrefrences = new SettingsPrefrences.kt(this);
 //        hGoogleMap.setMapType(hSettingsPrefrences.hGetMapsType());
 //        hGoogleMap.setMyLocationEnabled(true);
 //        hGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -433,7 +433,7 @@ public class CalculateActivity extends AppCompatActivity /*implements
 //            int dis = routes.get(0).distance.value;
 //            hDuration = String.valueOf(routes.get(0).duration.text);
 //
-//            SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(this);
+//            SettingsPrefrences.kt hSettingsPrefrences = new SettingsPrefrences.kt(this);
 //
 //            if (hSettingsPrefrences.hGetDistanceUnit() == Constants.H_MILES_DIS) {
 //                dis = dis / 1600;

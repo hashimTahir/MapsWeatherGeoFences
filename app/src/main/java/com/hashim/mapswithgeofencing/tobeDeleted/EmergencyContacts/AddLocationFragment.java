@@ -73,7 +73,7 @@ public class AddLocationFragment extends Fragment {
 
     private void hInitData() {
         hAppRepository = AppRepository.hGetInstance(getContext());
-        SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(getContext());
+        SettingsPrefrences.kt hSettingsPrefrences = new SettingsPrefrences.kt(getContext());
         HLatLngModel hLatLngModel = hSettingsPrefrences.hGetCurrentLocation();
         if (hLatLngModel != null) {
             hLatLng = new LatLng(Double.parseDouble(hLatLngModel.getLatitude()),
