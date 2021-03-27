@@ -175,8 +175,8 @@ class SettingsPrefrences(context: Context) {
         hEditor!!.apply()
     }
 
-    fun hGetCustomTemplates(): MutableList<String?>? {
-        var hList: MutableList<String?>? = ArrayList()
+    fun hGetCustomTemplates(): MutableList<String>? {
+        var hList: MutableList<String>? = ArrayList()
         var input: FileInputStream? = null
         try {
             input = hContext!!.openFileInput(H_FILE_NAME)
@@ -194,7 +194,7 @@ class SettingsPrefrences(context: Context) {
         return hList
     }
 
-    fun hSaveCustomTemplate(hText: String?) {
+    fun hSaveCustomTemplate(hText: String) {
         var hList = hGetCustomTemplates()
         if (hList != null) {
             hList.add(hText)

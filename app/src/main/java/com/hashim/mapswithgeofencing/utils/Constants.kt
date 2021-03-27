@@ -6,6 +6,7 @@ package com.hashim.mapswithgeofencing.utils
 
 class Constants {
     companion object {
+        val H_BOTTOM_DIALOG = "hBottomDialog"
         val CHANNEL_ID: String = "channelIdHere"
         val H_NOTIFICATION_ID: Int = 1
         const val hTag = "hashimTimberTags %s"

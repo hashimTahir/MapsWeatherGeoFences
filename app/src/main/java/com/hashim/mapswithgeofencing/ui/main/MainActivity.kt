@@ -6,7 +6,6 @@ package com.hashim.mapswithgeofencing.ui.main
 
 import android.location.Location
 import android.os.Bundle
-import android.view.View.GONE
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -15,6 +14,8 @@ import androidx.navigation.ui.NavigationUI
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.SettingsPrefrences
 import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding
+import com.hashim.mapswithgeofencing.ui.dialogs.SendMessageDialog
+import com.hashim.mapswithgeofencing.utils.Constants
 import com.mancj.materialsearchbar.MaterialSearchBar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -56,7 +57,8 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
             when (menuItem.itemId) {
                 R.id.hCompassMenu -> {
-                    Timber.d("hNavigateToMenu")
+                    hTestDialogs()
+
                 }
                 R.id.hWeatherMenu -> {
                     val hSettingsPrefrences = SettingsPrefrences(this)
@@ -78,6 +80,17 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
             false
         }
+    }
+
+    private fun hTestDialogs() {
+
+        val hSendMessageDialog = SendMessageDialog.newInstance("test", "test") {
+            Timber.d("Dialog Callback")
+        }
+        hSendMessageDialog.show(
+                supportFragmentManager,
+                Constants.H_BOTTOM_DIALOG
+        )
     }
 
 
