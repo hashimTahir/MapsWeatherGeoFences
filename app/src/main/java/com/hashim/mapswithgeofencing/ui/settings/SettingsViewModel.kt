@@ -9,14 +9,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes.*
 import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.ui.events.SettingViewState
 import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent
 import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent.*
 import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +26,6 @@ class SettingsViewModel @Inject constructor(
 
     private val _hSettingViewState = MutableLiveData<SettingViewState>()
 
-    enum class Settings
 
     val hSettingViewState: LiveData<SettingViewState>
         get() = _hSettingViewState
@@ -51,24 +49,36 @@ class SettingsViewModel @Inject constructor(
             }
             is OnDistanceSettingsChanged -> {
                 hSettingsPrefrences.hSaveSettings(
-                        hPrefTypes = PrefTypes.DISTANCE_UNIT_PT,
+                        hPrefTypes = DISTANCE_UNIT_PT,
                         value = settingsStateEvent.hDistance
                 )
             }
             is OnTempratureSettingsChanged -> {
                 hSettingsPrefrences.hSaveSettings(
-                        hPrefTypes = PrefTypes.TEMPRATURE_UNIT_PT,
+                        hPrefTypes = TEMPRATURE_UNIT_PT,
                         value = settingsStateEvent.hTemperature
                 )
 
             }
             is OnLanguageSettingsChanged -> {
                 hSettingsPrefrences.hSaveSettings(
-                        hPrefTypes = PrefTypes.LANGUAGE_PT,
+                        hPrefTypes = LANGUAGE_PT,
                         value = settingsStateEvent.hLanguage
                 )
             }
             is OnEditMessage -> {
+            }
+            is OnEmergencySettingsChanged -> {
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = EMERGENCY_PT,
+                        value = settingsStateEvent.hEmergencySettingsChanged
+                )
+            }
+            is OnTrackMeSettingsChanged -> {
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = TRACKING_PT,
+                        value = settingsStateEvent.hTrackMeSettingsChanged
+                )
             }
             is OnAddRemoveLocations -> {
             }
@@ -79,8 +89,8 @@ class SettingsViewModel @Inject constructor(
     }
 
 
-    fun hSetStateEvent(mainStateEvent: SettingsStateEvent) {
-        _hSettingsStateEvent.value = mainStateEvent
+    fun hSetStateEvent(settingsStateEvent: SettingsStateEvent) {
+        _hSettingsStateEvent.value = settingsStateEvent
     }
 //
 //    fun hSetMainData() {
