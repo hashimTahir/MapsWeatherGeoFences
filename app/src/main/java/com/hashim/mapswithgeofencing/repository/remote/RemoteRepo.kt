@@ -5,6 +5,7 @@
 package com.hashim.mapswithgeofencing.repository.remote
 
 import android.location.Location
+import com.hashim.mapswithgeofencing.Domain.model.Directions
 import com.hashim.mapswithgeofencing.Domain.model.Forecast
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.Domain.model.Weather
@@ -16,7 +17,11 @@ interface RemoteRepo {
 
     suspend fun hGetForecast(location: Location, unitType: String): Forecast
 
-    suspend fun hGetDirections(startLocation: Location, endLocation: Location, mode: String)
+    suspend fun hGetDirections(
+            startLocation: Location,
+            endLocation: Location,
+            mode: String
+    ): Directions
 
     suspend fun hFindNearybyPlaces(category: Category, location: Location): List<NearByPlaces>
 

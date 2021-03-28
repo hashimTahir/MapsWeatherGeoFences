@@ -9,11 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.hashim.mapswithgeofencing.databinding.FragmentCalculateRouteBinding
 
 class CalculateRouteFragment : Fragment() {
 
-
+    private val hCalculateRouteViewModel: CalculateRouteViewModel by viewModels()
     lateinit var hFragmentCalculateRouteBinding: FragmentCalculateRouteBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -23,6 +24,16 @@ class CalculateRouteFragment : Fragment() {
                 false
         )
         return hFragmentCalculateRouteBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        hSubscribeObservers()
+    }
+
+    private fun hSubscribeObservers() {
+
     }
 
     /*

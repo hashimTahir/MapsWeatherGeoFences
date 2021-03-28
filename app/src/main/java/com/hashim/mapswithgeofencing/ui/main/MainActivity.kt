@@ -14,12 +14,10 @@ import androidx.navigation.ui.NavigationUI
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding
 import com.hashim.mapswithgeofencing.prefrences.HlatLng
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes.*
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
 import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 import com.mancj.materialsearchbar.MaterialSearchBar
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -58,6 +56,7 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
             when (menuItem.itemId) {
                 R.id.hCompassMenu -> {
+                    hNavController.navigate(R.id.action_hMainFragment_to_hCompassFragment)
 
                 }
                 R.id.hWeatherMenu -> {
@@ -69,7 +68,7 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                     hNavController.navigate(actionHMainFragmentToHWeatherFragment)
                 }
                 R.id.hCalculateRounteMenu -> {
-                    Timber.d("hDirectionsMenu")
+                    hNavController.navigate(R.id.action_hMainFragment_to_hCalculateRouteFragment)
                 }
                 R.id.hSettingMenu -> {
                     hNavController.navigate(R.id.action_hMainFragment_to_hSettingsFragment)

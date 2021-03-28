@@ -7,7 +7,7 @@ package com.hashim.mapswithgeofencing.network.response.directions
 
 import com.google.gson.annotations.SerializedName
 
-data class DirectionsResponse(
+data class DirectionsDto(
         @SerializedName("geocoded_waypoints")
     val geocodedWaypoints: List<GeocodedWaypoint>,
         @SerializedName("routes")

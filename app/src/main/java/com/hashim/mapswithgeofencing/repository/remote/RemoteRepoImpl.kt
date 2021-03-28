@@ -5,10 +5,12 @@
 package com.hashim.mapswithgeofencing.repository.remote
 
 import android.location.Location
+import com.hashim.mapswithgeofencing.Domain.model.Directions
 import com.hashim.mapswithgeofencing.Domain.model.Forecast
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.Domain.model.Weather
 import com.hashim.mapswithgeofencing.network.RetroService
+import com.hashim.mapswithgeofencing.repository.mappers.DirectionDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
@@ -19,6 +21,7 @@ class RemoteRepoImpl(
         private val hNearByPlacesDtoMapper: NearByPlacesDtoMapper,
         private val hWeatherDtoMapper: WeatherDtoMapper,
         private val hForecastDtoMapper: ForecastDtoMapper,
+        private val hDirectionDtoMapper: DirectionDtoMapper,
         private val hMapsKey: String,
         private val hWeatherKey: String
 ) : RemoteRepo {
@@ -44,13 +47,15 @@ class RemoteRepoImpl(
     }
 
 
-    override suspend fun hGetDirections(startLocation: Location, endLocation: Location, mode: String) {
-        hRetroService.hFindDirections(
+    override suspend fun hGetDirections(startLocation: Location, endLocation: Location, mode: String): Directions {
+        val hGetDirections = hRetroService.hFindDirections(
                 startLocation = "${startLocation.latitude},${startLocation.longitude}",
                 endLocation = "${endLocation.latitude},${endLocation.longitude}",
                 key = hMapsKey,
                 mode = mode,
         )
+
+        return hDirectionDtoMapper.hMapToDomainModel(hGetDirections)
     }
 
     override suspend fun hFindNearybyPlaces(category: Category, location: Location): List<NearByPlaces> {

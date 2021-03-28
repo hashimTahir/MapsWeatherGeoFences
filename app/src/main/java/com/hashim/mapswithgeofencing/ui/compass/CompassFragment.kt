@@ -101,11 +101,9 @@ class CompassFragment : Fragment(), SensorEventListener2 {
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        TODO("Not yet implemented")
     }
 
     override fun onFlushCompleted(sensor: Sensor?) {
-        TODO("Not yet implemented")
     }
 
 

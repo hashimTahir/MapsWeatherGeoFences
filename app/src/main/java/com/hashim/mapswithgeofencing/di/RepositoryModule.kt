@@ -7,6 +7,7 @@ package com.hashim.mapswithgeofencing.di
 import android.content.Context
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.network.RetroService
+import com.hashim.mapswithgeofencing.repository.mappers.DirectionDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
@@ -35,12 +36,14 @@ object RepositoryModule {
             nearByPlacesDtoMapper: NearByPlacesDtoMapper,
             forecastDtoMapper: ForecastDtoMapper,
             weatherDtoMapper: WeatherDtoMapper,
+            directionDtoMapper: DirectionDtoMapper,
     ): RemoteRepo {
         return RemoteRepoImpl(
                 hRetroService = retrofitService,
                 hWeatherDtoMapper = weatherDtoMapper,
                 hNearByPlacesDtoMapper = nearByPlacesDtoMapper,
                 hForecastDtoMapper = forecastDtoMapper,
+                hDirectionDtoMapper = directionDtoMapper,
                 hMapsKey = mapsKey,
                 hWeatherKey = weatherKey
         )
