@@ -25,12 +25,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentSettingsBinding
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes.*
 import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsModelWithIds
 import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent.*
 import com.hashim.mapswithgeofencing.ui.settings.SettingsType.EMERGENCY
 import com.hashim.mapswithgeofencing.ui.settings.SettingsType.TRACK_ME
-import com.hashim.mapswithgeofencing.utils.Constants
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.CHANNEL_ID
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_NOTIFICATION_ID
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +55,9 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        hInitView()
+        hSettingViewModel.hSetStateEvent(OnGetAllSettings())
+
+        hInitSpinners()
 
         hSetupListeners()
 
@@ -69,15 +69,17 @@ class SettingsFragment : Fragment() {
 
         hInitSwitchListeners()
 
+        hInitClickListerns()
+    }
 
-
+    private fun hInitClickListerns() {
         hFragmentSettingsBinding.hAddRemoveContactsELayout
                 .hAddRemoveContactsELayout.setOnClickListener {
 //            startActivity(new Intent (SettingsActivity.this, TrackMeActivity.class));
                 }
         hFragmentSettingsBinding.hEditMessageELayout
                 .hEditMessageELayout.setOnClickListener {
-                    hEditEmergencyTrackeMeMessage(Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS)
+                    hEditEmergencyTrackeMeMessage(EMERGENCY)
                 }
         hFragmentSettingsBinding.hTestNotificationELayout
                 .hTestNotificationELayout.setOnClickListener {
@@ -99,7 +101,7 @@ class SettingsFragment : Fragment() {
         hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageELayout
                 .setOnClickListener {
                     hEditEmergencyTrackeMeMessage(
-                            Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS
+                            TRACK_ME
                     )
                 }
         hFragmentSettingsBinding.hTestNotificationTLayout
@@ -110,7 +112,6 @@ class SettingsFragment : Fragment() {
                 .hAddRemoveLocationsTV.setOnClickListener {
 //            startActivity(new Intent (this, EmergencyContactsActivity.class));
                 }
-
 
     }
 
@@ -188,19 +189,7 @@ class SettingsFragment : Fragment() {
                 }
     }
 
-    private fun hInitView() {
-        hInitSpinners()
-
-
-//        val hIsEnableDisableEmergencySettings = false
-//        hSettingsPrefrences.hGetSettings(ALL_PT)
-//        hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch.isChecked = hIsEnableDisableEmergencySettings
-//        hEnableDisableButtons(hIsEnableDisableEmergencySettings, EMERGENCY)
-
-    }
-
     private fun hInitSpinners() {
-        /*Todo Emit event for spinners default values*/
         val hDistanceAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.unit_spinner_array,
@@ -209,8 +198,6 @@ class SettingsFragment : Fragment() {
         hDistanceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         hFragmentSettingsBinding.hDistanceSpinner.adapter = hDistanceAdapter
-        hFragmentSettingsBinding.hDistanceSpinner.setSelection(0)
-
 
         val hLanguageAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
@@ -219,8 +206,6 @@ class SettingsFragment : Fragment() {
         )
         hLanguageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         hFragmentSettingsBinding.hLanguageSpinner.adapter = hLanguageAdapter
-        hFragmentSettingsBinding.hLanguageSpinner.setSelection(/*hSettingsPrefrences.hGetLanguage()*/0)
-
 
         val hTempAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
@@ -228,7 +213,7 @@ class SettingsFragment : Fragment() {
                 android.R.layout.simple_spinner_dropdown_item
         )
         hFragmentSettingsBinding.hTempratureSpinner.adapter = hTempAdapter
-        hFragmentSettingsBinding.hTempratureSpinner.setSelection(/*hSettingsPrefrences.hGetTempUnit()*/0)
+
     }
 
     fun hEnableDisableButtons(hEnableDisableSettings: Boolean, settingsType: SettingsType) {
@@ -264,13 +249,10 @@ class SettingsFragment : Fragment() {
                 hViewsColors(
                         changeColor = changeColor,
                         textViews = arrayOf(
-
-
                                 hFragmentSettingsBinding.hAddRemoveLocationsTLayout.hAddRemoveLocationsTV,
                                 hFragmentSettingsBinding.hEditMessageTLayout.hEditMessageTv,
                                 hFragmentSettingsBinding.hTestNotificationTLayout.hTestNotificationTv,
                         )
-
                 )
             }
             EMERGENCY -> {
@@ -283,7 +265,6 @@ class SettingsFragment : Fragment() {
                         ),
                 )
             }
-
         }
     }
 
@@ -298,7 +279,6 @@ class SettingsFragment : Fragment() {
                         ContextCompat.getColor(requireContext(), R.color.light_gray)
                 )
             }
-
         }
     }
 
@@ -310,22 +290,84 @@ class SettingsFragment : Fragment() {
     }
 
     private fun hSubscribeObservers() {
-        hSettingViewModel.hDataState.observe(viewLifecycleOwner) {
+        /*Data Setter*/
+        hSettingViewModel.hDataState.observe(viewLifecycleOwner) { dataState ->
+            dataState.hData?.let { settingViewState ->
+                settingViewState.hSettingsFields.hDefaultSavedVS?.let { defaultSavedVS ->
+                    hSettingViewModel.hSetDefaultSavedSettings(defaultSavedVS)
 
+                }
+
+            }
         }
-        hSettingViewModel.hSettingViewState.observe(viewLifecycleOwner) {
+        /*View Setter*/
+        hSettingViewModel.hSettingViewState.observe(viewLifecycleOwner) { settingsViewState ->
+            settingsViewState.hSettingsFields.hDefaultSavedVS?.let { defaultSavedVS ->
+                hSetDefaultValuesForSpinners(
+                        defaultSavedVS.hDistance,
+                        defaultSavedVS.hLanguage,
+                        defaultSavedVS.hTemprature
+                )
+
+                hSetupEmerencyTrackingLayouts(
+                        defaultSavedVS.hEmergency,
+                        defaultSavedVS.hTracking
+                )
+            }
 
         }
     }
 
-    private fun hEditEmergencyTrackeMeMessage(hEnableDisableTrackMeSettings: String) {
+    private fun hSetupEmerencyTrackingLayouts(hEmergency: Boolean?, hTracking: Boolean?) {
+        if (hEmergency == null) {
+            hEnableDisableButtons(false, EMERGENCY)
+            hChangeTextColors(false, EMERGENCY)
+            hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch
+                    .isChecked = false
+        } else {
+            hEnableDisableButtons(hEmergency, EMERGENCY)
+            hChangeTextColors(hEmergency, EMERGENCY)
+            hFragmentSettingsBinding.hEnableDisableELayout.hEnableDisableSwitch
+                    .isChecked = hEmergency
+        }
+
+        if (hTracking == null) {
+            hEnableDisableButtons(false, TRACK_ME)
+            hChangeTextColors(false, TRACK_ME)
+            hFragmentSettingsBinding.hEnableDisableTLayout.hEnableDisableSwitch
+                    .isChecked = false
+        } else {
+            hEnableDisableButtons(hTracking, TRACK_ME)
+            hChangeTextColors(hTracking, TRACK_ME)
+            hFragmentSettingsBinding.hEnableDisableTLayout.hEnableDisableSwitch
+                    .isChecked = hTracking
+        }
+    }
+
+    private fun hSetDefaultValuesForSpinners(hDistance: Int?, hLanguage: Int?, hTemprature: Int?) {
+        if (hDistance == null)
+            hFragmentSettingsBinding.hDistanceSpinner.setSelection(0)
+        else hFragmentSettingsBinding.hDistanceSpinner.setSelection(hDistance)
+
+        if (hLanguage == null)
+            hFragmentSettingsBinding.hLanguageSpinner.setSelection(0)
+        else hFragmentSettingsBinding.hLanguageSpinner.setSelection(hLanguage)
+
+        if (hTemprature == null)
+            hFragmentSettingsBinding.hTempratureSpinner.setSelection(0)
+        else hFragmentSettingsBinding.hTempratureSpinner.setSelection(hTemprature)
+
+
+    }
+
+    private fun hEditEmergencyTrackeMeMessage(settingsType: SettingsType) {
 //        HLatLngModel hLatLngModel = hSettingsPrefrences . hGetCurrentLocation ();
 //        String hMessage = String.format(getString(R.string.emergency_contact_message),
 //                hLatLngModel.getLatitude().concat(" ,").concat(hLatLngModel.getLongitude()));
 //        LogToastSnackHelper.hLogField(hTag, hMessage);
 
-        when (hEnableDisableTrackMeSettings) {
-            Constants.H_ENABLE_DISABLE_EMERGENCY_SETTINGS -> {
+        when (settingsType) {
+            EMERGENCY -> {
 //                if (hLatLngModel != null) {
 ////                    HcustomDialog1 hcustomDialog = HcustomDialog1.newInstance(hMessage, true);
 ////                    hcustomDialog.show(getSupportFragmentManager(), "H_Dialog");
@@ -333,7 +375,7 @@ class SettingsFragment : Fragment() {
 //
 //                }
             }
-            Constants.H_ENABLE_DISABLE_TRACK_ME_SETTINGS -> {
+            TRACK_ME -> {
 //                if (hLatLngModel != null) {
 ////                    HcustomDialog1 hcustomDialog = HcustomDialog1.newInstance(hMessage, false);
 ////                    hcustomDialog.show(getSupportFragmentManager(), "H_Dialog");

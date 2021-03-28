@@ -33,7 +33,8 @@ class SettingsPrefrences(context: Context) {
         if (hJsonString != null) {
             when (hPrefTypes) {
                 ALL_PT -> {
-                    return hJsonString
+                    hMap = hGson.fromJson(hJsonString, hGetTokenType(null))
+                    return hMap
                 }
                 CURRENT_LAT_LNG_PT -> {
                     hMap = hGson.fromJson(hJsonString, hGetTokenType(null))
@@ -42,37 +43,33 @@ class SettingsPrefrences(context: Context) {
                             hGetTokenType(hPrefTypes)
                     )
                 }
-                MAPS_TYPE_PT -> {
-                    return null
-                }
-                DISTANCE_UNIT_PT -> {
-                    return null
-                }
+
                 RADIUS_UNIT_PT -> {
                     return null
                 }
-                TRACKING_PT -> {
+                TRACKING_PT,
+                EMERGENCY_PT,
+                -> {
                     hMap = hGson.fromJson(hJsonString, hGetTokenType(null))
                     return hGson.fromJson<Boolean?>(
                             hMap[hPrefTypes.name].toString(),
                             hGetTokenType(hPrefTypes)
                     )
                 }
-                LANGUAGE_PT -> {
-                    return null
+                LANGUAGE_PT,
+                TEMPRATURE_UNIT_PT,
+                DISTANCE_UNIT_PT,
+                MAPS_TYPE_PT,
+                -> {
+                    hMap = hGson.fromJson(hJsonString, hGetTokenType(null))
+                    return hGson.fromJson<Int?>(
+                            hMap[hPrefTypes.name].toString(),
+                            hGetTokenType(hPrefTypes)
+                    )
                 }
-                TEMPRATURE_UNIT_PT -> {
-                    return null
-                }
+
                 TRACK_ME_MESSAGE_PT -> {
                     return null
-                }
-                EMERGENCY_PT -> {
-                    hMap = hGson.fromJson(hJsonString, hGetTokenType(null))
-                    return hGson.fromJson<Boolean?>(
-                            hMap[hPrefTypes.name].toString(),
-                            hGetTokenType(hPrefTypes)
-                    )
                 }
                 else ->
                     return null

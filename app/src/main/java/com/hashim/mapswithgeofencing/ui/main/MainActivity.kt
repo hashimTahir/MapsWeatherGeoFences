@@ -62,10 +62,7 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                 }
                 R.id.hWeatherMenu -> {
                     val hSettingsPrefrences = SettingsPrefrences(this)
-                    Timber.d("All Settings ${hSettingsPrefrences.hGetSettings(ALL_PT)}")
-
                     val hCurrentLocation: HlatLng = hSettingsPrefrences.hGetSettings(CURRENT_LAT_LNG_PT) as HlatLng
-                    Timber.d("Gett Settting $hCurrentLocation")
                     val actionHMainFragmentToHWeatherFragment = MainFragmentDirections.actionHMainFragmentToHWeatherFragment(
                             hCurrentLocation
                     )

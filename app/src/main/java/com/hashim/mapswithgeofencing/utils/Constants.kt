@@ -26,8 +26,7 @@ class Constants {
         const val H_CYCLING_MODE = "bicycling"
         const val H_WALKING_MODE = "walking"
 
-        const val H_ENABLE_DISABLE_EMERGENCY_SETTINGS = "H_ENABLE_DISABLE_EMERGENCY_SETTINGS"
-        const val H_ENABLE_DISABLE_TRACK_ME_SETTINGS = "H_ENABLE_DISABLE_TRACK_ME_SETTINGS"
+
 
         const val H_SAVED_LIST = 678
         const val H_ALL_LIST = 910

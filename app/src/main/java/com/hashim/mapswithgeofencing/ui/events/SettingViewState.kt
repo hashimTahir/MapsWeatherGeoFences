@@ -5,10 +5,19 @@
 package com.hashim.mapswithgeofencing.ui.events
 
 data class SettingViewState(
-        var hSettingsFields: SettingsFields = SettingsFields(),
+        val hSettingsFields: SettingsFields = SettingsFields(),
 
         ) {
     data class SettingsFields(
-            val hTemp: String? = null
+            var hDefaultSavedVS: DefaultSavedVS? = null
+    )
+
+
+    data class DefaultSavedVS(
+            val hLanguage: Int? = null,
+            val hDistance: Int? = null,
+            val hTemprature: Int? = null,
+            val hEmergency: Boolean? = null,
+            val hTracking: Boolean? = null,
     )
 }
