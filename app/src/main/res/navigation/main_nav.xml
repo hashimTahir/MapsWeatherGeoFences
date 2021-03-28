@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_hMainFragment_to_hCompassFragment"
             app:destination="@id/hCompassFragment" />
+        <action
+            android:id="@+id/action_hMainFragment_to_hCalculateRouteFragment"
+            app:destination="@id/hCalculateRouteFragment" />
     </fragment>
     <fragment
         android:id="@+id/hWeatherFragment"
@@ -30,7 +33,7 @@
         tools:layout="@layout/weather_fragment">
         <argument
             android:name="hCurrentLocation"
-            app:argType="com.hashim.mapswithgeofencing.SettingsPrefrences$HlatLng"
+            app:argType="com.hashim.mapswithgeofencing.prefrences.HlatLng"
             app:nullable="true" />
     </fragment>
     <fragment

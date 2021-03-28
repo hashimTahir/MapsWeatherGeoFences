@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2021/  3/ 26.  Created by Hashim Tahir
   -->
 
@@ -22,7 +21,7 @@
             app:layout_constraintBottom_toTopOf="@+id/hFragmentContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hAcrAppBar"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
 
@@ -95,10 +94,11 @@
 
 
                 <fragment
-                    android:id="@+id/place_autocomplete_fragment"
-                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                    android:id="@+id/autocomplete_fragment"
+                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
 
             </androidx.cardview.widget.CardView>
 
@@ -192,12 +192,10 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
             <fragment
-                android:id="@+id/hMap"
+                android:id="@+id/hGoogleMap"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                tools:context=".tobeDeleted.Activities.MapsActivity" />
+                android:layout_height="match_parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/hBottomCardView"
@@ -255,8 +253,7 @@
                         android:textColor="@color/white"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.51" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/hEtaTV"

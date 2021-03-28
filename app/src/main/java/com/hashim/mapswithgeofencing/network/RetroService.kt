@@ -4,7 +4,7 @@
 
 package com.hashim.mapswithgeofencing.network
 
-import com.hashim.mapswithgeofencing.network.response.directions.DirectionsResponse
+import com.hashim.mapswithgeofencing.network.response.directions.DirectionsDto
 import com.hashim.mapswithgeofencing.network.response.forecast.ForecastDto
 import com.hashim.mapswithgeofencing.network.response.nearybyplaces.NearByPlacesDto
 import com.hashim.mapswithgeofencing.network.response.weather.WeatherDto
@@ -48,5 +48,5 @@ interface RetroService {
             @Query("destination") endLocation: String,
             @Query("key") key: String,
             @Query("mode") mode: String,
-    ): DirectionsResponse
+    ): DirectionsDto
 }

@@ -4,17 +4,61 @@
 
 package com.hashim.mapswithgeofencing.ui.calculateroute
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.google.android.gms.common.api.Status
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.material.tabs.TabLayout
+import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentCalculateRouteBinding
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
+@AndroidEntryPoint
 class CalculateRouteFragment : Fragment() {
 
+    private val hCalculateRouteViewModel: CalculateRouteViewModel by viewModels()
 
     lateinit var hFragmentCalculateRouteBinding: FragmentCalculateRouteBinding
+    private var hGoogleMap: GoogleMap? = null
+
+
+    @SuppressLint("MissingPermission")
+    private val hMapCallBack = OnMapReadyCallback { googleMap ->
+        hGoogleMap = googleMap
+        hGoogleMap?.isMyLocationEnabled = true
+
+        /*
+        * //        hGoogleMap.setMapType(hSettingsPrefrences.hGetMapsType());
+//        hGoogleMap.setMyLocationEnabled(true);
+//        hGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+//        hGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hCurrentLatLng, 12.0f));
+        * */
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Places.initialize(requireContext(), getString(R.string.google_maps_key))
+        val placesClient = Places.createClient(requireContext())
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         hFragmentCalculateRouteBinding = FragmentCalculateRouteBinding.inflate(
@@ -25,320 +69,158 @@ class CalculateRouteFragment : Fragment() {
         return hFragmentCalculateRouteBinding.root
     }
 
-    /*
-    *
-public class CalculateActivity extends AppCompatActivity /*implements
-        TabLayout.BaseOnTabSelectedListener, OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-      *//*  DirectionFinderListener*//*, PlaceSelectionListener*/ {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        hSubscribeObservers()
 
-    private LatLng hCurrentLatLng;
-    private LatLng hDestLatLng;
+        hInitView()
 
-    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
-
-    FragmentManager hFragmentManager;
-    private GoogleMap hGoogleMap;
-    private FusedLocationProviderClient hFusedLocationProviderClient;
-    private GoogleApiClient hGoogleApiClient;
-    private List<Marker> hOriginMarkers = new ArrayList<>();
-    private List<Marker> hDestinationMarkers = new ArrayList<>();
-    private List<Polyline> hPolylinePaths = new ArrayList<>();
-    private AutocompleteSupportFragment hPlaceAutocompleteFragment;
-    private String hDestName;
-    private boolean hIsFromSearch;
-    private String hMode;
-    private boolean hIsSwitced = false;
-    private String hCurrentLocationName;
-    private boolean hIsVoiceCommand;
-    private AcitivityCalculateRouteBinding hAcitivityCalculateRouteBinding;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        hAcitivityCalculateRouteBinding = AcitivityCalculateRouteBinding.inflate(getLayoutInflater());
-
-        setContentView(hAcitivityCalculateRouteBinding.getRoot());
-
-
-        hGetIntentData();
-//        hMode = DirectionFinder.H_DRIVING_MODE;
-
-        hInitView();
-
-
+        hSetupListeners()
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_settings, menu);
-        return true;
+    private fun hSetupListeners() {
 
-    }
-
-    private void hInitView() {
-//        TabLayout hTabs = hAcitivityCalculateRouteBinding.hTabs;
-//        hTabs.addTab(hTabs.newTab().setText(getString(R.string.drive_tab)).setIcon(R.drawable.ic_car));
-//        hTabs.addTab(hTabs.newTab().setText(getString(R.string.cycling_tab)).setIcon(R.drawable.cycle));
-//        hTabs.addTab(hTabs.newTab().setText(getString(R.string.walking_tab)).setIcon(R.drawable.ic_walking));
-//        hTabs.addOnTabSelectedListener(this);
-//
-//
-//        hTabs.getTabAt(0).getIcon().setColorFilter(ContextCompat.getColor(this, R.color.share_loc_color), PorterDuff.Mode.SRC_IN);
-//        hTabs.getTabAt(1).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-//        hTabs.getTabAt(2).getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-//
-//
-//        /*Todo initilize later*/
-//        hPlaceAutocompleteFragment = null;
-//        hPlaceAutocompleteFragment.setOnPlaceSelectedListener(this);
-//
-//
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.hMap);
-//        mapFragment.getMapAsync(this);
-
-        hAcitivityCalculateRouteBinding.hGetDirectionsB.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this,
-                (R.color.share_loc_color))));
-    }
-
-    private void hGetIntentData() {
-
-//        Bundle hBundle = getIntent().getExtras();
-//        if (hBundle != null) {
-////            hIsFromSearch = hBundle.getBoolean(Constants.H_FROM_SEARCH_IC);
-//            if (hIsFromSearch) {
-////                hDestName = hBundle.getString(Constants.H_LOC_NAME);
-//
-//                hDestLatLng = new LatLng(hBundle.getDouble(Constants.H_DEST_LAT), hBundle.getDouble(Constants.H_DEST_LNG));
-//                hCurrentLocationName = hBundle.getString(Constants.H_CURRENT_LOCATION_NAME);
-//
-//            } else {
-//                if (hBundle.containsKey(Constants.H_VOICE_COMMAD)) {
-//                    hDestName = hBundle.getString(Constants.H_LOC_NAME);
-//                    hIsVoiceCommand = hBundle.getBoolean(Constants.H_VOICE_COMMAD);
-//
-//                    hDestLatLng = new LatLng(hBundle.getDouble(Constants.H_DEST_LAT), hBundle.getDouble(Constants.H_DEST_LNG));
-//
-//                }
-//            }
-//            hCurrentLatLng = new LatLng(hBundle.getDouble(Constants.H_LATITUDE), hBundle.getDouble(Constants.H_LONGITUDE));
-//        }
-
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+        hFragmentCalculateRouteBinding.hToTV.setOnClickListener {
+            hFragmentCalculateRouteBinding.placeAutocompleteCard.visibility =
+                    VISIBLE
         }
-        if (item.getItemId() == R.id.settings) {
-//            Intent hIntent = new Intent(this, SettingsActivity.class);
-//            startActivity(hIntent);
+
+        hFragmentCalculateRouteBinding.hGetDirectionsB.setOnClickListener {
 
         }
-        return super.onOptionsItemSelected(item);
-    }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//
-//        UIHelper.hOreoOrientationCheck(this);
-//
-//        UIHelper.hSetTextToTextView(
-//                hAcitivityCalculateRouteBinding.hFromTV,
-//                getString(R.string.current_location));
-//
-//        if (hDestName != null) {
-//            UIHelper.hSetTextToTextView(
-//                    hAcitivityCalculateRouteBinding.hToTV, hDestName);
-//
-//            try {
-//                hFindDirections(hMode);
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-
+        hFragmentCalculateRouteBinding.hIconSwitch.setOnClickListener {
+            /*Todo: Switch Coordinates*/
+        }
 
     }
 
-    /*Todo: Call later from on create*/
+    private fun hInitView() {
 
-    private void hSetupListeners() {
-        hAcitivityCalculateRouteBinding.hToTV.setOnClickListener(v -> {
-            //                UIHelper.hMakeVisibleInVisible(hPlaceAutocompleteCard, Constants.H_VISIBLE);
-//            final View root = hPlaceAutocompleteCard.getRootView();
-//            root.post(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                }
-//            });
-        });
-//        hAcitivityCalculateRouteBinding.hGetDirectionsB.setOnClickListener(v -> {
-//            hLaunchGoogleMaps();
-//        });
-//        hAcitivityCalculateRouteBinding.hIconSwitch.setOnClickListener(v -> {
-//            if (!hIsSwitced) {
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hToTV, getString(R.string.current_location));
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hFromTV, hDestName);
-//
-//
-//                LatLng hTempLatLng = hCurrentLatLng;
-//                hCurrentLatLng = hDestLatLng;
-//                hDestLatLng = hTempLatLng;
-//                hIsSwitced = true;
-//            } else {
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hToTV, hDestName);
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hFromTV, getString(R.string.current_location));
-//
-//
-//                LatLng hTempLatLng = hCurrentLatLng;
-//                hCurrentLatLng = hDestLatLng;
-//                hDestLatLng = hTempLatLng;
-//
-//                hIsSwitced = false;
-//            }
-//        });
+        hInitTabView()
+
+        hInitMapView()
+
+        hInitPlaceView()
+    }
+
+    private fun hInitPlaceView() {
+        val hAutoCompleteFragment =
+                childFragmentManager.findFragmentById(R.id.autocomplete_fragment)
+                        as AutocompleteSupportFragment
+
+        hAutoCompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+
+        hAutoCompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                Timber.d("Place: ${place.name}, ${place.id}")
+
+                hFragmentCalculateRouteBinding.placeAutocompleteCard.visibility =
+                        GONE
+
+                /*Set text to the view*/
+            }
+
+            override fun onError(status: Status) {
+                Timber.d("An error occurred: $status")
+            }
+        })
+    }
+
+    private fun hInitMapView() {
+
+        val hMapFragment = childFragmentManager.findFragmentById(R.id.hGoogleMap) as SupportMapFragment?
+        hMapFragment?.getMapAsync(hMapCallBack)
+    }
+
+    private fun hInitTabView() {
+
+        val hTabLayout: TabLayout = hFragmentCalculateRouteBinding.hTabs
+        hTabLayout.apply {
+
+            addTab(this.newTab().apply {
+                text = getString(R.string.drive_tab)
+                icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_car)
+            })
+            addTab(this.newTab().apply {
+                text = getString(R.string.cycling_tab)
+                icon = ContextCompat.getDrawable(requireContext(), R.drawable.cycle)
+            })
+            addTab(this.newTab().apply {
+                text = getString(R.string.walking_tab)
+                icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_walking)
+            })
+            addOnTabSelectedListener(
+                    object : TabLayout.OnTabSelectedListener {
+                        override fun onTabSelected(tab: TabLayout.Tab?) {
+                            when (tab?.position) {
+                                0 -> {
+                                    Timber.d("Driving Mode")
+                                    /*Todo:Find directions too*/
+                                }
+                                1 -> {
+                                    Timber.d("Cycling Mode")
+                                }
+                                2 -> {
+                                    Timber.d("Walking Mode")
+                                }
+
+                            }
+                        }
+
+                        override fun onTabUnselected(tab: TabLayout.Tab?) {
+                            tab?.icon?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                                    Color.WHITE,
+                                    BlendModeCompat.SRC_IN
+                            )
+                        }
+
+                        override fun onTabReselected(tab: TabLayout.Tab?) {
+                            /*TODO("Not yet implemented")*/
+                        }
+
+                    }
+            )
+            getTabAt(0)?.icon?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                    ContextCompat.getColor(requireContext(), R.color.share_loc_color),
+                    BlendModeCompat.SRC_IN
+            )
+            getTabAt(1)?.icon?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                    Color.WHITE,
+                    BlendModeCompat.SRC_IN
+            )
+            getTabAt(2)?.icon?.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                    Color.WHITE,
+                    BlendModeCompat.SRC_IN
+            )
+        }
     }
 
 
-    private void hLaunchGoogleMaps() {
+    private fun hSubscribeObservers() {
+        hCalculateRouteViewModel.hDataState.observe(viewLifecycleOwner) { dataState ->
+            dataState.hData?.let {
+                it.hCalculateRouteFields?.let {
 
-        Uri gmmIntentUri1 = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" +
-                hCurrentLatLng.latitude + "," + hCurrentLatLng.longitude
-                + "&destination=" + hDestLatLng.latitude + "," + hDestLatLng.longitude);
-
-        Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri1);
-        intent.setPackage("com.google.android.apps.maps");
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException ex) {
-            try {
-                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri1);
-                startActivity(unrestrictedIntent);
-            } catch (ActivityNotFoundException innerEx) {
+                }
             }
         }
+
+        hCalculateRouteViewModel.hCalculateRouteViewState.observe(viewLifecycleOwner) { calculateRouteViewState ->
+            calculateRouteViewState.hCalculateRouteFields?.let {
+
+            }
+
+        }
     }
+}
 
-//
-//    @Override
-//    public void onTabSelected(TabLayout.Tab tab) {
-////        tab.getIcon().setColorFilter(ContextCompat.getColor(this, R.color.share_loc_color), PorterDuff.Mode.SRC_IN);
-////
-////
-////        if (hCurrentLatLng != null && hDestLatLng != null) {
-////            switch (tab.getPosition()) {
-////                case 0:
-////
-////                    try {
-////                        hMode = DirectionFinder.H_DRIVING_MODE;
-////                        hFindDirections(hMode);
-////                    } catch (UnsupportedEncodingException e) {
-////                        e.printStackTrace();
-////                    }
-////                    break;
-////                case 1:
-////                    try {
-////                        hMode = DirectionFinder.H_CYCLING_MODE;
-////                        hFindDirections(hMode);
-////                    } catch (UnsupportedEncodingException e) {
-////                        e.printStackTrace();
-////                    }
-////                    break;
-////                case 2:
-////                    try {
-////                        hMode = DirectionFinder.H_WALKING_MODE;
-////                        hFindDirections(hMode);
-////                    } catch (UnsupportedEncodingException e) {
-////                        e.printStackTrace();
-////                    }
-////                    break;
-////            }
-////        } else {
-////            LogToastSnackHelper.hMakeLongToast(this, getString(R.string.enter_a_destination_first));
-////        }
-//
-//    }
 
-//    //Todo: change color of eta also its size
-//    @Override
-//    public void onTabUnselected(TabLayout.Tab tab) {
-//        tab.getIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
-//
-//    }
-//
-//    @Override
-//    public void onTabReselected(TabLayout.Tab tab) {
-//
-//    }
-//
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//
-//        hGoogleMap = googleMap;
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//        SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(this);
-//        hGoogleMap.setMapType(hSettingsPrefrences.hGetMapsType());
-//        hGoogleMap.setMyLocationEnabled(true);
-//        hGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
-//        hGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hCurrentLatLng, 12.0f));
-//
-//        hBuildGoogleApiClient();
-//
+/*
+*
+/*Todo: Call later from on create*/
 
-//    }
-//
-//    protected synchronized void hBuildGoogleApiClient() {
-//        hFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-//        hGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .build();
-//        hGoogleApiClient.connect();
-//    }
-//
-//
-//    @Override
-//    public void onConnected(@Nullable Bundle bundle) {
-//
-//    }
-//
-//    @Override
-//    public void onConnectionSuspended(int i) {
-//
-//    }
-//
-//    @Override
-//    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-//
-//    }
-
-//
 //    @Override
 //    public void onDirectionFinderStart() {
 //        if (hOriginMarkers != null) {
@@ -383,20 +265,20 @@ public class CalculateActivity extends AppCompatActivity /*implements
 //
 //    }
 
-    private void hCreateMarker(LatLng currentLatLng, LatLng destLatLng) {
-        MarkerOptions hMarkerOptions = new MarkerOptions();
+private void hCreateMarker(LatLng currentLatLng, LatLng destLatLng) {
+    MarkerOptions hMarkerOptions = new MarkerOptions();
 //        hMarkerOptions.position(currentLatLng).icon(BitmapDescriptorFactory.
 //                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER))));
 
-        MarkerOptions hMarkerOptions1 = new MarkerOptions();
+    MarkerOptions hMarkerOptions1 = new MarkerOptions();
 //        hMarkerOptions1.position(destLatLng).icon(BitmapDescriptorFactory.
 //                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER))));
 
 
-        hGoogleMap.addMarker(hMarkerOptions).showInfoWindow();
-        hGoogleMap.addMarker(hMarkerOptions1).showInfoWindow();
+    hGoogleMap.addMarker(hMarkerOptions).showInfoWindow();
+    hGoogleMap.addMarker(hMarkerOptions1).showInfoWindow();
 
-    }
+}
 
 //    private void hUpdatePolyLine(List<Route> routes) {
 //
@@ -433,7 +315,7 @@ public class CalculateActivity extends AppCompatActivity /*implements
 //            int dis = routes.get(0).distance.value;
 //            hDuration = String.valueOf(routes.get(0).duration.text);
 //
-//            SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(this);
+//            SettingsPrefrences.kt hSettingsPrefrences = new SettingsPrefrences.kt(this);
 //
 //            if (hSettingsPrefrences.hGetDistanceUnit() == Constants.H_MILES_DIS) {
 //                dis = dis / 1600;
@@ -497,4 +379,3 @@ public class CalculateActivity extends AppCompatActivity /*implements
 //
 //    }
 */
-}

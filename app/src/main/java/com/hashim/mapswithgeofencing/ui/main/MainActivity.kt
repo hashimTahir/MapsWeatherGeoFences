@@ -6,18 +6,18 @@ package com.hashim.mapswithgeofencing.ui.main
 
 import android.location.Location
 import android.os.Bundle
-import android.view.View.GONE
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.hashim.mapswithgeofencing.R
-import com.hashim.mapswithgeofencing.SettingsPrefrences
 import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding
+import com.hashim.mapswithgeofencing.prefrences.HlatLng
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
+import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 import com.mancj.materialsearchbar.MaterialSearchBar
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -56,20 +56,19 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
             when (menuItem.itemId) {
                 R.id.hCompassMenu -> {
-                    Timber.d("hNavigateToMenu")
+                    hNavController.navigate(R.id.action_hMainFragment_to_hCompassFragment)
+
                 }
                 R.id.hWeatherMenu -> {
                     val hSettingsPrefrences = SettingsPrefrences(this)
+                    val hCurrentLocation: HlatLng = hSettingsPrefrences.hGetSettings(CURRENT_LAT_LNG_PT) as HlatLng
                     val actionHMainFragmentToHWeatherFragment = MainFragmentDirections.actionHMainFragmentToHWeatherFragment(
-                            hSettingsPrefrences.hGetCurrentLocation()
+                            hCurrentLocation
                     )
                     hNavController.navigate(actionHMainFragmentToHWeatherFragment)
                 }
                 R.id.hCalculateRounteMenu -> {
-                    Timber.d("hDirectionsMenu")
-                }
-                R.id.hSettingMenu -> {
-                    Timber.d("hExit")
+                    hNavController.navigate(R.id.action_hMainFragment_to_hCalculateRouteFragment)
                 }
                 R.id.hSettingMenu -> {
                     hNavController.navigate(R.id.action_hMainFragment_to_hSettingsFragment)

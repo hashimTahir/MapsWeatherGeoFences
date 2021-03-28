@@ -7,158 +7,157 @@ package com.hashim.mapswithgeofencing.utils
 import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.HDialogResponseInterface
 
 
-class DialogHelper(private val hContext: Context, private val hDialogResponseInterface: HDialogResponseInterface) {
-    private var hDialogType = 0
-    private var hAlertDialog: AlertDialog? = null
-    fun hRadioDialog(title: String?, charSequences: Array<CharSequence?>?, hIsCancable: Boolean) {
+class DialogHelper {
 
-//        SettingsPrefrences hSettingsPrefrences = new SettingsPrefrences(hContext);
-        val hSelectedChoice = intArrayOf(0)
-        //                = {hSettingsPrefrences.hGetServerType()};
-        val hBuilder = AlertDialog.Builder(hContext)
-        hBuilder.setTitle(title)
-                .setSingleChoiceItems(charSequences, hSelectedChoice[0]) { dialog: DialogInterface?, which: Int -> hSelectedChoice[0] = which }
-                .setPositiveButton("OK") { dialog: DialogInterface?, id: Int ->
-                    hAlertDialog!!.dismiss()
-                    hDialogResponseInterface.onPostiveResponse(id, hSelectedChoice[0])
-                }.setNegativeButton("Cancel") { dialog: DialogInterface?, id: Int ->
-                    hAlertDialog!!.dismiss()
-                    hDialogResponseInterface.onNegtiveResponse(id, hSelectedChoice[0])
-                }
-        if (hIsCancable) {
-            hBuilder.setCancelable(true)
-        } else {
-            hBuilder.setCancelable(false)
-        }
-        hAlertDialog = hBuilder.create()
-        hAlertDialog!!.show()
-    }
+    companion object {
 
-    fun hCheckBoxDialog(title: String?, charSequences: Array<CharSequence?>?, hIsCancable: Boolean) {
-        val hSelectedChoice = intArrayOf(0)
-        val hBuilder = AlertDialog.Builder(hContext)
-        hBuilder.setTitle(title)
-                .setMultiChoiceItems(charSequences, null) { dialog: DialogInterface?, indexSelected: Int, isChecked: Boolean ->
-                    if (isChecked) {
-                        hSelectedChoice[0] = indexSelected
+        fun hCreateRadioDialog(
+                hContext: Context,
+                hTitle: String,
+                hDialogOptions: Array<CharSequence>,
+                hPositiveText: String,
+                hNegativeText: String,
+                hIsCancable: Boolean = true,
+                hCallBack: (Int) -> Unit,
+        ) {
+            var hAlertDialog: AlertDialog? = null
+
+
+            val hSelectedChoice = intArrayOf(0)
+
+            val hBuilder = AlertDialog.Builder(hContext)
+            hBuilder.setTitle(hTitle)
+                    .setSingleChoiceItems(hDialogOptions, hSelectedChoice[0])
+                    { dialog: DialogInterface?, choice: Int ->
+                        hSelectedChoice[0] = choice
                     }
-                }
-                .setPositiveButton("OK") { dialog: DialogInterface?, id: Int ->
-                    hAlertDialog!!.dismiss()
-                    hDialogResponseInterface.onPostiveResponse(id, hSelectedChoice[0])
-                }
-                .setNegativeButton("Cancel") { dialog: DialogInterface?, id: Int ->
-                    hAlertDialog!!.dismiss()
-                    hDialogResponseInterface.onNegtiveResponse(id, hSelectedChoice[0])
-                }
-        if (hIsCancable) {
-            hBuilder.setCancelable(true)
-        } else {
-            hBuilder.setCancelable(false)
+                    .setPositiveButton(hPositiveText)
+                    { dialog: DialogInterface?, id: Int ->
+                        hAlertDialog!!.dismiss()
+                        hCallBack.invoke(hSelectedChoice[0])
+                    }
+                    .setNegativeButton(hNegativeText)
+                    { dialog: DialogInterface?, id: Int ->
+                        hAlertDialog?.dismiss()
+                        hCallBack.invoke(hSelectedChoice[0])
+                    }
+                    .setCancelable(hIsCancable)
+            hAlertDialog = hBuilder.create()
+            hAlertDialog.show()
         }
-        hAlertDialog = hBuilder.create()
-        hAlertDialog!!.show()
+
+        fun hCreateCheckBoxDialog(
+                hContext: Context,
+                hTitle: String,
+                hDialogOptions: Array<CharSequence>,
+                hPositiveText: String,
+                hNegativeText: String,
+                hIsCancable: Boolean = true,
+                hCallBack: (Int) -> Unit
+        ) {
+            var hAlertDialog: AlertDialog? = null
+            val hSelectedChoice = intArrayOf(0)
+            val hBuilder = AlertDialog.Builder(hContext)
+            hBuilder.setTitle(hTitle)
+                    .setMultiChoiceItems(hDialogOptions, null)
+                    { dialog: DialogInterface?, indexSelected: Int, isChecked: Boolean ->
+                        if (isChecked) {
+                            hSelectedChoice[0] = indexSelected
+                        }
+                    }
+                    .setPositiveButton(hPositiveText)
+                    { dialog: DialogInterface?, id: Int ->
+                        hAlertDialog?.dismiss()
+                        hCallBack.invoke(hSelectedChoice[0])
+                    }
+                    .setNegativeButton(hNegativeText)
+                    { dialog: DialogInterface?, id: Int ->
+                        hAlertDialog?.dismiss()
+                    }
+            hBuilder.setCancelable(hIsCancable)
+            hAlertDialog = hBuilder.create()
+            hAlertDialog.show()
+        }
+
+        fun hCreateConformationDialog(
+                hContext: Context,
+                hMessage: String,
+                hPositiveText: String,
+                hNegativeText: String,
+                hIsCancable: Boolean = true,
+                hCallBack: () -> Unit
+        ) {
+
+            var hAlertDialog: AlertDialog? = null
+            val hBuilder = AlertDialog.Builder(hContext)
+            hBuilder.setMessage(hMessage)
+                    .setPositiveButton(hPositiveText)
+                    { dialog: DialogInterface?, id: Int ->
+                        hAlertDialog?.dismiss()
+                        hCallBack.invoke()
+                    }
+                    .setNegativeButton(hNegativeText)
+                    { dialog: DialogInterface?, id: Int ->
+                        hAlertDialog?.dismiss()
+                    }
+                    .setCancelable(hIsCancable)
+            hAlertDialog = hBuilder.create()
+            hAlertDialog.show()
+        }
+
+        fun hCreateConformationTitleDialog(
+                hContext: Context,
+                hTitle: String,
+                hMessage: String,
+                hPositiveText: String,
+                hNegativeText: String,
+                hIsCancable: Boolean = true,
+                hCallBack: () -> Unit
+
+        ) {
+
+            var hAlertDialog: AlertDialog? = null
+            val hBuilder = AlertDialog.Builder(hContext)
+            hBuilder
+                    .setTitle(hTitle)
+                    .setMessage(hMessage)
+                    .setPositiveButton(hPositiveText)
+                    { dialog: DialogInterface, id: Int ->
+                        hAlertDialog!!.dismiss()
+                        hCallBack.invoke()
+                    }
+                    .setNegativeButton(hNegativeText)
+                    { dialog: DialogInterface, id: Int ->
+                        hAlertDialog!!.dismiss()
+                    }
+            hBuilder.setCancelable(hIsCancable)
+
+            hAlertDialog = hBuilder.create()
+            hAlertDialog.show()
+        }
+
+
+        fun hCreateListDialog(
+                hContext: Context,
+                hTitle: String,
+                hIsCancable: Boolean = true,
+                hDialogOptions: Array<CharSequence>,
+                hCallBack: (String, Int) -> Unit,
+        ) {
+            var hAlertDialog: AlertDialog? = null
+            val hBuilder = AlertDialog.Builder(hContext)
+            hBuilder.setTitle(hTitle)
+                    .setItems(hDialogOptions)
+                    { dialog: DialogInterface?, which: Int ->
+                        hCallBack.invoke(hDialogOptions.get(which).toString(), which)
+                    }
+
+            hBuilder.setCancelable(hIsCancable)
+            hAlertDialog = hBuilder.create()
+            hAlertDialog.show()
+        }
     }
 
-    fun hConformationDialog(message: String?, positiveText: String?, neutralText: String?, negativeText: String?, hIsCancable: Boolean) {
-        val hBuilder = AlertDialog.Builder(hContext)
-        hBuilder.setMessage(message)
-                .setPositiveButton(positiveText) { dialog: DialogInterface?, id: Int ->
-                    hAlertDialog!!.dismiss()
-                    hDialogResponseInterface.onPostiveResponse(id, hDialogType)
-                }
-        if (negativeText != null) {
-            hBuilder.setNegativeButton(negativeText) { dialog: DialogInterface?, id: Int ->
-                hAlertDialog!!.dismiss()
-                hDialogResponseInterface.onNegtiveResponse(id, hDialogType)
-            }
-        }
-        if (neutralText != null) {
-            hBuilder.setNeutralButton(neutralText) { dialog: DialogInterface?, which: Int ->
-                hAlertDialog!!.dismiss()
-                hDialogResponseInterface.onNeutralResponse(which, hDialogType)
-            }
-        }
-        if (hIsCancable) {
-            hBuilder.setCancelable(true)
-        } else {
-            hBuilder.setCancelable(false)
-        }
-        hAlertDialog = hBuilder.create()
-        hAlertDialog!!.show()
-    }
-
-    fun hConformationDialogWithTitle(title: String?, message: String?,
-                                     positiveText: String?, neutralText: String?, negativeText: String?,
-                                     hIsCancable: Boolean) {
-        val hBuilder = AlertDialog.Builder(hContext)
-        hBuilder.setMessage(message).setTitle(title)
-                .setPositiveButton(positiveText) { dialog: DialogInterface?, id: Int ->
-                    hAlertDialog!!.dismiss()
-                    hDialogResponseInterface.onPostiveResponse(id, hDialogType)
-                }
-                .setNegativeButton(negativeText) { dialog: DialogInterface?, id: Int ->
-                    hAlertDialog!!.dismiss()
-                    hDialogResponseInterface.onNegtiveResponse(id, hDialogType)
-                }
-        if (neutralText != null) {
-            hBuilder.setNeutralButton(neutralText) { dialog: DialogInterface?, which: Int ->
-                hAlertDialog!!.dismiss()
-                hDialogResponseInterface.onNeutralResponse(which, hDialogType)
-            }
-        }
-        if (hIsCancable) {
-            hBuilder.setCancelable(true)
-        } else {
-            hBuilder.setCancelable(false)
-        }
-        hAlertDialog = hBuilder.create()
-        hAlertDialog!!.show()
-    }
-
-    fun hConformationDialogWithTitleNeutral(title: String?, message: String?,
-                                            positiveText: String?, negativeText: String?, neutralText: String?,
-                                            hIsCancable: Boolean) {
-        val hBuilder = AlertDialog.Builder(hContext)
-        hBuilder.setMessage(message).setTitle(title)
-                .setPositiveButton(positiveText) { dialog: DialogInterface?, id: Int ->
-                    hAlertDialog!!.dismiss()
-                    hDialogResponseInterface.onPostiveResponse(id, hDialogType)
-                }
-                .setNegativeButton(negativeText) { dialog: DialogInterface?, id: Int ->
-                    hAlertDialog!!.dismiss()
-                    hDialogResponseInterface.onNegtiveResponse(id, hDialogType)
-                }
-                .setNeutralButton(neutralText) { dialog: DialogInterface?, which: Int -> hAlertDialog!!.dismiss() }
-        if (hIsCancable) {
-            hBuilder.setCancelable(true)
-        } else {
-            hBuilder.setCancelable(false)
-        }
-        hAlertDialog = hBuilder.create()
-        hAlertDialog!!.show()
-    }
-
-    fun hListDialog(title: String?, charSequences: Array<CharSequence?>, hIsCancable: Boolean) {
-        val hBuilder = AlertDialog.Builder(hContext)
-        hBuilder.setTitle(title)
-                .setItems(charSequences) { dialog: DialogInterface?, which: Int ->
-                    hAlertDialog!!.dismiss()
-                    hDialogResponseInterface.onPostiveResponse(which, hDialogType, charSequences[which])
-                }
-        if (hIsCancable) {
-            hBuilder.setCancelable(true)
-        } else {
-            hBuilder.setCancelable(false)
-        }
-        hAlertDialog = hBuilder.create()
-        hAlertDialog!!.show()
-    }
-
-    fun hSetDialogType(dialogtype: Int) {
-        hDialogType = dialogtype
-    }
 }

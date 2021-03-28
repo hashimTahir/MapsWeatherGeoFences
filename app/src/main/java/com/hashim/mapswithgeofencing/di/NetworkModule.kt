@@ -6,6 +6,7 @@ package com.hashim.mapswithgeofencing.di
 
 import com.google.gson.Gson
 import com.hashim.mapswithgeofencing.network.RetroService
+import com.hashim.mapswithgeofencing.repository.mappers.DirectionDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
@@ -43,6 +44,11 @@ object NetworkModule {
         return ForecastDtoMapper()
     }
 
+    @Singleton
+    @Provides
+    fun hProvidesDirectionDtoMapper(): DirectionDtoMapper {
+        return DirectionDtoMapper()
+    }
 
     @Singleton
     @Provides
@@ -67,7 +73,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun hProvidesRecipeRetrofitService(
+    fun hProvidesRetrofitService(
             httpClient: OkHttpClient,
             gson: Gson
     ): RetroService {

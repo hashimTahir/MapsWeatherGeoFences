@@ -9,7 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentTemplatesBinding
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes
+import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
+import com.hashim.mapswithgeofencing.ui.dialogs.AddMessageTemplateDialog
+import com.hashim.mapswithgeofencing.ui.templates.TemplatesAdapter.AdapterType.CUSTOM
+import com.hashim.mapswithgeofencing.ui.templates.TemplatesAdapter.AdapterType.DEFAULT
+import com.hashim.mapswithgeofencing.utils.Constants
 
 
 class TemplatesFragment : Fragment() {
@@ -27,99 +35,43 @@ class TemplatesFragment : Fragment() {
         return hFragmentTempBinding.root
     }
 
+    private fun hInitAdapters() {
+        val hSettingsPrefrences = SettingsPrefrences(requireContext())
 
-    /*
-    *
-    *
-public class TemplatesActivity extends AppCompatActivity implements DialogResponseInterface, RecyclerInterface {
+        val hDefaultTemplatesList = resources.getStringArray(R.array.default_templates_array).toMutableList()
+        val hCustomTemplatesList = mutableListOf<String>()
+        hSettingsPrefrences.hGetSettings(PrefTypes.ALL_PT)
 
+        val hDefaultTemplatesAdapter = TemplatesAdapter(requireContext(), DEFAULT)
+        val hCustomTemplatesAdapter = TemplatesAdapter(requireContext(), CUSTOM)
 
+        hDefaultTemplatesAdapter.hSetData(hDefaultTemplatesList)
+        hCustomTemplatesAdapter.hSetData(hCustomTemplatesList)
 
-    private List<String> hDefaultTempList;
-    private List<String> hCustomTempList = new ArrayList<>();
-    private RecyclerAdapter hDefaultTempAdapter;
-    private RecyclerAdapter hCustomTempAdapter;
-    private SettingsPrefrences hSettingsPrefrences;
-    private ActivityTemplatesBinding hActivityTemplatesBinding;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        hActivityTemplatesBinding = ActivityTemplatesBinding.inflate(getLayoutInflater());
-        setContentView(hActivityTemplatesBinding.getRoot());
-        hInit();
-    }
-
-    private void hInit() {
-        hSettingsPrefrences = new SettingsPrefrences(this);
-        hDefaultTempList = ListUtils.hConvertArrayToArrayList(getResources().getStringArray(R.array.default_templates_array));
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        hDefaultTempAdapter = new RecyclerAdapter(this, hDefaultTempList, RecyclerAdapter.H_TEMPLATES_ADAPTER);
-        hActivityTemplatesBinding.hDefaultTemplateRv.setLayoutManager(layoutManager);
-        hActivityTemplatesBinding.hDefaultTemplateRv.setAdapter(hDefaultTempAdapter);
-
-        hInitCustomAdapter();
-    }
-
-    private void hInitCustomAdapter() {
-
-        hCustomTempList = hSettingsPrefrences.hGetCustomTemplates();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
-        if (hCustomTempList == null) {
-            hCustomTempList = new ArrayList<>();
-            hCustomTempAdapter = new RecyclerAdapter(this, hCustomTempList, RecyclerAdapter.H_TEMPLATES_ADAPTER);
-        } else {
-            hCustomTempAdapter = new RecyclerAdapter(this, hCustomTempList, RecyclerAdapter.H_TEMPLATES_ADAPTER);
-            hCustomTempAdapter.notifyDataSetChanged();
+        hCustomTemplatesList?.let {
+            hFragmentTempBinding.hCustomTemplateRv.apply {
+                layoutManager = LinearLayoutManager(requireContext())
+                adapter = hCustomTemplatesAdapter
+            }
         }
-        hActivityTemplatesBinding.hCustomTemplateRv.setLayoutManager(layoutManager);
-        hActivityTemplatesBinding.hCustomTemplateRv.setAdapter(hCustomTempAdapter);
-    }
 
-    public void hSetupListeners() {
-        hActivityTemplatesBinding.hAddTextTemplate.setOnClickListener(v -> {
-            HcustomDialog dialog = new HcustomDialog();
-            dialog.show(getSupportFragmentManager(), "H_Dialog");
-        });
+
+        hFragmentTempBinding.hDefaultTemplateRv.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = hDefaultTemplatesAdapter
+        }
 
     }
 
-    @Override
-    public void hSubmitText(String hText) {
+    private fun hSetupListeners() {
+        hFragmentTempBinding.hAddTextTemplate.setOnClickListener {
+            val hAddMessageTemplateDialog = AddMessageTemplateDialog.newInstance(null)
+            { message ->
+                /*Todo: Add message to the list save custom template*/
+            }
+            hAddMessageTemplateDialog.show(childFragmentManager, Constants.H_BOTTOM_DIALOG)
+        }
     }
 
-    @Override
-    public void hSubmitNegativeResponse(DialogFragment hDialogFragment) {
-        hDialogFragment.dismiss();
-    }
 
-    @Override
-    public void hSubmitNeutralResponse(DialogFragment hDialogFragment) {
-    }
-
-    @Override
-    public void hSubmitPositiveResponse(DialogFragment hDialogFragment, String string) {
-        hCustomTempList.add(string);
-        hCustomTempAdapter.notifyDataSetChanged();
-        hSettingsPrefrences.hSaveCustomTemplate(string);
-        hDialogFragment.dismiss();
-    }
-
-    @Override
-    public void hSubmitCloseResponse(boolean b) {
-    }
-
-    @Override
-    public void hOnClickListener(View hClickedView, int hClickedPosition) {
-    }
-
-    @Override
-    public void hOnClickListener(View v, int position, String hText) {
-        hSettingsPrefrences.hSaveCustomTemplate(hText);
-    }
-}
-
-    * */
 }

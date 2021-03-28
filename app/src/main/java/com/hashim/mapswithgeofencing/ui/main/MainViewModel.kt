@@ -12,8 +12,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.R
-import com.hashim.mapswithgeofencing.SettingsPrefrences
-import com.hashim.mapswithgeofencing.SettingsPrefrences.HlatLng
+import com.hashim.mapswithgeofencing.prefrences.HlatLng
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
+import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.*
@@ -56,10 +57,13 @@ class MainViewModel @Inject constructor(
             is OnCurrentLocationFound -> {
                 hCurrentLocation = stateEvent.location
                 hSubmitCurrentLocationData(hCurrentLocation)
-                hSettingsPrefrences.hSaveCurrentLocation(HlatLng(
-                        hLng = hCurrentLocation?.longitude,
-                        hLat = hCurrentLocation?.latitude,
-                ))
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = CURRENT_LAT_LNG_PT,
+                        value = HlatLng(
+                                hLng = hCurrentLocation?.longitude,
+                                hLat = hCurrentLocation?.latitude,
+                        )
+                )
                 hSubmitCurrentLocationData(hCurrentLocation)
             }
             is OnMapReady -> {
@@ -161,7 +165,7 @@ class MainViewModel @Inject constructor(
         _hMainViewState.value = hUpdate
     }
 
-    fun hGetCurrentViewStateOrNew(): MainViewState {
+    private fun hGetCurrentViewStateOrNew(): MainViewState {
         return hMainViewState.value ?: MainViewState()
     }
 

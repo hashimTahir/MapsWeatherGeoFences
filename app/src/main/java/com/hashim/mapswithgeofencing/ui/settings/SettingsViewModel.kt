@@ -8,13 +8,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.hashim.mapswithgeofencing.SettingsPrefrences
-import com.hashim.mapswithgeofencing.ui.events.MainViewState
+import com.google.gson.Gson
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes.*
+import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.ui.events.SettingViewState
+import com.hashim.mapswithgeofencing.ui.events.SettingViewState.DefaultSavedVS
+import com.hashim.mapswithgeofencing.ui.events.SettingViewState.SettingsFields
 import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent
 import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent.*
 import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,10 +29,12 @@ class SettingsViewModel @Inject constructor(
 
     private val _hSettingViewState = MutableLiveData<SettingViewState>()
 
-    enum class Settings
+
     val hSettingViewState: LiveData<SettingViewState>
         get() = _hSettingViewState
 
+    @Inject
+    lateinit var hGson: Gson
 
     val hDataState: LiveData<DataState<SettingViewState>> = Transformations
             .switchMap(_hSettingsStateEvent) {
@@ -38,30 +44,49 @@ class SettingsViewModel @Inject constructor(
             }
 
 
-    init {
-
-    }
-
     private fun hHandleStateEvent(settingsStateEvent: SettingsStateEvent):
             LiveData<DataState<SettingViewState>>? {
+
         when (settingsStateEvent) {
             is OnAddRemoveContacts -> {
             }
             is OnDistanceSettingsChanged -> {
-//                hSettingsPrefrences.hSaveDistanceUnit(position)
-
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = DISTANCE_UNIT_PT,
+                        value = settingsStateEvent.hDistance
+                )
             }
             is OnTempratureSettingsChanged -> {
-//                hSettingsPrefrences.hSaveTempUnit(position);
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = TEMPRATURE_UNIT_PT,
+                        value = settingsStateEvent.hTemperature
+                )
 
             }
             is OnLanguageSettingsChanged -> {
-//                hSettingsPrefrences.hSaveLanguage(position);
-
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = LANGUAGE_PT,
+                        value = settingsStateEvent.hLanguage
+                )
             }
             is OnEditMessage -> {
             }
+            is OnEmergencySettingsChanged -> {
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = EMERGENCY_PT,
+                        value = settingsStateEvent.hEmergencySettingsChanged
+                )
+            }
+            is OnTrackMeSettingsChanged -> {
+                hSettingsPrefrences.hSaveSettings(
+                        hPrefTypes = TRACKING_PT,
+                        value = settingsStateEvent.hTrackMeSettingsChanged
+                )
+            }
             is OnAddRemoveLocations -> {
+            }
+            is OnGetAllSettings -> {
+                hSubmitSavedOrDefaultSettings()
             }
             is None -> {
             }
@@ -69,32 +94,42 @@ class SettingsViewModel @Inject constructor(
         return null
     }
 
+    private fun hSubmitSavedOrDefaultSettings() {
+        val hLanguage = hSettingsPrefrences.hGetSettings(LANGUAGE_PT) as Int
+        val hDistance = hSettingsPrefrences.hGetSettings(DISTANCE_UNIT_PT) as Int
+        val hTemprature = hSettingsPrefrences.hGetSettings(TEMPRATURE_UNIT_PT) as Int
+        val hEmergency = hSettingsPrefrences.hGetSettings(EMERGENCY_PT) as Boolean
+        val hTracking = hSettingsPrefrences.hGetSettings(TRACKING_PT) as Boolean
 
-    fun hSetStateEvent(mainStateEvent: SettingsStateEvent) {
-        _hSettingsStateEvent.value = mainStateEvent
+        Timber.d("Language $hLanguage , Distance $hDistance , Emergency $hEmergency, Tracking $hTracking , Temperature $hTemprature")
+
+        _hSettingViewState.value = SettingViewState(
+                hSettingsFields = SettingsFields(
+                        hDefaultSavedVS = DefaultSavedVS(
+                                hLanguage = hLanguage,
+                                hDistance = hDistance,
+                                hTemprature = hTemprature,
+                                hEmergency = hEmergency,
+                                hTracking = hTracking,
+                        )
+                )
+        )
     }
-//
-//    fun hSetMainData() {
-//        var hUpdate = hGetCurrentViewStateOrNew()
-//        hUpdate.hMainFields = it
-//        _hSettingsStateEvent.value = hUpdate
-//    }
 
-    fun hGetCurrentViewStateOrNew(): SettingViewState {
+
+    fun hSetStateEvent(settingsStateEvent: SettingsStateEvent) {
+        _hSettingsStateEvent.value = settingsStateEvent
+    }
+
+    fun hSetDefaultSavedSettings(defaultSavedVS: DefaultSavedVS) {
+        val hUpdate = hGetCurrentViewStateOrNew()
+        hUpdate.hSettingsFields.hDefaultSavedVS = defaultSavedVS
+        _hSettingViewState.value = hUpdate
+    }
+
+    private fun hGetCurrentViewStateOrNew(): SettingViewState {
         return hSettingViewState.value ?: SettingViewState()
     }
 
-//    fun hSetMarkerData(it: MainViewState.NearByFields) {
-//        var hUpdate = hGetCurrentViewStateOrNew()
-//        hUpdate.hNearbyFields = it
-//        _hMainViewState.value = hUpdate
-//    }
-
-//    fun hSetViewStateData(data: Any) {
-//        when (data) {
-//            is SettingViewState.SettingsFields.
-//        }
-//
-//    }
 
 }

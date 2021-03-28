@@ -28,7 +28,7 @@ public class ContactsActivity extends AppCompatActivity {
     private boolean isMultiSelect = false;
     private boolean hIsSaveLayoutVisible;
     private List<ContactsEntity> hAllContactsList = new ArrayList<>();
-    private SettingsPrefrences hSettingsPrefrences;
+    private SettingsPrefrences.kt hSettingsPrefrences;
     private List<ContactsEntity> hSavedContacatsList;
     private int hWhatLoaded;
     private final int H_CONTACTS_PERMISSION_CODE = 222;
@@ -52,7 +52,7 @@ public class ContactsActivity extends AppCompatActivity {
         hToolBarHelper.hSetToolbar(hActivityContactsBinding.hToolbar.toolbar);
         hToolBarHelper.hSetToolbarTitle(hActivityContactsBinding.hToolbar.toolbarTitle, getString(R.string.emergency_contacts));
 
-        hSettingsPrefrences = new SettingsPrefrences(this);
+        hSettingsPrefrences = new SettingsPrefrences.kt(this);
         hAppRepository = AppRepository.hGetInstance(this);
         hGetIntentData();
 
