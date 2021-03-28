@@ -192,12 +192,10 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
             <fragment
-                android:id="@+id/hMap"
+                android:id="@+id/hGoogleMap"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                tools:context=".tobeDeleted.Activities.MapsActivity" />
+                android:layout_height="match_parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/hBottomCardView"
