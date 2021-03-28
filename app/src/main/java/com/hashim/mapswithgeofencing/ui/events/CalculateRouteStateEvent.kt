@@ -4,8 +4,16 @@
 
 package com.hashim.mapswithgeofencing.ui.events
 
-sealed class CalculateRouteStateEvent {
+import android.location.Location
 
+sealed class CalculateRouteStateEvent {
+    class OnFindDirections(
+            val hStartLocation: Location,
+            val hDestinationLocation: Location,
+            val hMode: Int,
+    ) : CalculateRouteStateEvent()
+
+    class OnSwitchPlaces() : CalculateRouteStateEvent()
 
     class None : CalculateRouteStateEvent()
 

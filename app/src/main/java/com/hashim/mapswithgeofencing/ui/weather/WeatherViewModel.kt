@@ -181,7 +181,7 @@ class WeatherViewModel @Inject constructor(
         _hWeatherViewState.value = hUpdate
     }
 
-    fun hGetCurrentViewStateOrNew(): WeatherViewState {
+    private fun hGetCurrentViewStateOrNew(): WeatherViewState {
         val hValue = hWeatherViewState.value?.let {
             it
         } ?: WeatherViewState()

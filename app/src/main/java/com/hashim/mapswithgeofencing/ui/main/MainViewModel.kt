@@ -165,7 +165,7 @@ class MainViewModel @Inject constructor(
         _hMainViewState.value = hUpdate
     }
 
-    fun hGetCurrentViewStateOrNew(): MainViewState {
+    private fun hGetCurrentViewStateOrNew(): MainViewState {
         return hMainViewState.value ?: MainViewState()
     }
 

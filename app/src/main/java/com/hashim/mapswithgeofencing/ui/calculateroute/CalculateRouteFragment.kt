@@ -9,6 +9,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -19,14 +21,17 @@ import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.tabs.TabLayout
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentCalculateRouteBinding
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class CalculateRouteFragment : Fragment() {
 
     private val hCalculateRouteViewModel: CalculateRouteViewModel by viewModels()
@@ -48,6 +53,12 @@ class CalculateRouteFragment : Fragment() {
         * */
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Places.initialize(requireContext(), getString(R.string.google_maps_key))
+        val placesClient = Places.createClient(requireContext())
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         hFragmentCalculateRouteBinding = FragmentCalculateRouteBinding.inflate(
@@ -64,6 +75,25 @@ class CalculateRouteFragment : Fragment() {
         hSubscribeObservers()
 
         hInitView()
+
+        hSetupListeners()
+    }
+
+    private fun hSetupListeners() {
+
+        hFragmentCalculateRouteBinding.hToTV.setOnClickListener {
+            hFragmentCalculateRouteBinding.placeAutocompleteCard.visibility =
+                    VISIBLE
+        }
+
+        hFragmentCalculateRouteBinding.hGetDirectionsB.setOnClickListener {
+
+        }
+
+        hFragmentCalculateRouteBinding.hIconSwitch.setOnClickListener {
+            /*Todo: Switch Coordinates*/
+        }
+
     }
 
     private fun hInitView() {
@@ -85,6 +115,11 @@ class CalculateRouteFragment : Fragment() {
         hAutoCompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
                 Timber.d("Place: ${place.name}, ${place.id}")
+
+                hFragmentCalculateRouteBinding.placeAutocompleteCard.visibility =
+                        GONE
+
+                /*Set text to the view*/
             }
 
             override fun onError(status: Status) {
@@ -164,7 +199,20 @@ class CalculateRouteFragment : Fragment() {
 
 
     private fun hSubscribeObservers() {
-/*Todo: Check for arguments from main*/
+        hCalculateRouteViewModel.hDataState.observe(viewLifecycleOwner) { dataState ->
+            dataState.hData?.let {
+                it.hCalculateRouteFields?.let {
+
+                }
+            }
+        }
+
+        hCalculateRouteViewModel.hCalculateRouteViewState.observe(viewLifecycleOwner) { calculateRouteViewState ->
+            calculateRouteViewState.hCalculateRouteFields?.let {
+
+            }
+
+        }
     }
 }
 
@@ -173,44 +221,6 @@ class CalculateRouteFragment : Fragment() {
 *
 /*Todo: Call later from on create*/
 
-private void hSetupListeners() {
-    hAcitivityCalculateRouteBinding.hToTV.setOnClickListener(v -> {
-        //                UIHelper.hMakeVisibleInVisible(hPlaceAutocompleteCard, Constants.H_VISIBLE);
-//            final View root = hPlaceAutocompleteCard.getRootView();
-//            root.post(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                }
-//            });
-    });
-//        hAcitivityCalculateRouteBinding.hGetDirectionsB.setOnClickListener(v -> {
-//            hLaunchGoogleMaps();
-//        });
-//        hAcitivityCalculateRouteBinding.hIconSwitch.setOnClickListener(v -> {
-//            if (!hIsSwitced) {
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hToTV, getString(R.string.current_location));
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hFromTV, hDestName);
-//
-//
-//                LatLng hTempLatLng = hCurrentLatLng;
-//                hCurrentLatLng = hDestLatLng;
-//                hDestLatLng = hTempLatLng;
-//                hIsSwitced = true;
-//            } else {
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hToTV, hDestName);
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hFromTV, getString(R.string.current_location));
-//
-//
-//                LatLng hTempLatLng = hCurrentLatLng;
-//                hCurrentLatLng = hDestLatLng;
-//                hDestLatLng = hTempLatLng;
-//
-//                hIsSwitced = false;
-//            }
-//        });
-}
-//
 //    @Override
 //    public void onDirectionFinderStart() {
 //        if (hOriginMarkers != null) {
