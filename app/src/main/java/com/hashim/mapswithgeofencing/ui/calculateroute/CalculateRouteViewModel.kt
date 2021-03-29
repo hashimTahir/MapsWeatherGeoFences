@@ -4,8 +4,12 @@
 
 package com.hashim.mapswithgeofencing.ui.calculateroute
 
+import android.location.Location
+import android.location.LocationManager
 import androidx.lifecycle.*
 import com.hashim.mapswithgeofencing.Domain.model.Directions
+import com.hashim.mapswithgeofencing.prefrences.HlatLng
+import com.hashim.mapswithgeofencing.prefrences.PrefTypes
 import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent
@@ -43,10 +47,18 @@ class CalculateRouteViewModel @Inject constructor(
         when (stateEvent) {
             is OnFindDirections -> {
                 viewModelScope.launch {
+                    var hCurrentLocation = Location(LocationManager.GPS_PROVIDER)
+                    if (stateEvent.hStartLocation == null) {
+                        val hCurrentHlatLng: HlatLng = hSettingsPrefrences.hGetSettings(PrefTypes.CURRENT_LAT_LNG_PT) as HlatLng
+                        hCurrentLocation = Location(LocationManager.GPS_PROVIDER).apply {
+                            latitude = hCurrentHlatLng.hLat!!
+                            longitude = hCurrentHlatLng.hLng!!
+                        }
+                    }
                     val hDirections = hRemoteRepo.hGetDirections(
-                            startLocation = stateEvent.hStartLocation,
+                            startLocation = hCurrentLocation,
                             endLocation = stateEvent.hDestinationLocation,
-                            mode = stateEvent.hMode.toString()
+                            mode = stateEvent.hMode
                     )
                     hDrawPath(hDirections)
                 }
@@ -62,6 +74,7 @@ class CalculateRouteViewModel @Inject constructor(
 
     private fun hDrawPath(hDirections: Directions) {
 
+        hDirections.overviewPolyline
     }
 
 

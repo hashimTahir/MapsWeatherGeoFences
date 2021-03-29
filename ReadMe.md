@@ -9,24 +9,15 @@
 
 
 ### Technologies Used
-Dagger-Hilt
-
-Retrofit
-
-Coroutines
-
-Repository
-
-Google Maps Api
-
-Google Directions Api
-
-Google Places Api
-
-Goolge Geofences Api
-
-Open Weather api
-
-Database caching
-
-Navigation Components
+ * Dagger-Hilt
+ * Retrofit
+ * Coroutines
+ * Repository
+ * Google Maps Api
+ * Google Directions Api
+ * Google Places Api
+ * Goolge Geofences Api
+ * Open Weather api
+ * Database caching
+ * Navigation Components
+ * Room

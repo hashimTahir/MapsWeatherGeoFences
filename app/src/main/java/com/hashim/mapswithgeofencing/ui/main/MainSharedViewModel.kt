@@ -9,7 +9,6 @@ import android.location.LocationManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
-import com.hashim.mapswithgeofencing.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -28,20 +27,6 @@ class MainSharedViewModel @Inject constructor(
         hTestLocation.latitude = 41.43206
         hTestLocation.longitude = -81.38992
 
-        hTestDirections(location, hTestLocation)
-    }
-
-    private fun hTestDirections(location: Location?, hTestLocation: Location) {
-        viewModelScope.launch {
-            if (location != null) {
-                hRemoteRepo.hGetDirections(
-
-                        startLocation = location,
-                        endLocation = hTestLocation,
-                        Constants.H_DRIVING_MODE
-                )
-            }
-        }
     }
 
 

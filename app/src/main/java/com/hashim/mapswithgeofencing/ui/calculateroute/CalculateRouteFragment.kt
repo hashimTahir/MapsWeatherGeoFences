@@ -6,6 +6,8 @@ package com.hashim.mapswithgeofencing.ui.calculateroute
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +30,8 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.tabs.TabLayout
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentCalculateRouteBinding
+import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.OnFindDirections
+import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_DRIVING_MODE
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -110,11 +114,22 @@ class CalculateRouteFragment : Fragment() {
                 childFragmentManager.findFragmentById(R.id.autocomplete_fragment)
                         as AutocompleteSupportFragment
 
-        hAutoCompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+        hAutoCompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
 
         hAutoCompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
                 Timber.d("Place: ${place.name}, ${place.id}")
+                val hLocation = Location(LocationManager.GPS_PROVIDER).also {
+                    it.latitude = place.latLng?.latitude!!
+                    it.longitude = place.latLng?.longitude!!
+                }
+
+                hCalculateRouteViewModel.hSetStateEvent(
+                        OnFindDirections(
+                                hDestinationLocation = hLocation,
+                                hMode = H_DRIVING_MODE
+                        )
+                )
 
                 hFragmentCalculateRouteBinding.placeAutocompleteCard.visibility =
                         GONE
@@ -216,11 +231,6 @@ class CalculateRouteFragment : Fragment() {
     }
 }
 
-
-/*
-*
-/*Todo: Call later from on create*/
-
 //    @Override
 //    public void onDirectionFinderStart() {
 //        if (hOriginMarkers != null) {
@@ -265,20 +275,20 @@ class CalculateRouteFragment : Fragment() {
 //
 //    }
 
-private void hCreateMarker(LatLng currentLatLng, LatLng destLatLng) {
-    MarkerOptions hMarkerOptions = new MarkerOptions();
-//        hMarkerOptions.position(currentLatLng).icon(BitmapDescriptorFactory.
-//                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER))));
-
-    MarkerOptions hMarkerOptions1 = new MarkerOptions();
-//        hMarkerOptions1.position(destLatLng).icon(BitmapDescriptorFactory.
-//                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER))));
-
-
-    hGoogleMap.addMarker(hMarkerOptions).showInfoWindow();
-    hGoogleMap.addMarker(hMarkerOptions1).showInfoWindow();
-
-}
+//private void hCreateMarker(LatLng currentLatLng, LatLng destLatLng) {
+//MarkerOptions hMarkerOptions = new MarkerOptions();
+////        hMarkerOptions.position(currentLatLng).icon(BitmapDescriptorFactory.
+////                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER))));
+//
+//MarkerOptions hMarkerOptions1 = new MarkerOptions();
+////        hMarkerOptions1.position(destLatLng).icon(BitmapDescriptorFactory.
+////                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER))));
+//
+//
+//hGoogleMap.addMarker(hMarkerOptions).showInfoWindow();
+//hGoogleMap.addMarker(hMarkerOptions1).showInfoWindow();
+//
+//}
 
 //    private void hUpdatePolyLine(List<Route> routes) {
 //
@@ -378,4 +388,3 @@ private void hCreateMarker(LatLng currentLatLng, LatLng destLatLng) {
 //    public void onError(Status status) {
 //
 //    }
-*/

@@ -8,9 +8,9 @@ import android.location.Location
 
 sealed class CalculateRouteStateEvent {
     class OnFindDirections(
-            val hStartLocation: Location,
+            val hStartLocation: Location? = null,
             val hDestinationLocation: Location,
-            val hMode: Int,
+            val hMode: String,
     ) : CalculateRouteStateEvent()
 
     class OnSwitchPlaces() : CalculateRouteStateEvent()
