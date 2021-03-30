@@ -162,6 +162,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="@dimen/_56dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
@@ -194,6 +195,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:padding="@dimen/_8dp"
+                        android:text="@string/distance"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_18sp"
                         android:textStyle="bold"

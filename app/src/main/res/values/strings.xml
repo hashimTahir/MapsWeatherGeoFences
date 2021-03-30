@@ -52,6 +52,7 @@
     <string name="no_saved_contacts">No Saved Contacts</string>
     <string name="location_settings">Location Settings</string>
     <string name="distance_unit">Distance unit</string>
+    <string name="distance">Distance </string>
     <string name="language_settings">Language Settings</string>
     <string name="select_language">Select Language</string>
     <string name="enable_disable">Enable/Disable</string>
@@ -87,11 +88,12 @@
     <string name="enter_a_destination_first">Enter a destination first</string>
     <string name="not_available">not available</string>
     <string name="miles">miles</string>
+    <string name="kilometers">km</string>
     <string name="explore_nearby_places">Explore Nearby Places</string>
     <string name="weather">Weather</string>
     <string name="selected_contacts_saved">Selected contacts saved</string>
     <string name="contacts_selected">&#160;&#160;Contacts Selected</string>
-    <string name="time">Time:</string>
+    <string name="time">Time: %s</string>
     <string name="navigate">Navigate</string>
     <string name="heading_0_0">Heading: 0.0</string>
     <string name="save_contacts">Save Contacts</string>

@@ -13,6 +13,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
@@ -21,17 +22,21 @@ import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.material.tabs.TabLayout
 import com.google.maps.android.PolyUtil
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentCalculateRouteBinding
-import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent
+import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.OnFindDirections
+import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.OnMapReady
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteViewState.DrawPathVS
+import com.hashim.mapswithgeofencing.ui.events.CalculateRouteViewState.SetMapVS
 import com.hashim.mapswithgeofencing.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -48,9 +53,11 @@ class CalculateRouteFragment : Fragment() {
     val hStartPlacesForResult = registerForActivityResult(StartActivityForResult()) { result: ActivityResult ->
         Timber.d("Results Callback")
         if (result.resultCode == Activity.RESULT_OK) {
-            val intent = result.data?.let {
+            result.data?.let {
                 val place = Autocomplete.getPlaceFromIntent(it)
                 Timber.d("Place is ${place.name} and latlngs are ${place.latLng}")
+
+                hFragmentCalculateRouteBinding.hToTV.text = place.name
 
                 val hLocation = Location(LocationManager.GPS_PROVIDER).also {
                     it.latitude = place.latLng?.latitude!!
@@ -58,7 +65,7 @@ class CalculateRouteFragment : Fragment() {
                 }
 
                 hCalculateRouteViewModel.hSetStateEvent(
-                        CalculateRouteStateEvent.OnFindDirections(
+                        OnFindDirections(
                                 hDestinationLocation = hLocation,
                                 hMode = Constants.H_DRIVING_MODE
                         )
@@ -72,17 +79,7 @@ class CalculateRouteFragment : Fragment() {
     private val hMapCallBack = OnMapReadyCallback { googleMap ->
         hGoogleMap = googleMap
         hGoogleMap?.isMyLocationEnabled = true
-
-        /*
-        * //        hGoogleMap.setMapType(hSettingsPrefrences.hGetMapsType());
-//        hGoogleMap.setMyLocationEnabled(true);
-//        hGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
-//        hGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(hCurrentLatLng, 12.0f));
-        * */
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        hCalculateRouteViewModel.hSetStateEvent(OnMapReady())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -206,19 +203,51 @@ class CalculateRouteFragment : Fragment() {
     private fun hSubscribeObservers() {
         hCalculateRouteViewModel.hDataState.observe(viewLifecycleOwner) { dataState ->
             dataState.hData?.let { calculateRouteViewSate ->
-                calculateRouteViewSate.hCalculateRouteFields.hDrawPathVS?.let {
-                    hCalculateRouteViewModel.hSetDrawPathVs(it)
+                calculateRouteViewSate.hCalculateRouteFields.hDrawPathVS?.let { drawPathVS ->
+                    hCalculateRouteViewModel.hSetDrawPathVs(drawPathVS)
+                }
+
+                calculateRouteViewSate.hCalculateRouteFields.hSetMapVS?.let { currentLocationVS ->
+                    hCalculateRouteViewModel.hSetCurrentLocationVs(currentLocationVS)
+
                 }
             }
         }
 
         hCalculateRouteViewModel.hCalculateRouteViewState.observe(viewLifecycleOwner) { calculateRouteViewState ->
-            calculateRouteViewState.hCalculateRouteFields.hDrawPathVS?.let {
-                hDrawPathOnMap(it)
-
+            calculateRouteViewState.hCalculateRouteFields.hDrawPathVS?.let { drawPathVS ->
+                hDrawPathOnMap(drawPathVS)
+                hMakeViewsVisible(
+                        drawPathVS.hDistanceUnit,
+                        drawPathVS.hEta
+                )
+            }
+            calculateRouteViewState.hCalculateRouteFields.hSetMapVS?.let { setMapVS ->
+                hSetupMap(setMapVS)
             }
 
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun hSetupMap(setMapVS: SetMapVS) {
+//   hGoogleMap.setMapType(hSettingsPrefrences.hGetMapsType());
+
+        hGoogleMap?.setMyLocationEnabled(true)
+        hGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                        setMapVS.currentLocation.latitude,
+                        setMapVS.currentLocation.longitude
+
+                ), setMapVS.cameraZoom))
+    }
+
+    private fun hMakeViewsVisible(hDistance: String?, hEta: String?) {
+
+        Timber.d("Distance $hDistance and Eta $hEta")
+        hFragmentCalculateRouteBinding.hBottomCardView.visibility = VISIBLE
+        hFragmentCalculateRouteBinding.hEtaTV.text = hDistance.toString()
+        hFragmentCalculateRouteBinding.hTimeTv.text = hEta
     }
 
     private fun hDrawPathOnMap(drawPathVS: DrawPathVS) {

@@ -15,6 +15,8 @@ sealed class CalculateRouteStateEvent {
 
     class OnSwitchPlaces() : CalculateRouteStateEvent()
 
+    class OnMapReady() : CalculateRouteStateEvent()
+
     class None : CalculateRouteStateEvent()
 
 }
