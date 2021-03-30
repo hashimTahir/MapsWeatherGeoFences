@@ -6,6 +6,7 @@ package com.hashim.mapswithgeofencing.utils
 
 class Constants {
     companion object {
+        val H_REQUEST_CODE = 38
         val H_BOTTOM_DIALOG = "hBottomDialog"
         val CHANNEL_ID: String = "channelIdHere"
         val H_NOTIFICATION_ID: Int = 1
@@ -25,7 +26,6 @@ class Constants {
         const val H_DRIVING_MODE = "driving"
         const val H_CYCLING_MODE = "bicycling"
         const val H_WALKING_MODE = "walking"
-
 
 
         const val H_SAVED_LIST = 678

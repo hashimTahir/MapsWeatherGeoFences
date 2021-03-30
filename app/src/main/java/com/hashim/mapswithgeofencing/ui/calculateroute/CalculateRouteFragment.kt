@@ -4,37 +4,35 @@
 
 package com.hashim.mapswithgeofencing.ui.calculateroute
 
+import PlaceUtils
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Color
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.PolylineOptions
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.material.tabs.TabLayout
 import com.google.maps.android.PolyUtil
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentCalculateRouteBinding
-import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.OnFindDirections
+import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteViewState.DrawPathVS
-import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_DRIVING_MODE
+import com.hashim.mapswithgeofencing.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -45,6 +43,29 @@ class CalculateRouteFragment : Fragment() {
 
     lateinit var hFragmentCalculateRouteBinding: FragmentCalculateRouteBinding
     private var hGoogleMap: GoogleMap? = null
+
+
+    val hStartPlacesForResult = registerForActivityResult(StartActivityForResult()) { result: ActivityResult ->
+        Timber.d("Results Callback")
+        if (result.resultCode == Activity.RESULT_OK) {
+            val intent = result.data?.let {
+                val place = Autocomplete.getPlaceFromIntent(it)
+                Timber.d("Place is ${place.name} and latlngs are ${place.latLng}")
+
+                val hLocation = Location(LocationManager.GPS_PROVIDER).also {
+                    it.latitude = place.latLng?.latitude!!
+                    it.longitude = place.latLng?.longitude!!
+                }
+
+                hCalculateRouteViewModel.hSetStateEvent(
+                        CalculateRouteStateEvent.OnFindDirections(
+                                hDestinationLocation = hLocation,
+                                hMode = Constants.H_DRIVING_MODE
+                        )
+                )
+            }
+        }
+    }
 
 
     @SuppressLint("MissingPermission")
@@ -62,8 +83,6 @@ class CalculateRouteFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Places.initialize(requireContext(), getString(R.string.google_maps_key))
-        val placesClient = Places.createClient(requireContext())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -89,8 +108,10 @@ class CalculateRouteFragment : Fragment() {
     private fun hSetupListeners() {
 
         hFragmentCalculateRouteBinding.hToTV.setOnClickListener {
-            hFragmentCalculateRouteBinding.placeAutocompleteCard.visibility =
-                    VISIBLE
+            PlaceUtils.hInit(requireContext())
+            hStartPlacesForResult.launch(
+                    PlaceUtils.hStartPlacesAutoComplete(this)
+            )
         }
 
         hFragmentCalculateRouteBinding.hGetDirectionsB.setOnClickListener {
@@ -109,42 +130,8 @@ class CalculateRouteFragment : Fragment() {
 
         hInitMapView()
 
-        hInitPlaceView()
     }
 
-    private fun hInitPlaceView() {
-        val hAutoCompleteFragment =
-                childFragmentManager.findFragmentById(R.id.autocomplete_fragment)
-                        as AutocompleteSupportFragment
-
-        hAutoCompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
-
-        hAutoCompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                Timber.d("Place: ${place.name}, ${place.id}")
-                val hLocation = Location(LocationManager.GPS_PROVIDER).also {
-                    it.latitude = place.latLng?.latitude!!
-                    it.longitude = place.latLng?.longitude!!
-                }
-
-                hCalculateRouteViewModel.hSetStateEvent(
-                        OnFindDirections(
-                                hDestinationLocation = hLocation,
-                                hMode = H_DRIVING_MODE
-                        )
-                )
-
-                hFragmentCalculateRouteBinding.placeAutocompleteCard.visibility =
-                        GONE
-
-                /*Set text to the view*/
-            }
-
-            override fun onError(status: Status) {
-                Timber.d("An error occurred: $status")
-            }
-        })
-    }
 
     private fun hInitMapView() {
 
