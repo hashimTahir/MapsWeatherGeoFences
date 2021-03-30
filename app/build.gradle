@@ -160,6 +160,7 @@ dependencies {
 
     implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
 
+    implementation 'com.google.maps.android:android-maps-utils:2.2.2'
 }
 
 kapt {

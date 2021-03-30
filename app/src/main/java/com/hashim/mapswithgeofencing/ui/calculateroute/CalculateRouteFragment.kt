@@ -23,14 +23,17 @@ import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.android.material.tabs.TabLayout
+import com.google.maps.android.PolyUtil
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentCalculateRouteBinding
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.OnFindDirections
+import com.hashim.mapswithgeofencing.ui.events.CalculateRouteViewState.DrawPathVS
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_DRIVING_MODE
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -215,176 +218,38 @@ class CalculateRouteFragment : Fragment() {
 
     private fun hSubscribeObservers() {
         hCalculateRouteViewModel.hDataState.observe(viewLifecycleOwner) { dataState ->
-            dataState.hData?.let {
-                it.hCalculateRouteFields?.let {
-
+            dataState.hData?.let { calculateRouteViewSate ->
+                calculateRouteViewSate.hCalculateRouteFields.hDrawPathVS?.let {
+                    hCalculateRouteViewModel.hSetDrawPathVs(it)
                 }
             }
         }
 
         hCalculateRouteViewModel.hCalculateRouteViewState.observe(viewLifecycleOwner) { calculateRouteViewState ->
-            calculateRouteViewState.hCalculateRouteFields?.let {
+            calculateRouteViewState.hCalculateRouteFields.hDrawPathVS?.let {
+                hDrawPathOnMap(it)
 
             }
 
         }
     }
+
+    private fun hDrawPathOnMap(drawPathVS: DrawPathVS) {
+        Timber.d("hDrawPathOnMap")
+        hGoogleMap?.clear()
+        val hPolylineOptions = PolylineOptions().apply {
+            color(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+            geodesic(true)
+            width(10F)
+        }
+
+        val hPolyline = PolyUtil.decode(drawPathVS.hOverviewPolyline?.points)
+
+        hPolyline.forEach {
+            hPolylineOptions.add(it)
+        }
+
+        hGoogleMap?.addPolyline(hPolylineOptions)
+
+    }
 }
-
-//    @Override
-//    public void onDirectionFinderStart() {
-//        if (hOriginMarkers != null) {
-//            for (Marker marker : hOriginMarkers) {
-//                marker.remove();
-//            }
-//        }
-//
-//        if (hDestinationMarkers != null) {
-//            for (Marker marker : hDestinationMarkers) {
-//                marker.remove();
-//            }
-//        }
-//
-//        if (hPolylinePaths != null) {
-//            for (Polyline polyline : hPolylinePaths) {
-//                polyline.remove();
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void onDirectionFinderSuccess(List<Route> route) {
-//        if (route.size() > 0) {
-//            //        progressDialog.dismiss();
-//            hPolylinePaths = new ArrayList<>();
-//            hOriginMarkers = new ArrayList<>();
-//            hDestinationMarkers = new ArrayList<>();
-//
-//            hUpdatePolyLine(route);
-//            hCreateMarker(new LatLng(hCurrentLatLng.latitude, hCurrentLatLng.longitude),
-//                    new LatLng(hDestLatLng.latitude, hDestLatLng.longitude));
-////        hHideLoader();
-//
-//
-//        } else {
-//            LogToastSnackHelper.hMakeLongToast(this, hMode.concat(getString(R.string.not_available)));
-//            AnimHelper.hAnimateBottomDown(this, hAcitivityCalculateRouteBinding.hBottomCardView);
-//            UIHelper.hMakeVisibleInVisible(hAcitivityCalculateRouteBinding.hBottomCardView, Constants.H_INVISIBLE);
-//        }
-//
-//
-//    }
-
-//private void hCreateMarker(LatLng currentLatLng, LatLng destLatLng) {
-//MarkerOptions hMarkerOptions = new MarkerOptions();
-////        hMarkerOptions.position(currentLatLng).icon(BitmapDescriptorFactory.
-////                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_CURRENT_MARKER))));
-//
-//MarkerOptions hMarkerOptions1 = new MarkerOptions();
-////        hMarkerOptions1.position(destLatLng).icon(BitmapDescriptorFactory.
-////                fromBitmap(MarkerUtils.hGetCustomMapMarker(this, String.valueOf(Constants.H_DEST_MARKER))));
-//
-//
-//hGoogleMap.addMarker(hMarkerOptions).showInfoWindow();
-//hGoogleMap.addMarker(hMarkerOptions1).showInfoWindow();
-//
-//}
-
-//    private void hUpdatePolyLine(List<Route> routes) {
-//
-//        if (routes.size() > 0) {
-//            hGoogleMap.clear();
-//            String hDist = null;
-//            String hDuration = null;
-//            for (Route route : routes) {
-//
-//                PolylineOptions polylineOptions = new PolylineOptions().geodesic(true).
-//                        color(ContextCompat.getColor(this, R.color.colorPrimary)).width(10);
-//
-//                for (int i = 0; i < route.points.size(); i++) {
-//                    polylineOptions.add(route.points.get(i));
-//
-//
-//                }
-//                hPolylinePaths.add(hGoogleMap.addPolyline(polylineOptions));
-//
-//            }
-//            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                //    ActivityCompat#requestPermissions
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for ActivityCompat#requestPermissions for more details.
-//                return;
-//            }
-//
-//            hDist = String.valueOf(routes.get(0).distance.text);
-//            int dis = routes.get(0).distance.value;
-//            hDuration = String.valueOf(routes.get(0).duration.text);
-//
-//            SettingsPrefrences.kt hSettingsPrefrences = new SettingsPrefrences.kt(this);
-//
-//            if (hSettingsPrefrences.hGetDistanceUnit() == Constants.H_MILES_DIS) {
-//                dis = dis / 1600;
-//
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hDistanceTv, String.valueOf(dis) + getString(R.string.miles));
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hEtaTV, "  (".concat(hDuration) + ")");
-//            } else {
-//
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hDistanceTv, hDist);
-//                UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hEtaTV, "  (".concat(hDuration) + ")");
-//            }
-//
-//
-////        hGoogleMap.setMyLocationEnabled(false);
-//
-//
-//            UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hTimeTv, hDestName);
-//            AnimHelper.hAnimateBottomUp(this, hAcitivityCalculateRouteBinding.hBottomCardView);
-//
-//        }
-//
-//    }
-
-//    @Override
-//    public void onPlaceSelected(Place place) {
-//
-//        String hPlaceName = (String) place.getName();
-//        hDestLatLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
-//        hDestName = hPlaceName;
-//        UIHelper.hSetTextToTextView(hAcitivityCalculateRouteBinding.hToTV, hPlaceName);
-//
-//        try {
-//            hFindDirections(hMode);
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-//
-//    private void hFindDirections(String mode) throws UnsupportedEncodingException {
-//        String origin = String.valueOf(hCurrentLatLng.latitude).concat(",").concat(String.valueOf(hCurrentLatLng.longitude));
-//        String destination = String.valueOf(hDestLatLng.latitude).concat(",").concat(String.valueOf(hDestLatLng.longitude));
-//
-//        switch (mode) {
-//            case DirectionFinder.H_CYCLING_MODE:
-//                new DirectionFinder(this, origin, destination, DirectionFinder.H_CYCLING_MODE).execute();
-//                break;
-//            case DirectionFinder.H_DRIVING_MODE:
-//                new DirectionFinder(this, origin, destination, DirectionFinder.H_DRIVING_MODE).execute();
-//                break;
-//            case DirectionFinder.H_WALKING_MODE:
-//                new DirectionFinder(this, origin, destination, DirectionFinder.H_WALKING_MODE).execute();
-//                break;
-//        }
-//
-//
-//    }
-//
-//    @Override
-//    public void onError(Status status) {
-//
-//    }

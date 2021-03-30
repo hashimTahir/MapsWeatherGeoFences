@@ -7,6 +7,7 @@ package com.hashim.mapswithgeofencing.ui.calculateroute
 import android.location.Location
 import android.location.LocationManager
 import androidx.lifecycle.*
+import com.google.maps.android.PolyUtil
 import com.hashim.mapswithgeofencing.Domain.model.Directions
 import com.hashim.mapswithgeofencing.prefrences.HlatLng
 import com.hashim.mapswithgeofencing.prefrences.PrefTypes
@@ -16,6 +17,8 @@ import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.None
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.OnFindDirections
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteViewState
+import com.hashim.mapswithgeofencing.ui.events.CalculateRouteViewState.CalculateRouteFields
+import com.hashim.mapswithgeofencing.ui.events.CalculateRouteViewState.DrawPathVS
 import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -74,12 +77,29 @@ class CalculateRouteViewModel @Inject constructor(
 
     private fun hDrawPath(hDirections: Directions) {
 
-        hDirections.overviewPolyline
+        _hCalculateRouteViewState.value = CalculateRouteViewState(
+                hCalculateRouteFields = CalculateRouteFields(
+                        hDrawPathVS = DrawPathVS(
+                                hDistance = hDirections.distance,
+                                hOverviewPolyline = hDirections.overviewPolyline,
+                                hSteps = hDirections.steps,
+                        )
+                )
+        )
+
+
     }
 
 
     fun hSetStateEvent(calculateRouteStateEvent: CalculateRouteStateEvent) {
         _CalculateRouteStateEvent.value = calculateRouteStateEvent
+    }
+
+
+    fun hSetDrawPathVs(drawPathVS: DrawPathVS) {
+        val hUpdate = hGetCurrentViewStateOrNew()
+        hUpdate.hCalculateRouteFields.hDrawPathVS = drawPathVS
+        _hCalculateRouteViewState.value = hUpdate
     }
 
     private fun hGetCurrentViewStateOrNew(): CalculateRouteViewState {
