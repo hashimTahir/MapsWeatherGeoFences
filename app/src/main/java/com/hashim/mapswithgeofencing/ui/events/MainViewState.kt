@@ -17,7 +17,8 @@ data class MainViewState(
     @Parcelize
     data class MainFields(
             var hCurrentLocationVS: CurrentLocationVS? = null,
-            var hNearByPlacesVS: NearByPlacesVS? = null
+            var hNearByPlacesVS: NearByPlacesVS? = null,
+            var hOnMarkerClickVS: OnMarkerClickVS? = null,
     ) : Parcelable
 
 
@@ -32,5 +33,11 @@ data class MainViewState(
     data class NearByPlacesVS(
             val hMarkerList: List<MarkerOptions>? = null
     ) : Parcelable
+
+
+    @Parcelize
+    data class OnMarkerClickVS(
+            val hTemp: String? = null
+    ): Parcelable
 }
 

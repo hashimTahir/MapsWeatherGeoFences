@@ -7,6 +7,7 @@ package com.hashim.mapswithgeofencing.ui.main
 import android.content.Context
 import android.location.Location
 import androidx.lifecycle.*
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.prefrences.HlatLng
@@ -23,6 +24,7 @@ import com.hashim.mapswithgeofencing.utils.hCreateMarkerOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -50,7 +52,9 @@ class MainViewModel @Inject constructor(
             }
 
 
-    private fun hHandleStateEvent(stateEvent: MainStateEvent): LiveData<DataState<MainViewState>>? {
+    private fun hHandleStateEvent(
+            stateEvent: MainStateEvent
+    ): LiveData<DataState<MainViewState>>? {
         when (stateEvent) {
             is OnCurrentLocationFound -> {
                 hCurrentLocation = stateEvent.location
@@ -80,6 +84,9 @@ class MainViewModel @Inject constructor(
             }
             is None -> {
             }
+            is OnMarkerClicked -> {
+                hChangeBottomView(stateEvent.marker)
+            }
             else -> {
             }
         }
@@ -87,7 +94,21 @@ class MainViewModel @Inject constructor(
 
     }
 
-    private fun hSubmitNearByMarkerList(nearyByPlacesList: List<NearByPlaces>, category: Category) {
+    private fun hChangeBottomView(marker: Marker) {
+        Timber.d("hChangeBottomView $marker")
+
+
+        _hMainViewState.value = MainViewState(
+                hMainFields = MainFields(
+                        hOnMarkerClickVS = OnMarkerClickVS("test")
+                )
+        )
+    }
+
+    private fun hSubmitNearByMarkerList(
+            nearyByPlacesList: List<NearByPlaces>,
+            category: Category
+    ) {
         val hMarkerList = mutableListOf<MarkerOptions>()
         nearyByPlacesList.forEach { place ->
             hMarkerList.add(
@@ -101,7 +122,6 @@ class MainViewModel @Inject constructor(
         }
         _hMainViewState.value = MainViewState(
                 hMainFields = MainFields(
-                        hCurrentLocationVS = null,
                         hNearByPlacesVS = NearByPlacesVS(
                                 hMarkerList = hMarkerList
                         )
@@ -112,7 +132,6 @@ class MainViewModel @Inject constructor(
 
     private fun hSubmitCurrentLocationData(location: Location?) {
         location?.let { location ->
-
 
             _hMainViewState.value = MainViewState(
                     hMainFields = MainFields(
@@ -126,7 +145,6 @@ class MainViewModel @Inject constructor(
                                     ),
                                     cameraZoom = 12.0F,
                             ),
-                            hNearByPlacesVS = null,
                     )
             )
         }
@@ -150,6 +168,12 @@ class MainViewModel @Inject constructor(
     fun hSetNearByPlacesData(nearByPlacesVS: NearByPlacesVS) {
         val hUpdate = hGetCurrentViewStateOrNew()
         hUpdate.hMainFields.hNearByPlacesVS = nearByPlacesVS
+        _hMainViewState.value = hUpdate
+    }
+
+    fun hSetMarkerClickData(onMarkerClickVS: OnMarkerClickVS) {
+        val hUpdate = hGetCurrentViewStateOrNew()
+        hUpdate.hMainFields.hOnMarkerClickVS = onMarkerClickVS
         _hMainViewState.value = hUpdate
     }
 }

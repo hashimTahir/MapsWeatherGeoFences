@@ -5,6 +5,7 @@
 package com.hashim.mapswithgeofencing.ui.events
 
 import android.location.Location
+import com.google.android.gms.maps.model.Marker
 import com.hashim.mapswithgeofencing.ui.main.Category
 
 sealed class MainStateEvent {
@@ -14,6 +15,8 @@ sealed class MainStateEvent {
     class OnCategorySelected(val category: Category) : MainStateEvent()
 
     class OnMapReady : MainStateEvent()
+
+    class OnMarkerClicked(val marker: Marker) : MainStateEvent()
 
     class None : MainStateEvent()
 

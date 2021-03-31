@@ -26,6 +26,7 @@
             android:id="@+id/action_hMainFragment_to_hCalculateRouteFragment"
             app:destination="@id/hCalculateRouteFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/hWeatherFragment"
         android:name="com.hashim.mapswithgeofencing.ui.weather.WeatherFragment"
@@ -35,22 +36,55 @@
             android:name="hCurrentLocation"
             app:argType="com.hashim.mapswithgeofencing.prefrences.HlatLng"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_hWeatherFragment_to_hSettingsFragment"
+            app:destination="@id/hSettingsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/hSettingsFragment"
         android:name="com.hashim.mapswithgeofencing.ui.settings.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings" />
+
     <fragment
         android:id="@+id/hCalculateRouteFragment"
         android:name="com.hashim.mapswithgeofencing.ui.calculateroute.CalculateRouteFragment"
         android:label="CalculateRouteFragment"
-        tools:layout="@layout/fragment_calculate_route" />
+        tools:layout="@layout/fragment_calculate_route" >
+        <action
+            android:id="@+id/action_hCalculateRouteFragment_to_hCompassFragment"
+            app:destination="@id/hCompassFragment" />
+        <action
+            android:id="@+id/action_hCalculateRouteFragment_to_hMainFragment"
+            app:destination="@id/hMainFragment" />
+        <action
+            android:id="@+id/action_hCalculateRouteFragment_to_hWeatherFragment"
+            app:destination="@id/hWeatherFragment" />
+        <action
+            android:id="@+id/action_hCalculateRouteFragment_to_hSettingsFragment"
+            app:destination="@id/hSettingsFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/hCompassFragment"
         android:name="com.hashim.mapswithgeofencing.ui.compass.CompassFragment"
         android:label="CompassFragment"
-        tools:layout="@layout/fragment_compass" />
+        tools:layout="@layout/fragment_compass" >
+        <action
+            android:id="@+id/action_hCompassFragment_to_hCalculateRouteFragment"
+            app:destination="@id/hCalculateRouteFragment" />
+        <action
+            android:id="@+id/action_hCompassFragment_to_hMainFragment"
+            app:destination="@id/hMainFragment" />
+        <action
+            android:id="@+id/action_hCompassFragment_to_hWeatherFragment"
+            app:destination="@id/hWeatherFragment" />
+        <action
+            android:id="@+id/action_hCompassFragment_to_hSettingsFragment"
+            app:destination="@id/hSettingsFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/hTemplatesFragment"
         android:name="com.hashim.mapswithgeofencing.ui.templates.TemplatesFragment"

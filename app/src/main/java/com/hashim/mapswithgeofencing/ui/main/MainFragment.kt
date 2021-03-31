@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -24,14 +25,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentMainBinding
 import com.hashim.mapswithgeofencing.location.LocationUtis
-import com.hashim.mapswithgeofencing.ui.events.MainStateEvent
-import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.OnCurrentLocationFound
-import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.OnMapReady
-import com.hashim.mapswithgeofencing.ui.events.MainViewState.CurrentLocationVS
-import com.hashim.mapswithgeofencing.ui.events.MainViewState.NearByPlacesVS
+import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.*
+import com.hashim.mapswithgeofencing.ui.events.MainViewState.*
 import com.hashim.mapswithgeofencing.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -46,6 +43,22 @@ class MainFragment : Fragment() {
         hGoogleMap = googleMap
         hGoogleMap?.isMyLocationEnabled = true
         hMainViewModel.hSetStateEvent(OnMapReady())
+
+        hSetMapListerns()
+    }
+
+    @SuppressLint("PotentialBehaviorOverride")
+    private fun hSetMapListerns() {
+        hGoogleMap?.setOnMarkerClickListener { marker ->
+            /* Todo: Show details */
+            if (marker.isInfoWindowShown()) {
+                marker.hideInfoWindow()
+            } else {
+                marker.showInfoWindow()
+            }
+            hMainViewModel.hSetStateEvent(OnMarkerClicked(marker))
+            return@setOnMarkerClickListener true
+        }
     }
 
 
@@ -65,7 +78,7 @@ class MainFragment : Fragment() {
         hCategoriesAdapter = CategoriesAdapter(requireContext())
         hCategoriesAdapter.hSetCategoriesCallback { category ->
             hMainViewModel.hSetStateEvent(
-                    MainStateEvent.OnCategorySelected(category)
+                    OnCategorySelected(category)
             )
         }
 
@@ -97,7 +110,6 @@ class MainFragment : Fragment() {
                         hMainViewModel.hSetStateEvent(
                                 OnCurrentLocationFound(location)
                         )
-//                        hOnFragmentInteraction.hSetLocation(location)
                     },
                     onLocationUpdated = {}
             )
@@ -113,6 +125,11 @@ class MainFragment : Fragment() {
         hFragmentMainBinding.hSearchBar.setSpeechMode(true)
 //        hFragmentMainBinding.hSearchBar.setOnSearchActionListener(this)
 
+        hFragmentMainBinding.hDetailCardView.setOnClickListener {
+            /*Todo Execute route*/
+
+        }
+
     }
 
     private fun hSubscribeObservers() {
@@ -120,11 +137,12 @@ class MainFragment : Fragment() {
             dataState.hData?.let { mainViewState ->
                 mainViewState.hMainFields.hCurrentLocationVS?.let { currentLocationVS ->
                     hMainViewModel.hSetCurrentLocationData(currentLocationVS)
-
                 }
                 mainViewState.hMainFields.hNearByPlacesVS?.let { nearByPlacesVS ->
                     hMainViewModel.hSetNearByPlacesData(nearByPlacesVS)
-
+                }
+                mainViewState.hMainFields.hOnMarkerClickVS?.let { onMarkerClickVS ->
+                    hMainViewModel.hSetMarkerClickData(onMarkerClickVS)
                 }
             }
         }
@@ -136,15 +154,21 @@ class MainFragment : Fragment() {
             mainviewstate.hMainFields.hCurrentLocationVS?.let { currentLocationVS ->
                 hSetCurrentMarker(currentLocationVS)
             }
+            mainviewstate.hMainFields.hOnMarkerClickVS?.let { onMarkerClickVS ->
+                hSetBottomCard(onMarkerClickVS)
+
+            }
 
         }
     }
 
+    private fun hSetBottomCard(onMarkerClickVS: OnMarkerClickVS) {
+        hFragmentMainBinding.hDetailCardView.visibility = VISIBLE
+    }
+
     private fun hCreateNearByMarker(nearByPlacesVS: NearByPlacesVS) {
-        Timber.d("Create markers")
         hGoogleMap?.clear()
         nearByPlacesVS.hMarkerList?.forEach {
-            Timber.d("Adding Marking")
             hGoogleMap?.addMarker(it)
         }
     }
