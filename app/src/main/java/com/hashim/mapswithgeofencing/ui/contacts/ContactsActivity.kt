@@ -1,14 +1,36 @@
 /*
- * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 1.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.tobeDeleted.Contacts;
+package com.hashim.mapswithgeofencing.ui.contacts
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
+import com.hashim.mapswithgeofencing.databinding.ActivityContacts3Binding
 
-@SuppressWarnings("unchecked")
-public class ContactsActivity extends AppCompatActivity {
-    /*
+class ContactsActivity : AppCompatActivity() {
+    lateinit var hActivityContacts3Binding: ActivityContacts3Binding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        hActivityContacts3Binding = ActivityContacts3Binding.inflate(
+                layoutInflater
+        )
+        setContentView(hActivityContacts3Binding.root)
+        setSupportActionBar(hActivityContacts3Binding.toolbar)
+
+        hActivityContacts3Binding.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+        }
+    }
+}
+
+/*
+*
+*
+*   /*
 }
         implements OnItemClickListener, DeleteCallBack,
         RecyclerInterface, DialogResponseInterface,
@@ -616,5 +638,4 @@ public class ContactsActivity extends AppCompatActivity {
         if (requestCode == H_CONTACTS_PERMISSION_CODE) {
             hAskForPermissions(Constants.H_LOCATION_PERMISSION);
         }
-    }*/
-}
+    }*/*/
