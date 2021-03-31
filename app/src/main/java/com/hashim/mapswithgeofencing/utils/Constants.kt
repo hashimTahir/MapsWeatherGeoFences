@@ -23,9 +23,7 @@ class Constants {
         const val H_FARENHEIT_UNIT = "imperial"
         const val H_KELVIL_UNIT = "kelvin"
 
-        const val H_DRIVING_MODE = "driving"
-        const val H_CYCLING_MODE = "bicycling"
-        const val H_WALKING_MODE = "walking"
+
 
 
         const val H_SAVED_LIST = 678

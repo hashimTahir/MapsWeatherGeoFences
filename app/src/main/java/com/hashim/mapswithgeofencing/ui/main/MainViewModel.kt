@@ -7,11 +7,8 @@ package com.hashim.mapswithgeofencing.ui.main
 import android.content.Context
 import android.location.Location
 import androidx.lifecycle.*
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
-import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.prefrences.HlatLng
 import com.hashim.mapswithgeofencing.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
 import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
@@ -22,6 +19,7 @@ import com.hashim.mapswithgeofencing.ui.events.MainViewState
 import com.hashim.mapswithgeofencing.ui.events.MainViewState.*
 import com.hashim.mapswithgeofencing.utils.DataState
 import com.hashim.mapswithgeofencing.utils.MarkerUtils
+import com.hashim.mapswithgeofencing.utils.hCreateMarkerOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -94,9 +92,10 @@ class MainViewModel @Inject constructor(
         nearyByPlacesList.forEach { place ->
             hMarkerList.add(
                     hCreateMarkerOptions(
+                            hContext = hContext,
                             hLat = place.lat!!,
                             hLng = place.lng!!,
-                            hCategory = category
+                            hCategory = category,
                     )
             )
         }
@@ -111,28 +110,6 @@ class MainViewModel @Inject constructor(
     }
 
 
-    private fun hCreateMarkerOptions(hLat: Double, hLng: Double, hCategory: Category?): MarkerOptions {
-        val hLatLng = LatLng(hLat, hLng)
-        val hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(hContext, hCategory)
-
-
-        val hMarkerOptions =
-                if (hCategory != null) {
-                    MarkerOptions().position(hLatLng)
-                            .title(hCategory.name)
-                            .snippet(hCategory.name)
-                            .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap))
-                } else {
-                    MarkerOptions().position(hLatLng)
-                            .title(hContext.getString(R.string.you_are_here))
-                            .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap))
-                }
-
-
-        return hMarkerOptions
-    }
-
-
     private fun hSubmitCurrentLocationData(location: Location?) {
         location?.let { location ->
 
@@ -142,9 +119,10 @@ class MainViewModel @Inject constructor(
                             hCurrentLocationVS = CurrentLocationVS(
                                     currentLocation = location,
                                     currentMarkerOptions = hCreateMarkerOptions(
+                                            hContext = hContext,
                                             hLat = location.latitude,
                                             hLng = location.longitude,
-                                            hCategory = null
+                                            hType = MarkerUtils.MarkerType.CURRENT,
                                     ),
                                     cameraZoom = 12.0F,
                             ),

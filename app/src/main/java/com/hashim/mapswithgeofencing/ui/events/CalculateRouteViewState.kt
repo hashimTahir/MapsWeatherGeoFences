@@ -26,7 +26,9 @@ data class CalculateRouteViewState(
             val hSteps: List<Step>? = null,
             val hDistance: Distance? = null,
             val hEta: String? = null,
-            val hDistanceUnit: String? = null
+            val hDistanceUnit: String? = null,
+            val hStartMarker: MarkerOptions? = null,
+            val hEndMarker: MarkerOptions? = null,
     )
 
     data class SetMapVS(

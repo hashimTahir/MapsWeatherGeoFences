@@ -14,7 +14,9 @@ import com.hashim.mapswithgeofencing.repository.mappers.DirectionDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
+import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode
 import com.hashim.mapswithgeofencing.ui.main.Category
+import java.util.*
 
 class RemoteRepoImpl(
         private val hRetroService: RetroService,
@@ -47,12 +49,15 @@ class RemoteRepoImpl(
     }
 
 
-    override suspend fun hGetDirections(startLocation: Location, endLocation: Location, mode: String): Directions {
+    override suspend fun hGetDirections(
+            startLocation: Location,
+            endLocation: Location,
+            mode: DirectionsMode): Directions {
         val hGetDirections = hRetroService.hFindDirections(
                 startLocation = "${startLocation.latitude},${startLocation.longitude}",
                 endLocation = "${endLocation.latitude},${endLocation.longitude}",
                 key = hMapsKey,
-                mode = mode,
+                mode = mode.name.toLowerCase(Locale.getDefault()),
         )
 
         return hDirectionDtoMapper.hMapToDomainModel(hGetDirections)

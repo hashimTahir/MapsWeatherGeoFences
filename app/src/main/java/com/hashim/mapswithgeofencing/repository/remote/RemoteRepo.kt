@@ -9,6 +9,7 @@ import com.hashim.mapswithgeofencing.Domain.model.Directions
 import com.hashim.mapswithgeofencing.Domain.model.Forecast
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.Domain.model.Weather
+import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode
 import com.hashim.mapswithgeofencing.ui.main.Category
 
 interface RemoteRepo {
@@ -20,7 +21,7 @@ interface RemoteRepo {
     suspend fun hGetDirections(
             startLocation: Location,
             endLocation: Location,
-            mode: String
+            mode: DirectionsMode,
     ): Directions
 
     suspend fun hFindNearybyPlaces(category: Category, location: Location): List<NearByPlaces>

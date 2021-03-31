@@ -8,8 +8,6 @@ import PlaceUtils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
-import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,17 +25,18 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.material.tabs.TabLayout
 import com.google.maps.android.PolyUtil
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentCalculateRouteBinding
-import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.OnFindDirections
-import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.OnMapReady
+import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode.*
+import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.*
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteViewState.DrawPathVS
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteViewState.SetMapVS
-import com.hashim.mapswithgeofencing.utils.Constants
+import com.hashim.mapswithgeofencing.utils.hLatLngToLocation
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -59,21 +58,20 @@ class CalculateRouteFragment : Fragment() {
 
                 hFragmentCalculateRouteBinding.hToTV.text = place.name
 
-                val hLocation = Location(LocationManager.GPS_PROVIDER).also {
-                    it.latitude = place.latLng?.latitude!!
-                    it.longitude = place.latLng?.longitude!!
-                }
+                val hLocation = hLatLngToLocation(
+                        hLng = place.latLng?.longitude!!,
+                        hLat = place.latLng?.latitude!!,
+                )
 
                 hCalculateRouteViewModel.hSetStateEvent(
                         OnFindDirections(
                                 hDestinationLocation = hLocation,
-                                hMode = Constants.H_DRIVING_MODE
+                                hMode = DRIVING
                         )
                 )
             }
         }
     }
-
 
     @SuppressLint("MissingPermission")
     private val hMapCallBack = OnMapReadyCallback { googleMap ->
@@ -158,14 +156,19 @@ class CalculateRouteFragment : Fragment() {
                         override fun onTabSelected(tab: TabLayout.Tab?) {
                             when (tab?.position) {
                                 0 -> {
-                                    Timber.d("Driving Mode")
-                                    /*Todo:Find directions too*/
+                                    hCalculateRouteViewModel.hSetStateEvent(
+                                            OnModeChanged(DRIVING)
+                                    )
                                 }
                                 1 -> {
-                                    Timber.d("Cycling Mode")
+                                    hCalculateRouteViewModel.hSetStateEvent(
+                                            OnModeChanged(TRANSIT)
+                                    )
                                 }
                                 2 -> {
-                                    Timber.d("Walking Mode")
+                                    hCalculateRouteViewModel.hSetStateEvent(
+                                            OnModeChanged(WALKING)
+                                    )
                                 }
 
                             }
@@ -179,7 +182,6 @@ class CalculateRouteFragment : Fragment() {
                         }
 
                         override fun onTabReselected(tab: TabLayout.Tab?) {
-                            /*TODO("Not yet implemented")*/
                         }
 
                     }
@@ -209,24 +211,36 @@ class CalculateRouteFragment : Fragment() {
 
                 calculateRouteViewSate.hCalculateRouteFields.hSetMapVS?.let { currentLocationVS ->
                     hCalculateRouteViewModel.hSetCurrentLocationVs(currentLocationVS)
-
                 }
             }
         }
 
-        hCalculateRouteViewModel.hCalculateRouteViewState.observe(viewLifecycleOwner) { calculateRouteViewState ->
-            calculateRouteViewState.hCalculateRouteFields.hDrawPathVS?.let { drawPathVS ->
-                hDrawPathOnMap(drawPathVS)
-                hMakeViewsVisible(
-                        drawPathVS.hDistanceUnit,
-                        drawPathVS.hEta
-                )
-            }
-            calculateRouteViewState.hCalculateRouteFields.hSetMapVS?.let { setMapVS ->
-                hSetupMap(setMapVS)
-            }
+        hCalculateRouteViewModel.hCalculateRouteViewState
+                .observe(viewLifecycleOwner) { calculateRouteViewState ->
+                    calculateRouteViewState.hCalculateRouteFields.hDrawPathVS?.let { drawPathVS ->
+                        hDrawPathOnMap(drawPathVS)
 
-        }
+                        hPutStartEndMarkers(
+                                drawPathVS.hStartMarker,
+                                drawPathVS.hEndMarker,
+                        )
+
+                        hMakeViewsVisible(
+                                drawPathVS.hDistanceUnit,
+                                drawPathVS.hEta
+                        )
+                    }
+                    calculateRouteViewState.hCalculateRouteFields.hSetMapVS?.let { setMapVS ->
+                        hSetupMap(setMapVS)
+                    }
+
+                }
+    }
+
+    private fun hPutStartEndMarkers(hStartMarker: MarkerOptions?, hEndMarker: MarkerOptions?) {
+        hGoogleMap?.addMarker(hStartMarker)
+        hGoogleMap?.addMarker(hEndMarker)
+
     }
 
     @SuppressLint("MissingPermission")
