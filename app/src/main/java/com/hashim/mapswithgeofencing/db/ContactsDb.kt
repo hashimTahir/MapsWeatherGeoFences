@@ -9,6 +9,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.hashim.mapswithgeofencing.db.entities.Contact
+import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_DATABASE
 
 @Database(
         entities = [
@@ -28,7 +29,7 @@ abstract class ContactsDb : RoomDatabase() {
                 return INSTANCE ?: Room.databaseBuilder(
                         context.applicationContext,
                         ContactsDb::class.java,
-                        "contacts_db"
+                        H_DATABASE,
                 ).build().also {
                     INSTANCE = it
                 }

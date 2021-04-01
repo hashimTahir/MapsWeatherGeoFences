@@ -1,32 +1,51 @@
 /*
- * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 1.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.tobeDeleted.Adapters;
+package com.hashim.mapswithgeofencing.ui.contacts
 
-import android.view.ViewGroup;
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.SectionIndexer
+import androidx.recyclerview.widget.RecyclerView
+import com.hashim.mapswithgeofencing.databinding.ItemRecyclerContactsBinding
+import com.hashim.mapswithgeofencing.tobeDeleted.ViewHolders.ContactsVH
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-
-public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+class ContactsAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder?>(), SectionIndexer {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return ContactsVH(
+                ItemRecyclerContactsBinding.inflate(
+                        LayoutInflater.from(parent.getContext()),
+                        parent,
+                        false
+                )
+        )
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        TODO("Not yet implemented")
     }
 
-    @Override
-    public int getItemCount() {
-        return 0;
+    override fun getItemCount(): Int {
+        TODO("Not yet implemented")
     }
-//    implements
+
+    override fun getSections(): Array<Any> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPositionForSection(sectionIndex: Int): Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSectionForPosition(position: Int): Int {
+        TODO("Not yet implemented")
+    }
+
+
+    /*
+    *
+    * //    implements
 //} SectionIndexer
 //{
 //
@@ -155,4 +174,5 @@ public class ContactsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 //        notifyDataSetChanged();
 //    }
 
+    * */
 }

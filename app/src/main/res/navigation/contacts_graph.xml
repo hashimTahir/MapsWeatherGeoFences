@@ -11,9 +11,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.hashim.mapswithgeofencing.ui.contacts.FirstFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.contacts.DisplayContactsFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_display_contacts">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"

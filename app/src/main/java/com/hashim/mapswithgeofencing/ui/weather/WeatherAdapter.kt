@@ -17,9 +17,15 @@ import com.hashim.mapswithgeofencing.ui.viewholders.TodaysVh
 import com.hashim.mapswithgeofencing.ui.viewholders.WeeklyVh
 import com.hashim.mapswithgeofencing.utils.GlideUtils
 
-class WeatherAdapter(val adapterType: Int, val hContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class WeatherAdapter(
+        val adapterType: Int,
+        val hContext: Context
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var hList = mutableListOf<Any>()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+            parent: ViewGroup,
+            viewType: Int
+    ): RecyclerView.ViewHolder {
         when (adapterType) {
             H_TODAYS_RECYCLER -> return hGetTodaysVh(parent)
             H_WEEKLY_RECYCLER -> return hGetWeeklyVh(parent)

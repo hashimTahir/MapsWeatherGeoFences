@@ -6,25 +6,45 @@ package com.hashim.mapswithgeofencing.ui.contacts
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
-import com.hashim.mapswithgeofencing.databinding.ActivityContacts3Binding
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import com.hashim.mapswithgeofencing.R
+import com.hashim.mapswithgeofencing.databinding.ActivityContactsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ContactsActivity : AppCompatActivity() {
-    lateinit var hActivityContacts3Binding: ActivityContacts3Binding
+    lateinit var hActivityContactsBinding: ActivityContactsBinding
+    private lateinit var hNavHostFragments: NavHostFragment
+    private lateinit var hNavController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        hActivityContacts3Binding = ActivityContacts3Binding.inflate(
+        hActivityContactsBinding = ActivityContactsBinding.inflate(
                 layoutInflater
         )
-        setContentView(hActivityContacts3Binding.root)
-        setSupportActionBar(hActivityContacts3Binding.toolbar)
+        setContentView(hActivityContactsBinding.root)
 
-        hActivityContacts3Binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+        hInitNavView()
+
     }
+
+    private fun hInitNavView() {
+
+        setSupportActionBar(hActivityContactsBinding.toolbar)
+
+
+        hNavHostFragments = supportFragmentManager
+                .findFragmentById(R.id.hContactsFragmentContainer)
+                as NavHostFragment
+
+        hNavController = hNavHostFragments.navController
+
+        hNavController.setGraph(R.navigation.contacts_graph)
+
+
+    }
+
 }
 
 /*

@@ -54,3 +54,19 @@ fun hCreateMarkerOptions(
 
     return hMarkerOptions
 }
+
+fun hGetCategroyList(context: Context): MutableList<Category> {
+    val hCategoryList = mutableListOf<Category>()
+    val hNameList = context.resources.getStringArray(R.array.place_strings).asList()
+    val hIconsTypedArray = context.resources.obtainTypedArray(R.array.places_icons_array)
+
+    hNameList.forEachIndexed { index, name ->
+        hCategoryList.add(
+                Category(
+                        name = name,
+                        icon = hIconsTypedArray.getDrawable(index)!!
+                )
+        )
+    }
+    return hCategoryList
+}

@@ -3,20 +3,6 @@
  */
 
 package com.hashim.mapswithgeofencing.tobeDeleted.Contacts;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import android.view.View;
-
-import com.hashim.mapswithgeofencing.tobeDeleted.Adapters.ContactsAdapter;
-import com.hashim.mapswithgeofencing.tobeDeleted.Interfaces.DeleteCallBack;
-import com.hashim.mapswithgeofencing.R;
 
 
 public class SwipeToDeleteCallback {

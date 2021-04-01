@@ -9,14 +9,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerCategoryBinding
+import com.hashim.mapswithgeofencing.utils.hGetCategroyList
 
 
 class CategoriesAdapter(
-        private val hContext: Context,
+        hContext: Context,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
     private var hCategoriesCallback: ((Category) -> Unit)? = null
-    private var hCategoriesList: List<Category> = TempData.hGetCategroyList(hContext)
+    private var hCategoriesList: List<Category> = hGetCategroyList(hContext)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return CategoryVh(

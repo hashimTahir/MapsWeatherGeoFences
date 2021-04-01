@@ -11,13 +11,12 @@ import com.hashim.mapswithgeofencing.db.entities.Contact
 interface ContactsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun hInsertContact(Contact: Contact)
-
+    suspend fun hInsertContact(Contact: Contact): Long
 
 
     @Transaction
-    @Query("SELECT * FROM Contact WHERE hTemp = :ContactName")
-    suspend fun hGetAllContacts(ContactName: String): List<Contact>
+    @Query("SELECT * FROM Contact WHERE hTemp = :contact")
+    suspend fun hGetAllContacts(contact: Contact): List<Contact>
 
 
 }
