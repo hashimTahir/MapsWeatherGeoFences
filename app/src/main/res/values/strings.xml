@@ -131,6 +131,7 @@
     <string name="voice_navigation">Voice Navigation</string>
     <string name="speech_prompt">"Say something&#8230;</string>
     <string name="location_permision">Location permission is required</string>
+    <string name="contacts_permision">Contacts permission is required</string>
     <string name="ok">Ok</string>
     <string name="add_a_template_message">Add a template message</string>
     <string name="enter_number">Enter Number</string>

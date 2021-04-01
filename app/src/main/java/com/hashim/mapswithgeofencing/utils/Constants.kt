@@ -4,6 +4,8 @@
 
 package com.hashim.mapswithgeofencing.utils
 
+import android.Manifest
+
 class Constants {
     companion object {
         val H_REQUEST_CODE = 38
@@ -23,8 +25,6 @@ class Constants {
         const val H_FARENHEIT_UNIT = "imperial"
         const val H_KELVIL_UNIT = "kelvin"
         const val H_DATABASE = "contacts_db"
-
-
 
 
         const val H_SAVED_LIST = 678

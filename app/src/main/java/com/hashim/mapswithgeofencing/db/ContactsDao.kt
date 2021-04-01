@@ -15,8 +15,8 @@ interface ContactsDao {
 
 
     @Transaction
-    @Query("SELECT * FROM Contact WHERE hTemp = :contact")
-    suspend fun hGetAllContacts(contact: Contact): List<Contact>
+    @Query("SELECT * FROM Contact")
+    suspend fun hGetAllContacts(): List<Contact>
 
 
 }
