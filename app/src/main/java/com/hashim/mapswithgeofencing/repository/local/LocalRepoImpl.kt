@@ -11,10 +11,10 @@ class LocalRepoImpl(
         private val hContactsDao: ContactsDao
 ) : LocalRepo {
     override suspend fun hInsertContact(Contact: Contact): Long {
-        TODO("Not yet implemented")
+        return hContactsDao.hInsertContact(Contact)
     }
 
-    override suspend fun hGetAllContacts(Contact: Contact): List<Contact> {
-        TODO("Not yet implemented")
+    override suspend fun hGetAllContacts(): List<Contact> {
+        return hContactsDao.hGetAllContacts()
     }
 }

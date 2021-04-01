@@ -14,9 +14,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentDisplayContactsBinding
-import com.hashim.mapswithgeofencing.utils.Constants
+import com.hashim.mapswithgeofencing.db.entities.Contact
 import com.hashim.mapswithgeofencing.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -43,11 +44,62 @@ class DisplayContactsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (hHasPermission()) {
-            hDisplayContactsViewModel.hFindContacts()
         } else {
             hRequestPermissions()
         }
 
+        hInitRecyclerView()
+
+
+        hSubscribeObservers()
+
+    }
+
+    private fun hInitRecyclerView() {
+        val hContactsAdapter = ContactsAdapter(requireContext()) {
+            Timber.d("Callbac $it")
+        }
+        val hTestList = mutableListOf<Contact>()
+        hTestList.add(Contact(hNumber = "123", hName = "abc"))
+        hTestList.add(Contact(hNumber = "234", hName = "def"))
+        hTestList.add(Contact(hNumber = "456", hName = "ghi"))
+        hContactsAdapter.hSetData(hTestList)
+
+        hFragmentDisplayContactsBinding.hContactsRV.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = hContactsAdapter
+
+
+            setIndexTextSize = 12
+            setIndexBarColor("#ff212121")
+            mIndexBarCornerRadius = 5
+            mIndexbarMargin = 0f
+            mIndexbarWidth = 50f
+            mPreviewPadding = 2
+            mIndexBarTransparentValue = 0.4.toFloat()
+            setIndexBarVisibility(true)
+            setIndexBarHighLightTextVisibility(true)
+            indexbarHighLightTextColor = ContextCompat.getColor(requireContext(), R.color.rvColor)
+            mIndexbarTextColor = ContextCompat.getColor(requireContext(), R.color.white)
+        }
+    }
+
+
+    private fun hSubscribeObservers() {
+        hDisplayContactsViewModel.hDataState.observe(viewLifecycleOwner) { dataState ->
+            dataState.hData?.let { contactsViewState ->
+                contactsViewState.hContactsFields.hTemp?.let {
+
+                }
+            }
+
+        }
+        hDisplayContactsViewModel.hContactsViewState.observe(viewLifecycleOwner) { contactsViewState ->
+            contactsViewState.hContactsFields?.hTemp.let {
+
+            }
+
+        }
     }
 
 
@@ -81,7 +133,7 @@ class DisplayContactsFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.RequestPermission())
             { isGranted: Boolean ->
                 if (isGranted) {
-                    hDisplayContactsViewModel.hFindContacts()
+                    /*Execute contacts search*/
                 } else {
                     UiHelper.hShowSnackBar(
                             view = hFragmentDisplayContactsBinding.hSnackBarCL,

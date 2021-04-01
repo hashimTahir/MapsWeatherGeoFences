@@ -17,7 +17,7 @@ interface LocalRepo {
 
     suspend fun hInsertContact(Contact: Contact): Long
 
-    suspend fun hGetAllContacts(Contact: Contact): List<Contact>
+    suspend fun hGetAllContacts(): List<Contact>
 
 
 

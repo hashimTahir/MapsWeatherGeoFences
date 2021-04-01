@@ -82,6 +82,7 @@
     <color name="weather_gradiet_start">#1FA2FC</color>
     <color name="settings_color">#4950e6</color>
     <color name="rate_color">#e45252</color>
+    <color name="rvColor">#33334c</color>
 
 
 </resources>

@@ -6,14 +6,14 @@ package com.hashim.mapswithgeofencing.ui.contacts
 
 import android.content.Context
 import android.provider.ContactsContract
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.hashim.mapswithgeofencing.db.entities.Contact
 import com.hashim.mapswithgeofencing.repository.local.LocalRepo
+import com.hashim.mapswithgeofencing.ui.contacts.ContactsStateEvent.*
+import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,28 +21,58 @@ class DisplayContactsViewModel @Inject constructor(
         private val hLocationRepo: LocalRepo,
         @ApplicationContext private val hContext: Context,
 ) : ViewModel() {
+    private val _hContactsSateEvent = MutableLiveData<ContactsStateEvent>()
+    private val _hContactsViewState = MutableLiveData<ContactsViewState>()
 
+    val hContactsViewState: LiveData<ContactsViewState>
+        get() = _hContactsViewState
 
-    fun hFindContacts() = viewModelScope.launch {
+    val hDataState: LiveData<DataState<ContactsViewState>> =
+            Transformations.switchMap(_hContactsSateEvent) {
+                it?.let { contactsStateEvent ->
+                    hHandleStateEvents(it)
+                }
+            }
+
+    private fun hHandleStateEvents(contactsStateEvent: ContactsStateEvent)
+            : LiveData<DataState<ContactsViewState>>? {
+
+        when (contactsStateEvent) {
+            is OnContactsFound -> {
+            }
+            is OnFetchContacts -> {
+            }
+            is None -> {
+            }
+        }
+
+        return null
+    }
+
+    private fun hFindContacts() = viewModelScope.launch {
         val hContactsList = mutableListOf<Contact>()
         val hContentResolver = hContext.contentResolver
-        val hCursor = hContentResolver.query(
+        val hNumberCusor = hContentResolver.query(
                 ContactsContract.Contacts.CONTENT_URI,
                 null,
                 null,
                 null,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC"
         )
-        hCursor?.let {
-            while (hCursor.moveToNext()) {
-                val hPhoneNumber = hCursor.getString(
-                        hCursor.getColumnIndex(
+        hNumberCusor?.let {
+            while (hNumberCusor.moveToNext()) {
+                val hPhoneNumber = hNumberCusor.getString(
+                        hNumberCusor.getColumnIndex(
                                 ContactsContract.Contacts.HAS_PHONE_NUMBER
                         )
                 ).toInt()
                 if (hPhoneNumber > 0) {
-                    val hId = hCursor.getString(hCursor.getColumnIndex(ContactsContract.Contacts._ID));
-                    val hName = hCursor.getString(hCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    val hId = hNumberCusor.getString(
+                            hNumberCusor.getColumnIndex(ContactsContract.Contacts._ID)
+                    )
+                    val hName = hNumberCusor.getString(
+                            hNumberCusor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+                    )
 
                     val hPhoneCursor = hContentResolver.query(
                             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -52,7 +82,9 @@ class DisplayContactsViewModel @Inject constructor(
                             null
                     )
                     if (hPhoneCursor?.moveToNext() == true) {
-                        val hPhoneNumber = hPhoneCursor.getString(hPhoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                        val hPhoneNumber = hPhoneCursor.getString(
+                                hPhoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                        )
                         hContactsList.add(
                                 Contact(
                                         hNumber = hPhoneNumber,
@@ -61,12 +93,34 @@ class DisplayContactsViewModel @Inject constructor(
                         )
                         hPhoneCursor.close()
                     }
-
                 }
             }
-            hCursor.close()
+            hNumberCusor.close()
         }
 
-        Timber.d("Contacts list $hContactsList")
+        hSaveToDb(hContactsList)
     }
+
+    private fun hSaveToDb(hContactsList: MutableList<Contact>) {
+        viewModelScope.launch {
+            hContactsList.forEach {
+                hLocationRepo.hInsertContact(it)
+            }
+        }
+    }
+
+    private fun hGetContacts() {
+        viewModelScope.launch {
+            hLocationRepo.hGetAllContacts()
+        }
+    }
+
+    fun hSetStateEvent(contactsStateEvent: ContactsStateEvent) {
+        _hContactsSateEvent.value = contactsStateEvent
+    }
+
+    private fun hGetCurrentViewStateOrNew(): ContactsViewState {
+        return hContactsViewState.value ?: ContactsViewState()
+    }
+
 }

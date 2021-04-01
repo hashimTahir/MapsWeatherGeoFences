@@ -25,7 +25,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentSettingsBinding
-import com.hashim.mapswithgeofencing.tobeDeleted.Contacts.ContactsModelWithIds
 import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent.*
 import com.hashim.mapswithgeofencing.ui.settings.SettingsType.EMERGENCY
 import com.hashim.mapswithgeofencing.ui.settings.SettingsType.TRACK_ME
@@ -391,35 +390,35 @@ class SettingsFragment : Fragment() {
 
     private fun hSendMessageAndNotification() {
         /*Todo: Dont know what this is */
-        val hContactsModelWithIdsList: List<ContactsModelWithIds> = emptyList()
+//        val hContactsModelWithIdsList: List<ContactsModelWithIds> = emptyList()
 //        hSettingsPrefrences.hGetSettings(ALL_PT)
 //                as List<ContactsModelWithIds>
-        val message: String? = null
-//        hSettingsPrefrences.hGetSettings(ALL_PT)
-
-        if (hContactsModelWithIdsList == null || hContactsModelWithIdsList.size == 0) {
-//            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.no_saved_contacts_plz))
-        }
-        if (message == null) {
-//            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.no_saved_message));
-        }
-
-        val hStringBuilder = StringBuilder()
-        var hIsTextSent: Boolean = false
-        if (hContactsModelWithIdsList != null && hContactsModelWithIdsList.size != 0 && message != null) {
-            for (contactsModelWithIds in hContactsModelWithIdsList) {
-                //                    Todo: send Message
-                hSendSmsMessage(contactsModelWithIds.contactNumber, message)
-                hStringBuilder.append(contactsModelWithIds.contactName + ("\n"))
-            }
-            hIsTextSent = true
-        }
-        if (hIsTextSent) {
-            hCreateNotificationChannel()
-            hCreateSendNotification(hStringBuilder.toString())
-        } else {
-//            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.unable_to_send_text_message));
-        }
+//        val message: String? = null
+////        hSettingsPrefrences.hGetSettings(ALL_PT)
+//
+//        if (hContactsModelWithIdsList == null || hContactsModelWithIdsList.size == 0) {
+////            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.no_saved_contacts_plz))
+//        }
+//        if (message == null) {
+////            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.no_saved_message));
+//        }
+//
+//        val hStringBuilder = StringBuilder()
+//        var hIsTextSent: Boolean = false
+//        if (hContactsModelWithIdsList != null && hContactsModelWithIdsList.size != 0 && message != null) {
+//            for (contactsModelWithIds in hContactsModelWithIdsList) {
+//                //                    Todo: send Message
+//                hSendSmsMessage(contactsModelWithIds.contactNumber, message)
+//                hStringBuilder.append(contactsModelWithIds.contactName + ("\n"))
+//            }
+//            hIsTextSent = true
+//        }
+//        if (hIsTextSent) {
+//            hCreateNotificationChannel()
+//            hCreateSendNotification(hStringBuilder.toString())
+//        } else {
+////            LogToastSnackHelper.hMakeShortToast(this, getString(R.string.unable_to_send_text_message));
+//        }
     }
 
     private fun hCreateSendNotification(names: String) {
