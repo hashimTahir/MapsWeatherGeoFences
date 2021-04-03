@@ -30,9 +30,9 @@ class AddMessageTemplateDialog : BottomSheetDialogFragment() {
         Objects.requireNonNull(dialog)!!.setCanceledOnTouchOutside(true)
         KeyboardUtils(
                 dialog!!.window!!.decorView,
-                hAddMessageTemplateDialogBinding.getRoot()
+                hAddMessageTemplateDialogBinding.root
         )
-        return hAddMessageTemplateDialogBinding.getRoot()
+        return hAddMessageTemplateDialogBinding.root
     }
 
 

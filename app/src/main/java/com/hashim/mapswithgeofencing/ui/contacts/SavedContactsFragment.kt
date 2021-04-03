@@ -4,7 +4,6 @@
 
 package com.hashim.mapswithgeofencing.ui.contacts
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.FragmentSavedContactsBinding
-import com.hashim.mapswithgeofencing.ui.contacts.ContactsStateEvent.OnGetContacts
+import com.hashim.mapswithgeofencing.ui.events.ContactsStateEvent.OnGetContacts
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 

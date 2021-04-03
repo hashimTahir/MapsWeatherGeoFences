@@ -48,7 +48,7 @@ class TemplatesFragment : Fragment() {
         hDefaultTemplatesAdapter.hSetData(hDefaultTemplatesList)
         hCustomTemplatesAdapter.hSetData(hCustomTemplatesList)
 
-        hCustomTemplatesList?.let {
+        hCustomTemplatesList.let {
             hFragmentTempBinding.hCustomTemplateRv.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = hCustomTemplatesAdapter

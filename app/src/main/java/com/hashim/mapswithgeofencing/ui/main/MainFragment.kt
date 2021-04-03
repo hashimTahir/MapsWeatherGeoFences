@@ -51,7 +51,7 @@ class MainFragment : Fragment() {
     private fun hSetMapListerns() {
         hGoogleMap?.setOnMarkerClickListener { marker ->
             /* Todo: Show details */
-            if (marker.isInfoWindowShown()) {
+            if (marker.isInfoWindowShown) {
                 marker.hideInfoWindow()
             } else {
                 marker.showInfoWindow()

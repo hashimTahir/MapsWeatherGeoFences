@@ -26,8 +26,8 @@ fun hCreateMarkerOptions(
         hContext: Context,
         hLat: Double,
         hLng: Double,
-        hType: MarkerUtils.MarkerType?=null,
-        hCategory: Category?=null,
+        hType: MarkerUtils.MarkerType? = null,
+        hCategory: Category? = null,
 ): MarkerOptions {
 
     val hLatLng = LatLng(hLat, hLng)

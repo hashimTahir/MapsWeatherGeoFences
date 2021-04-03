@@ -18,8 +18,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentAllContactsBinding
-import com.hashim.mapswithgeofencing.ui.contacts.ContactsStateEvent.OnFetchContacts
-import com.hashim.mapswithgeofencing.ui.contacts.ContactsStateEvent.OnSaveContacts
+import com.hashim.mapswithgeofencing.ui.events.ContactsStateEvent.OnFetchContacts
+import com.hashim.mapswithgeofencing.ui.events.ContactsStateEvent.OnSaveContacts
 import com.hashim.mapswithgeofencing.utils.UiHelper
 import timber.log.Timber
 

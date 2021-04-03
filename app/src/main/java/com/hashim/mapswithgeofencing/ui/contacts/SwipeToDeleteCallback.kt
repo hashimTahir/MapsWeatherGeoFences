@@ -27,7 +27,7 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
         /**
          * To disable "swipe" for specific item return 0 here.
          */
-        if (viewHolder?.adapterPosition == 10) return 0
+        if (viewHolder.adapterPosition == 10) return 0
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 

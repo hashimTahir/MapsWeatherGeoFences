@@ -14,9 +14,9 @@ sealed class CalculateRouteStateEvent {
             val hMode: DirectionsMode,
     ) : CalculateRouteStateEvent()
 
-    class OnSwitchPlaces() : CalculateRouteStateEvent()
+    class OnSwitchPlaces : CalculateRouteStateEvent()
 
-    class OnMapReady() : CalculateRouteStateEvent()
+    class OnMapReady : CalculateRouteStateEvent()
 
     class OnModeChanged(val hMode: DirectionsMode) : CalculateRouteStateEvent()
 

@@ -15,7 +15,7 @@ sealed class SettingsStateEvent {
 
     class OnEmergencySettingsChanged(val hEmergencySettingsChanged: Boolean) : SettingsStateEvent()
 
-    class OnGetAllSettings() : SettingsStateEvent()
+    class OnGetAllSettings : SettingsStateEvent()
 
     class OnAddRemoveContacts : SettingsStateEvent()
 

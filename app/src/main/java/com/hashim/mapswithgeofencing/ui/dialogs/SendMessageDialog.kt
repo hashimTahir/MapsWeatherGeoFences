@@ -30,9 +30,9 @@ class SendMessageDialog : BottomSheetDialogFragment() {
         Objects.requireNonNull(dialog)!!.setCanceledOnTouchOutside(true)
         KeyboardUtils(
                 dialog!!.window!!.decorView,
-                hSendMessageBottomDialogBinding.getRoot()
+                hSendMessageBottomDialogBinding.root
         )
-        return hSendMessageBottomDialogBinding.getRoot()
+        return hSendMessageBottomDialogBinding.root
     }
 
 

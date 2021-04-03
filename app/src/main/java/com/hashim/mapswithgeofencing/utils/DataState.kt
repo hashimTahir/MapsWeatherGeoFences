@@ -4,37 +4,37 @@
 package com.hashim.mapswithgeofencing.utils
 
 data class DataState<T>(
-    var hMessage: String? = null,
-    var hLoading: Boolean = false,
-    var hData: T? = null
+        var hMessage: String? = null,
+        var hLoading: Boolean = false,
+        var hData: T? = null
 ) {
 
     companion object {
         fun <T> hError(errorMessage: String)
                 : DataState<T> {
             return DataState(
-                hMessage = errorMessage,
-                hLoading = false,
-                hData = null
+                    hMessage = errorMessage,
+                    hLoading = false,
+                    hData = null
             )
         }
 
         fun <T> hLoading(loading: Boolean): DataState<T> {
             return DataState(
-                hMessage = null,
-                hLoading = true,
-                hData = null
+                    hMessage = null,
+                    hLoading = true,
+                    hData = null
             )
         }
 
         fun <T> hData(
-            message: String? = null,
-            data: T? = null
+                message: String? = null,
+                data: T? = null
         ): DataState<T> {
             return DataState(
-                hMessage = null,
-                hLoading = false,
-                hData = data
+                    hMessage = null,
+                    hLoading = false,
+                    hData = data
             )
         }
     }

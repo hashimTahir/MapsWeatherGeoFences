@@ -9,21 +9,21 @@ import com.google.gson.annotations.SerializedName
 
 data class Leg(
         @SerializedName("distance")
-    val distance: Distance,
+        val distance: Distance,
         @SerializedName("duration")
-    val duration: Duration,
+        val duration: Duration,
         @SerializedName("end_address")
-    val endAddress: String,
+        val endAddress: String,
         @SerializedName("end_location")
-    val endLocation: EndLocation,
+        val endLocation: EndLocation,
         @SerializedName("start_address")
-    val startAddress: String,
+        val startAddress: String,
         @SerializedName("start_location")
-    val startLocation: StartLocation,
+        val startLocation: StartLocation,
         @SerializedName("steps")
-    val steps: List<Step>,
+        val steps: List<Step>,
         @SerializedName("traffic_speed_entry")
-    val trafficSpeedEntry: List<Any>,
+        val trafficSpeedEntry: List<Any>,
         @SerializedName("via_waypoint")
-    val viaWaypoint: List<Any>
+        val viaWaypoint: List<Any>
 )

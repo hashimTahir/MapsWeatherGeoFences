@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2021/  4/ 2.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 4.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.ui.contacts
+package com.hashim.mapswithgeofencing.ui.events
 
 import com.hashim.mapswithgeofencing.db.entities.Contact
 

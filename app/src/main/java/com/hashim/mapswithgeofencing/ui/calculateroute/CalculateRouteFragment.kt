@@ -247,7 +247,7 @@ class CalculateRouteFragment : Fragment() {
     private fun hSetupMap(setMapVS: SetMapVS) {
 //   hGoogleMap.setMapType(hSettingsPrefrences.hGetMapsType());
 
-        hGoogleMap?.setMyLocationEnabled(true)
+        hGoogleMap?.isMyLocationEnabled = true
         hGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 LatLng(
                         setMapVS.currentLocation.latitude,

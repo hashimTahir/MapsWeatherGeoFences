@@ -38,6 +38,6 @@ data class MainViewState(
     @Parcelize
     data class OnMarkerClickVS(
             val hTemp: String? = null
-    ): Parcelable
+    ) : Parcelable
 }
 

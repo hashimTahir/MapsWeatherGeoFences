@@ -56,10 +56,10 @@ class TemplatesAdapter(private val hContext: Context, private val adapterType: A
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (adapterType) {
             DEFAULT -> {
-                hBindDefaultVh(holder as DefaultTemplatesVh, hList.get(position) as String)
+                hBindDefaultVh(holder as DefaultTemplatesVh, hList.get(position))
             }
             CUSTOM ->
-                hBindCustomVh(holder as CustomTemplatesVh, hList.get(position) as String)
+                hBindCustomVh(holder as CustomTemplatesVh, hList.get(position))
         }
     }
 

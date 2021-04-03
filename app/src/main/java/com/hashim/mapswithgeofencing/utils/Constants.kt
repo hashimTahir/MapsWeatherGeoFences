@@ -4,8 +4,6 @@
 
 package com.hashim.mapswithgeofencing.utils
 
-import android.Manifest
-
 class Constants {
     companion object {
         val H_REQUEST_CODE = 38

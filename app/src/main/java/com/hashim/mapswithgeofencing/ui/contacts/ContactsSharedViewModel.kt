@@ -9,8 +9,10 @@ import android.provider.ContactsContract
 import androidx.lifecycle.*
 import com.hashim.mapswithgeofencing.db.entities.Contact
 import com.hashim.mapswithgeofencing.repository.local.LocalRepo
-import com.hashim.mapswithgeofencing.ui.contacts.ContactsStateEvent.*
-import com.hashim.mapswithgeofencing.ui.contacts.ContactsViewState.ContactsFields
+import com.hashim.mapswithgeofencing.ui.events.ContactsStateEvent
+import com.hashim.mapswithgeofencing.ui.events.ContactsStateEvent.*
+import com.hashim.mapswithgeofencing.ui.events.ContactsViewState
+import com.hashim.mapswithgeofencing.ui.events.ContactsViewState.ContactsFields
 import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

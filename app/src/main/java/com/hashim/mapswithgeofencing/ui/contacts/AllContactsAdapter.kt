@@ -28,7 +28,7 @@ class AllContactsAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return AllContactsVh(
                 ItemRecyclerAllContactsBinding.inflate(
-                        LayoutInflater.from(parent.getContext()),
+                        LayoutInflater.from(parent.context),
                         parent,
                         false
                 )

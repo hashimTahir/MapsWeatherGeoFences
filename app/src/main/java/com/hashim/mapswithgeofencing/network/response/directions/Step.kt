@@ -9,19 +9,19 @@ import com.google.gson.annotations.SerializedName
 
 data class Step(
         @SerializedName("distance")
-    val distance: DistanceX,
+        val distance: DistanceX,
         @SerializedName("duration")
-    val duration: DurationX,
+        val duration: DurationX,
         @SerializedName("end_location")
-    val endLocation: EndLocationX,
+        val endLocation: EndLocationX,
         @SerializedName("html_instructions")
-    val htmlInstructions: String,
+        val htmlInstructions: String,
         @SerializedName("maneuver")
-    val maneuver: String,
+        val maneuver: String,
         @SerializedName("polyline")
-    val polyline: Polyline,
+        val polyline: Polyline,
         @SerializedName("start_location")
-    val startLocation: StartLocationX,
+        val startLocation: StartLocationX,
         @SerializedName("travel_mode")
-    val travelMode: String
+        val travelMode: String
 )

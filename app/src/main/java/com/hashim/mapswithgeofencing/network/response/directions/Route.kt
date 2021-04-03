@@ -9,17 +9,17 @@ import com.google.gson.annotations.SerializedName
 
 data class Route(
         @SerializedName("bounds")
-    val bounds: Bounds,
+        val bounds: Bounds,
         @SerializedName("copyrights")
-    val copyrights: String,
+        val copyrights: String,
         @SerializedName("legs")
-    val legs: List<Leg>,
+        val legs: List<Leg>,
         @SerializedName("overview_polyline")
-    val overviewPolyline: OverviewPolyline,
+        val overviewPolyline: OverviewPolyline,
         @SerializedName("summary")
-    val summary: String,
+        val summary: String,
         @SerializedName("warnings")
-    val warnings: List<Any>,
+        val warnings: List<Any>,
         @SerializedName("waypoint_order")
-    val waypointOrder: List<Any>
+        val waypointOrder: List<Any>
 )
