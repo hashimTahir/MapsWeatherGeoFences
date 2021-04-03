@@ -13,11 +13,11 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentDisplayContactsBinding
-import com.hashim.mapswithgeofencing.db.entities.Contact
+import com.hashim.mapswithgeofencing.ui.contacts.ContactsStateEvent.OnGetContacts
 import com.hashim.mapswithgeofencing.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -26,7 +26,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class DisplayContactsFragment : Fragment() {
     private lateinit var hFragmentDisplayContactsBinding: FragmentDisplayContactsBinding
-    val hDisplayContactsViewModel: DisplayContactsViewModel by viewModels()
+    val hDisplayContactsViewModel: ContactsSharedViewModel by activityViewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +50,9 @@ class DisplayContactsFragment : Fragment() {
 
         hInitRecyclerView()
 
-
         hSubscribeObservers()
+
+        hDisplayContactsViewModel.hSetStateEvent(OnGetContacts())
 
     }
 
@@ -59,11 +60,6 @@ class DisplayContactsFragment : Fragment() {
         val hContactsAdapter = ContactsAdapter(requireContext()) {
             Timber.d("Callbac $it")
         }
-        val hTestList = mutableListOf<Contact>()
-        hTestList.add(Contact(hNumber = "123", hName = "abc"))
-        hTestList.add(Contact(hNumber = "234", hName = "def"))
-        hTestList.add(Contact(hNumber = "456", hName = "ghi"))
-        hContactsAdapter.hSetData(hTestList)
 
         hFragmentDisplayContactsBinding.hContactsRV.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -88,14 +84,14 @@ class DisplayContactsFragment : Fragment() {
     private fun hSubscribeObservers() {
         hDisplayContactsViewModel.hDataState.observe(viewLifecycleOwner) { dataState ->
             dataState.hData?.let { contactsViewState ->
-                contactsViewState.hContactsFields.hTemp?.let {
+                contactsViewState.hContactsFields.hContactList?.let {
 
                 }
             }
 
         }
         hDisplayContactsViewModel.hContactsViewState.observe(viewLifecycleOwner) { contactsViewState ->
-            contactsViewState.hContactsFields?.hTemp.let {
+            contactsViewState.hContactsFields?.hContactList.let {
 
             }
 

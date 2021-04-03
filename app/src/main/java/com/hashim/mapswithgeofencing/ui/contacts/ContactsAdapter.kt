@@ -103,7 +103,6 @@ class ContactsAdapter(
             }
             i++
         }
-
         return hSectionsList.toTypedArray()
     }
 

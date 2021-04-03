@@ -5,6 +5,7 @@
 package com.hashim.mapswithgeofencing.ui.contacts
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -17,6 +18,9 @@ class ContactsActivity : AppCompatActivity() {
     lateinit var hActivityContactsBinding: ActivityContactsBinding
     private lateinit var hNavHostFragments: NavHostFragment
     private lateinit var hNavController: NavController
+
+    val hContactsSharedViewModel: ContactsSharedViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

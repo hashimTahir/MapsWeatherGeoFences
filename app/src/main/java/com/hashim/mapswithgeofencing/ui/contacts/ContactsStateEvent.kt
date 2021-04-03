@@ -10,4 +10,8 @@ sealed class ContactsStateEvent {
     class OnContactsFound() : ContactsStateEvent()
 
     class None : ContactsStateEvent()
+
+    class OnGetContacts : ContactsStateEvent() {
+
+    }
 }

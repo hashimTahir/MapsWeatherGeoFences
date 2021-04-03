@@ -10,6 +10,7 @@ import androidx.lifecycle.*
 import com.hashim.mapswithgeofencing.db.entities.Contact
 import com.hashim.mapswithgeofencing.repository.local.LocalRepo
 import com.hashim.mapswithgeofencing.ui.contacts.ContactsStateEvent.*
+import com.hashim.mapswithgeofencing.ui.contacts.ContactsViewState.ContactsFields
 import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DisplayContactsViewModel @Inject constructor(
+class ContactsSharedViewModel @Inject constructor(
         private val hLocationRepo: LocalRepo,
         @ApplicationContext private val hContext: Context,
 ) : ViewModel() {
@@ -41,6 +42,9 @@ class DisplayContactsViewModel @Inject constructor(
             is OnContactsFound -> {
             }
             is OnFetchContacts -> {
+            }
+            is OnGetContacts -> {
+                hGetContacts()
             }
             is None -> {
             }
@@ -110,8 +114,18 @@ class DisplayContactsViewModel @Inject constructor(
     }
 
     private fun hGetContacts() {
+        /*Fetch contacts from device in backgroud. save if any is missing in backgroud*/
         viewModelScope.launch {
-            hLocationRepo.hGetAllContacts()
+            val hContactsList = hLocationRepo.hGetAllContacts()
+            if (hContactsList.size > 0) {
+                _hContactsViewState.value = ContactsViewState(
+                        hContactsFields = ContactsFields(
+                                hContactList = hContactsList
+                        )
+                )
+            } else {
+            /*Notifiy no contacts in db.*/
+            }
         }
     }
 
