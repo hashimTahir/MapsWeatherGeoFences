@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerViewContactsBinding
 import com.hashim.mapswithgeofencing.db.entities.Contact
 import com.hashim.mapswithgeofencing.ui.viewholders.ViewContactVh
+import timber.log.Timber
 
 class ViewContactsAdapter(
         private val hContext: Context,
@@ -57,6 +58,12 @@ class ViewContactsAdapter(
     fun hSetData(list: List<Contact>) {
         hList = list
         notifyDataSetChanged()
+    }
+
+    fun hRemoveItem(adapterPosition: Int) {
+        Timber.d("Remove item$adapterPosition")
+
+
     }
 
 }

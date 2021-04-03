@@ -4,13 +4,16 @@
 
 package com.hashim.mapswithgeofencing.ui.contacts
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.FragmentSavedContactsBinding
 import com.hashim.mapswithgeofencing.ui.contacts.ContactsStateEvent.OnGetContacts
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +51,16 @@ class SavedContactsFragment : Fragment() {
 
     private fun hInitRecyclerView() {
         hViewContactsAdapter = ViewContactsAdapter(requireContext())
+
+        val hSwipeToDeleteCallback = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                var viewContactsAdapter = hFragmentSavedContactsBinding.hSavedContactsRv.adapter as ViewContactsAdapter
+                viewContactsAdapter.hRemoveItem(viewHolder.adapterPosition)
+                /*Todo: Notify viewmodel of the changes*/
+            }
+        }
+        val hItemTouchHelper = ItemTouchHelper(hSwipeToDeleteCallback)
+        hItemTouchHelper.attachToRecyclerView(hFragmentSavedContactsBinding.hSavedContactsRv)
 
         hFragmentSavedContactsBinding.hSavedContactsRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
