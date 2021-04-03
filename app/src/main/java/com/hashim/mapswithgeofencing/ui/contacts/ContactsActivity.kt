@@ -44,7 +44,7 @@ class ContactsActivity : AppCompatActivity() {
 
         hNavController = hNavHostFragments.navController
 
-        hNavController.setGraph(R.navigation.contacts_graph)
+        hNavController.setGraph(R.navigation.contacts_nav_graph)
 
 
     }

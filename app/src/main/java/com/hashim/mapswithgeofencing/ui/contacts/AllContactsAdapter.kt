@@ -4,32 +4,30 @@
 
 package com.hashim.mapswithgeofencing.ui.contacts
 
-import android.R
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.SectionIndexer
-import androidx.core.content.ContextCompat
+import androidx.core.util.forEach
 import androidx.recyclerview.widget.RecyclerView
-import com.hashim.mapswithgeofencing.databinding.ItemRecyclerContactsBinding
+import com.hashim.mapswithgeofencing.databinding.ItemRecyclerAllContactsBinding
 import com.hashim.mapswithgeofencing.db.entities.Contact
-import com.hashim.mapswithgeofencing.tobeDeleted.ViewHolders.ContactsVH
+import com.hashim.mapswithgeofencing.ui.viewholders.AllContactsVh
 
-class ContactsAdapter(
+class AllContactsAdapter(
         private val hContext: Context,
-        val hCallBack: (Int) -> Unit
+        val hCallBack: (Int, Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder?>(), SectionIndexer {
 
 
-    var hList = mutableListOf<Contact>()
+    var hList = listOf<Contact>()
     private val hSelectedItems: SparseBooleanArray = SparseBooleanArray()
     private var hSectionPostion = mutableListOf<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ContactsVH(
-                ItemRecyclerContactsBinding.inflate(
+        return AllContactsVh(
+                ItemRecyclerAllContactsBinding.inflate(
                         LayoutInflater.from(parent.getContext()),
                         parent,
                         false
@@ -38,22 +36,23 @@ class ContactsAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        hBindContatsVB(holder as ContactsVH, hList.get(position), position)
+        hBindContatsVB(holder as AllContactsVh, hList.get(position), position)
     }
 
-    private fun hBindContatsVB(hContactsVH: ContactsVH, contact: Contact, position: Int) {
+    private fun hBindContatsVB(hContactsVH: AllContactsVh, contact: Contact, position: Int) {
 
 
-        hContactsVH.hItemRecyclerContactsBinding.title.text = contact.hName
-        hContactsVH.hItemRecyclerContactsBinding.numberTextView.text = contact.hNumber
+        hContactsVH.hItemRecyclerAllContactsBinding.title.text = contact.hName
+        hContactsVH.hItemRecyclerAllContactsBinding.numberTextView.text = contact.hNumber
 
 
         hSelectUnselectItems(position, hContactsVH)
 
-        hContactsVH.hItemRecyclerContactsBinding.rootView.setOnClickListener {
+        hContactsVH.hItemRecyclerAllContactsBinding.rootView.setOnClickListener {
             hToggleSelection(position)
-            hCallBack(position)
+            hCallBack(position, hContactsVH.hItemRecyclerAllContactsBinding.hCheckBox.isChecked)
         }
+
 
     }
 
@@ -62,27 +61,9 @@ class ContactsAdapter(
         notifyItemChanged(position)
     }
 
-    private fun hSelectUnselectItems(position: Int, hContactsVH: ContactsVH) {
-        if (hSelectedItems[position, false]) {
-
-            hContactsVH.hItemRecyclerContactsBinding.rootView.setForeground(
-                    ColorDrawable(
-                            ContextCompat.getColor(
-                                    hContext,
-                                    R.color.darker_gray
-                            )
-                    )
-            )
-        } else {
-            hContactsVH.hItemRecyclerContactsBinding.rootView.setForeground(
-                    ColorDrawable(
-                            ContextCompat.getColor(
-                                    hContext,
-                                    R.color.transparent
-                            )
-                    )
-            )
-        }
+    private fun hSelectUnselectItems(position: Int, hContactsVH: AllContactsVh) {
+        hContactsVH.hItemRecyclerAllContactsBinding.hCheckBox
+                .isChecked = hSelectedItems[position, false]
     }
 
 
@@ -115,8 +96,18 @@ class ContactsAdapter(
         return 0
     }
 
-    fun hSetData(hTestList: MutableList<Contact>) {
-        hList = hTestList
+    fun hSetData(list: List<Contact>) {
+        hList = list
+        notifyDataSetChanged()
+    }
+
+    fun hGetSelectedContacts(): List<Contact> {
+        val hToSaveContactList = mutableListOf<Contact>()
+        hSelectedItems.forEach { key, value ->
+            if (value)
+                hToSaveContactList.add(hList.get(key))
+        }
+        return hToSaveContactList.toList()
     }
 
 }

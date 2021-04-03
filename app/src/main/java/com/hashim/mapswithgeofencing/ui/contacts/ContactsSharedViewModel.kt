@@ -15,11 +15,12 @@ import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ContactsSharedViewModel @Inject constructor(
-        private val hLocationRepo: LocalRepo,
+        private val hLocalRepo: LocalRepo,
         @ApplicationContext private val hContext: Context,
 ) : ViewModel() {
     private val _hContactsSateEvent = MutableLiveData<ContactsStateEvent>()
@@ -42,9 +43,13 @@ class ContactsSharedViewModel @Inject constructor(
             is OnContactsFound -> {
             }
             is OnFetchContacts -> {
+                hFindContacts()
             }
             is OnGetContacts -> {
                 hGetContacts()
+            }
+            is OnSaveContacts -> {
+                hSaveToDb(contactsStateEvent.hSelectedContacts)
             }
             is None -> {
             }
@@ -101,14 +106,17 @@ class ContactsSharedViewModel @Inject constructor(
             }
             hNumberCusor.close()
         }
-
-        hSaveToDb(hContactsList)
+        _hContactsViewState.value = ContactsViewState(
+                hContactsFields = ContactsFields(
+                        hContactList = hContactsList
+                )
+        )
     }
 
-    private fun hSaveToDb(hContactsList: MutableList<Contact>) {
+    private fun hSaveToDb(hContactsList: List<Contact>) {
         viewModelScope.launch {
             hContactsList.forEach {
-                hLocationRepo.hInsertContact(it)
+                Timber.d("Contacts Saved ${hLocalRepo.hInsertContact(it)}")
             }
         }
     }
@@ -116,7 +124,7 @@ class ContactsSharedViewModel @Inject constructor(
     private fun hGetContacts() {
         /*Fetch contacts from device in backgroud. save if any is missing in backgroud*/
         viewModelScope.launch {
-            val hContactsList = hLocationRepo.hGetAllContacts()
+            val hContactsList = hLocalRepo.hGetAllContacts()
             if (hContactsList.size > 0) {
                 _hContactsViewState.value = ContactsViewState(
                         hContactsFields = ContactsFields(
@@ -124,7 +132,7 @@ class ContactsSharedViewModel @Inject constructor(
                         )
                 )
             } else {
-            /*Notifiy no contacts in db.*/
+                /*Notifiy no contacts in db.*/
             }
         }
     }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021/  4/ 1.  Created by Hashim Tahir
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/hAllContactsFragment">
+
+    <fragment
+        android:id="@+id/hAllContactsFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.contacts.AllContactsFragment"
+        android:label="@string/all_contacts_fragment"
+        tools:layout="@layout/fragment_all_contacts">
+
+        <action
+            android:id="@+id/action_hAllContactsFragment_to_hSavedContactsFragment"
+            app:destination="@id/hSavedContactsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/hSavedContactsFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.contacts.SavedContactsFragment"
+        android:label="@string/saved_contacts_fragment"
+        tools:layout="@layout/fragment_saved_contacts">
+
+        <action
+            android:id="@+id/action_hSavedContactsFragment_to_hAllContactsFragment"
+            app:destination="@id/hAllContactsFragment" />
+    </fragment>
+</navigation>
