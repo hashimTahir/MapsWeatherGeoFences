@@ -15,7 +15,7 @@ import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
 import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
 import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode
-import com.hashim.mapswithgeofencing.ui.main.Category
+import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
 import java.util.*
 
 class RemoteRepoImpl(

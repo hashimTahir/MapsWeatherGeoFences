@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 4.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.ui.main
+package com.hashim.mapswithgeofencing.ui.main.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -21,9 +21,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentMainBinding
-import com.hashim.mapswithgeofencing.location.LocationUtis
+import com.hashim.mapswithgeofencing.others.location.LocationUtis
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.*
 import com.hashim.mapswithgeofencing.ui.events.MainViewState.*
+import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.CategoriesAdapter
 import com.hashim.mapswithgeofencing.utils.PermissionsUtils.Companion.hRequestLocationPermission
 import com.hashim.mapswithgeofencing.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint

@@ -2,7 +2,7 @@
  * Copyright (c) 2021/  4/ 4.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.MarkerAnimation
+package com.hashim.mapswithgeofencing.others.MarkerAnimation
 
 import com.google.android.gms.maps.model.LatLng
 

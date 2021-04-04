@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/hAllContactsFragment"
-        android:name="com.hashim.mapswithgeofencing.ui.contacts.AllContactsFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.contacts.fragments.AllContactsFragment"
         android:label="@string/all_contacts_fragment"
         tools:layout="@layout/fragment_all_contacts">
 
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/hSavedContactsFragment"
-        android:name="com.hashim.mapswithgeofencing.ui.contacts.SavedContactsFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.contacts.fragments.SavedContactsFragment"
         android:label="@string/saved_contacts_fragment"
         tools:layout="@layout/fragment_saved_contacts">
 

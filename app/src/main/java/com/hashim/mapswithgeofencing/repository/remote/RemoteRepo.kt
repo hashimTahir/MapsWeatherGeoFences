@@ -10,7 +10,7 @@ import com.hashim.mapswithgeofencing.Domain.model.Forecast
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.Domain.model.Weather
 import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode
-import com.hashim.mapswithgeofencing.ui.main.Category
+import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
 
 interface RemoteRepo {
 

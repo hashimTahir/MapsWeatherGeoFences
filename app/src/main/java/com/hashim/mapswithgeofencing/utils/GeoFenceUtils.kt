@@ -14,8 +14,8 @@ import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes.ALL_PT
-import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
+import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.ALL_PT
+import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
 
 
 class GeoFenceUtils(private val hContext: Context) {

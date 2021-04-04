@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentTemplatesBinding
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes
-import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
-import com.hashim.mapswithgeofencing.ui.dialogs.AddMessageTemplateDialog
+import com.hashim.mapswithgeofencing.others.dialogs.AddMessageTemplateDialog
+import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes
+import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.ui.templates.TemplatesAdapter.AdapterType.CUSTOM
 import com.hashim.mapswithgeofencing.ui.templates.TemplatesAdapter.AdapterType.DEFAULT
 import com.hashim.mapswithgeofencing.utils.Constants

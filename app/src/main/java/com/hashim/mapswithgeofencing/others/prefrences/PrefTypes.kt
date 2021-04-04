@@ -2,7 +2,7 @@
  * Copyright (c) 2021/  3/ 27.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.prefrences
+package com.hashim.mapswithgeofencing.others.prefrences
 
 enum class PrefTypes {
     MAPS_TYPE_PT,

@@ -13,9 +13,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.ActivityMainBinding
-import com.hashim.mapswithgeofencing.prefrences.HlatLng
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
-import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
+import com.hashim.mapswithgeofencing.others.prefrences.HlatLng
+import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
+import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
 import com.mancj.materialsearchbar.MaterialSearchBar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

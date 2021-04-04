@@ -9,9 +9,9 @@ import android.location.Location
 import androidx.lifecycle.*
 import com.hashim.mapswithgeofencing.Domain.model.Directions
 import com.hashim.mapswithgeofencing.R
-import com.hashim.mapswithgeofencing.prefrences.HlatLng
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes.*
-import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
+import com.hashim.mapswithgeofencing.others.prefrences.HlatLng
+import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.*
+import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent
 import com.hashim.mapswithgeofencing.ui.events.CalculateRouteStateEvent.*

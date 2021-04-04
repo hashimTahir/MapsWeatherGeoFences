@@ -6,7 +6,7 @@ package com.hashim.mapswithgeofencing.ui.events
 
 import android.location.Location
 import com.google.android.gms.maps.model.Marker
-import com.hashim.mapswithgeofencing.ui.main.Category
+import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
 
 sealed class MainStateEvent {
 

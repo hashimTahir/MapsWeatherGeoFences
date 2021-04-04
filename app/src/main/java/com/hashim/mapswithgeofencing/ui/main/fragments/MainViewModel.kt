@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 4.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.ui.main
+package com.hashim.mapswithgeofencing.ui.main.fragments
 
 import android.content.Context
 import android.location.Location
@@ -10,14 +10,15 @@ import androidx.lifecycle.*
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
-import com.hashim.mapswithgeofencing.prefrences.HlatLng
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
-import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
+import com.hashim.mapswithgeofencing.others.prefrences.HlatLng
+import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
+import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.*
 import com.hashim.mapswithgeofencing.ui.events.MainViewState
 import com.hashim.mapswithgeofencing.ui.events.MainViewState.*
+import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
 import com.hashim.mapswithgeofencing.utils.DataState
 import com.hashim.mapswithgeofencing.utils.MarkerUtils
 import com.hashim.mapswithgeofencing.utils.hCreateMarkerOptions

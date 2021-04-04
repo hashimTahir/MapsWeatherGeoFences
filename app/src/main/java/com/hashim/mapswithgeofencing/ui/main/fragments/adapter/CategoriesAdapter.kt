@@ -1,14 +1,15 @@
 /*
- * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 4.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.ui.main
+package com.hashim.mapswithgeofencing.ui.main.fragments.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.ItemRecyclerCategoryBinding
+import com.hashim.mapswithgeofencing.ui.viewholders.CategoryVh
 import com.hashim.mapswithgeofencing.utils.hGetCategroyList
 
 

@@ -11,7 +11,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.hashim.mapswithgeofencing.R
-import com.hashim.mapswithgeofencing.ui.main.Category
+import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
 
 
 object MarkerUtils {

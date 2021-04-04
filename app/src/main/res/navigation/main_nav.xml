@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/hMainFragment"
-        android:name="com.hashim.mapswithgeofencing.ui.main.MainFragment"
+        android:name="com.hashim.mapswithgeofencing.ui.main.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action

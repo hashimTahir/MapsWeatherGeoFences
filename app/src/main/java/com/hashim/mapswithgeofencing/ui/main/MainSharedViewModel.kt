@@ -9,6 +9,7 @@ import android.location.LocationManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
+import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber

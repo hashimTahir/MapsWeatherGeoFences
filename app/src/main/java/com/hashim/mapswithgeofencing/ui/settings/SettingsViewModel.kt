@@ -9,8 +9,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes.*
-import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
+import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.*
+import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.ui.events.SettingViewState
 import com.hashim.mapswithgeofencing.ui.events.SettingViewState.DefaultSavedVS
 import com.hashim.mapswithgeofencing.ui.events.SettingViewState.SettingsFields

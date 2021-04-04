@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2021/  3/ 27.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 4.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.ui.dialogs
+package com.hashim.mapswithgeofencing.others.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater

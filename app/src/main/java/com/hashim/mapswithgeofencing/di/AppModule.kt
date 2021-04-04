@@ -8,7 +8,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hashim.mapswithgeofencing.BaseApplication
-import com.hashim.mapswithgeofencing.prefrences.SettingsPrefrences
+import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

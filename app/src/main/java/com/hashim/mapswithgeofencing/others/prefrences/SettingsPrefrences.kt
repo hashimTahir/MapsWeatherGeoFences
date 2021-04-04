@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2021/  3/ 28.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 4.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.prefrences
+package com.hashim.mapswithgeofencing.others.prefrences
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Parcelable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.hashim.mapswithgeofencing.prefrences.PrefTypes.*
+import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.*
 import kotlinx.android.parcel.Parcelize
 import java.lang.reflect.Type
 import java.util.*

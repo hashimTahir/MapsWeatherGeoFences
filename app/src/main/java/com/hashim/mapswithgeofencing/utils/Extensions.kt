@@ -11,7 +11,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hashim.mapswithgeofencing.R
-import com.hashim.mapswithgeofencing.ui.main.Category
+import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
 
 fun hLatLngToLocation(
         hLat: Double,

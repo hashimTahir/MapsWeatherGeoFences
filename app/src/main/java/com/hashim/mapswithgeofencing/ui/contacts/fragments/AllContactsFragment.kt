@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2021/  4/ 1.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 4.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.ui.contacts
+package com.hashim.mapswithgeofencing.ui.contacts.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentAllContactsBinding
+import com.hashim.mapswithgeofencing.ui.contacts.ContactsSharedViewModel
+import com.hashim.mapswithgeofencing.ui.contacts.adapter.AllContactsAdapter
 import com.hashim.mapswithgeofencing.ui.events.ContactsStateEvent.OnFetchContacts
 import com.hashim.mapswithgeofencing.ui.events.ContactsStateEvent.OnSaveContacts
 import com.hashim.mapswithgeofencing.utils.PermissionsUtils.Companion.hRequestContactPermission
