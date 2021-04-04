@@ -4,16 +4,13 @@
 
 package com.hashim.mapswithgeofencing.ui.main
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +24,7 @@ import com.hashim.mapswithgeofencing.databinding.FragmentMainBinding
 import com.hashim.mapswithgeofencing.location.LocationUtis
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.*
 import com.hashim.mapswithgeofencing.ui.events.MainViewState.*
+import com.hashim.mapswithgeofencing.utils.PermissionsUtils.Companion.hRequestLocationPermission
 import com.hashim.mapswithgeofencing.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -102,21 +100,7 @@ class MainFragment : Fragment() {
 
         hSetupListeners()
 
-        if (hHasPermission()) {
-            hInitMap()
-            var hLocationUtis = LocationUtis(
-                    context = requireContext(),
-                    onLocationRetrieved = { location ->
-                        hMainViewModel.hSetStateEvent(
-                                OnCurrentLocationFound(location)
-                        )
-                    },
-                    onLocationUpdated = {}
-            )
-        } else {
-            hRequestPermissions()
-        }
-
+        hRequestPermissions()
 
     }
 
@@ -184,25 +168,21 @@ class MainFragment : Fragment() {
 
     }
 
-    private fun hHasPermission(): Boolean {
-        return (
-                ContextCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                        == PackageManager.PERMISSION_GRANTED
-                )
-    }
 
     private fun hRequestPermissions() {
-        if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            hRequestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        } else {
-            UiHelper.hShowSnackBar(
-                    view = hFragmentMainBinding.hSnackBarCL,
-                    message = getString(R.string.location_permision),
-                    onTakeAction = {
-                        hRequestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-                    }
+
+        hRequestLocationPermission(
+                requireContext(),
+                hRequestLocationPermissionLauncher) {
+            hInitMap()
+            var hLocationUtis = LocationUtis(
+                    context = requireContext(),
+                    onLocationRetrieved = { location ->
+                        hMainViewModel.hSetStateEvent(
+                                OnCurrentLocationFound(location)
+                        )
+                    },
+                    onLocationUpdated = {}
             )
         }
     }
@@ -213,7 +193,7 @@ class MainFragment : Fragment() {
     }
 
 
-    private val hRequestPermissionLauncher =
+    private val hRequestLocationPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission())
             { isGranted: Boolean ->
                 if (isGranted) {
@@ -222,7 +202,9 @@ class MainFragment : Fragment() {
                     UiHelper.hShowSnackBar(
                             view = hFragmentMainBinding.hSnackBarCL,
                             message = getString(R.string.location_permision),
-                            onTakeAction = {}
+                            onTakeAction = {
+                                hRequestPermissions()
+                            }
                     )
                 }
             }

@@ -4,8 +4,6 @@
 
 package com.hashim.mapswithgeofencing.ui.contacts
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +18,7 @@ import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentAllContactsBinding
 import com.hashim.mapswithgeofencing.ui.events.ContactsStateEvent.OnFetchContacts
 import com.hashim.mapswithgeofencing.ui.events.ContactsStateEvent.OnSaveContacts
+import com.hashim.mapswithgeofencing.utils.PermissionsUtils.Companion.hRequestContactPermission
 import com.hashim.mapswithgeofencing.utils.UiHelper
 import timber.log.Timber
 
@@ -51,10 +50,14 @@ class AllContactsFragment : Fragment() {
 
         hSubscribeObservers()
 
-        if (hHasPermission()) {
+        hRequestPermissons()
+    }
+
+    private fun hRequestPermissons() {
+        hRequestContactPermission(
+                requireContext(),
+                hRequestPermissionLauncher) {
             hContactsSharedViewModel.hSetStateEvent(OnFetchContacts())
-        } else {
-            hRequestPermissions()
         }
     }
 
@@ -114,42 +117,18 @@ class AllContactsFragment : Fragment() {
     }
 
 
-    private fun hHasPermission(): Boolean {
-        return (
-                ContextCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.READ_CONTACTS)
-                        == PackageManager.PERMISSION_GRANTED
-                )
-    }
-
-    private fun hRequestPermissions() {
-        if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
-            hRequestPermissionLauncher.launch(
-                    Manifest.permission.READ_CONTACTS
-            )
-        } else {
-            UiHelper.hShowSnackBar(
-                    view = hAllContactsBinding.hSnackBarCL,
-                    message = getString(R.string.contacts_permision),
-                    onTakeAction = {
-                        hRequestPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
-                    }
-            )
-        }
-    }
-
-
     private val hRequestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission())
             { isGranted: Boolean ->
                 if (isGranted) {
-                    /*Execute contacts search*/
+                    hContactsSharedViewModel.hSetStateEvent(OnFetchContacts())
                 } else {
                     UiHelper.hShowSnackBar(
                             view = hAllContactsBinding.hSnackBarCL,
                             message = getString(R.string.contacts_permision),
-                            onTakeAction = {}
+                            onTakeAction = {
+                                hRequestPermissons()
+                            }
                     )
                 }
             }
