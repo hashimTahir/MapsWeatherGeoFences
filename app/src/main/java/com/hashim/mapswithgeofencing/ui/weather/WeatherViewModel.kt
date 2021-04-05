@@ -14,6 +14,7 @@ import com.hashim.mapswithgeofencing.ui.events.WeatherStateEvent
 import com.hashim.mapswithgeofencing.ui.events.WeatherViewState
 import com.hashim.mapswithgeofencing.ui.events.WeatherViewState.*
 import com.hashim.mapswithgeofencing.utils.Constants
+import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_ICON_URL
 import com.hashim.mapswithgeofencing.utils.DataState
 import com.hashim.mapswithgeofencing.utils.DateFormatter
 import com.hashim.mapswithgeofencing.utils.DateFormatter.FormatterType.*

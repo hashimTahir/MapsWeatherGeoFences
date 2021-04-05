@@ -5,15 +5,10 @@
 package com.hashim.mapswithgeofencing.repository.remote
 
 import android.location.Location
-import com.hashim.mapswithgeofencing.Domain.model.Directions
-import com.hashim.mapswithgeofencing.Domain.model.Forecast
-import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
-import com.hashim.mapswithgeofencing.Domain.model.Weather
+import com.google.android.gms.maps.model.LatLng
+import com.hashim.mapswithgeofencing.Domain.model.*
 import com.hashim.mapswithgeofencing.network.RetroService
-import com.hashim.mapswithgeofencing.repository.mappers.DirectionDtoMapper
-import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
-import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
-import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.*
 import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode
 import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
 import java.util.*
@@ -24,6 +19,7 @@ class RemoteRepoImpl(
         private val hWeatherDtoMapper: WeatherDtoMapper,
         private val hForecastDtoMapper: ForecastDtoMapper,
         private val hDirectionDtoMapper: DirectionDtoMapper,
+        private val hGeoCodeDtoMapper: GeoCodeDtoMapper,
         private val hMapsKey: String,
         private val hWeatherKey: String
 ) : RemoteRepo {
@@ -73,5 +69,14 @@ class RemoteRepoImpl(
         )
 
         return hNearByPlacesDtoMapper.hToDomainList(hFindNearByPlaces.nearyByPlacesResultDtos)
+    }
+
+    override suspend fun hReverseGeoCode(latLng: LatLng): List<GeoCode> {
+        val hReverseGeoCode = hRetroService.hGeoCode(
+                key = hMapsKey,
+                latLng = "${latLng.latitude},${latLng.longitude}"
+        )
+
+        return hGeoCodeDtoMapper.hToDomainList(hReverseGeoCode.results)
     }
 }

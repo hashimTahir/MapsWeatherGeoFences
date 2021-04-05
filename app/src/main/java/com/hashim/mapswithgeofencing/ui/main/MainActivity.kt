@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
         hSetupListeners()
 
+        hMainSharedViewModel.hHandleCategoriesCallBack()
+
     }
 
 

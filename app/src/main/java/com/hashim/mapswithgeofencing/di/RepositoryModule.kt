@@ -10,10 +10,7 @@ import com.hashim.mapswithgeofencing.db.ContactsDb
 import com.hashim.mapswithgeofencing.network.RetroService
 import com.hashim.mapswithgeofencing.repository.local.LocalRepo
 import com.hashim.mapswithgeofencing.repository.local.LocalRepoImpl
-import com.hashim.mapswithgeofencing.repository.mappers.DirectionDtoMapper
-import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
-import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
-import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.*
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepoImpl
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_MAPS_KEYTYPE
@@ -40,6 +37,7 @@ object RepositoryModule {
             forecastDtoMapper: ForecastDtoMapper,
             weatherDtoMapper: WeatherDtoMapper,
             directionDtoMapper: DirectionDtoMapper,
+            geoCodeDtoMapper: GeoCodeDtoMapper,
     ): RemoteRepo {
         return RemoteRepoImpl(
                 hRetroService = retrofitService,
@@ -48,7 +46,8 @@ object RepositoryModule {
                 hForecastDtoMapper = forecastDtoMapper,
                 hDirectionDtoMapper = directionDtoMapper,
                 hMapsKey = mapsKey,
-                hWeatherKey = weatherKey
+                hWeatherKey = weatherKey,
+                hGeoCodeDtoMapper = geoCodeDtoMapper
         )
     }
 

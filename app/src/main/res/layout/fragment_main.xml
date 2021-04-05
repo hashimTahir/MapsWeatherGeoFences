@@ -19,7 +19,7 @@
             android:layout_marginBottom="@dimen/_56dp"
             android:elevation="@dimen/_8dp"
             android:padding="@dimen/_5dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:cardCornerRadius="@dimen/_8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -6,10 +6,7 @@ package com.hashim.mapswithgeofencing.di
 
 import com.google.gson.Gson
 import com.hashim.mapswithgeofencing.network.RetroService
-import com.hashim.mapswithgeofencing.repository.mappers.DirectionDtoMapper
-import com.hashim.mapswithgeofencing.repository.mappers.ForecastDtoMapper
-import com.hashim.mapswithgeofencing.repository.mappers.NearByPlacesDtoMapper
-import com.hashim.mapswithgeofencing.repository.mappers.WeatherDtoMapper
+import com.hashim.mapswithgeofencing.repository.mappers.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,6 +39,13 @@ object NetworkModule {
     @Provides
     fun hProvidesForecastDtoMapper(): ForecastDtoMapper {
         return ForecastDtoMapper()
+    }
+
+
+    @Singleton
+    @Provides
+    fun hProvidesGeoCodeDtoMapper(): GeoCodeDtoMapper {
+        return GeoCodeDtoMapper()
     }
 
     @Singleton

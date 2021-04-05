@@ -5,18 +5,22 @@
 package com.hashim.mapswithgeofencing.repository.remote
 
 import android.location.Location
-import com.hashim.mapswithgeofencing.Domain.model.Directions
-import com.hashim.mapswithgeofencing.Domain.model.Forecast
-import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
-import com.hashim.mapswithgeofencing.Domain.model.Weather
+import com.google.android.gms.maps.model.LatLng
+import com.hashim.mapswithgeofencing.Domain.model.*
 import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode
 import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
 
 interface RemoteRepo {
 
-    suspend fun hGetWeather(location: Location, unitType: String): Weather
+    suspend fun hGetWeather(
+            location: Location,
+            unitType: String
+    ): Weather
 
-    suspend fun hGetForecast(location: Location, unitType: String): Forecast
+    suspend fun hGetForecast(
+            location: Location,
+            unitType: String
+    ): Forecast
 
     suspend fun hGetDirections(
             startLocation: Location,
@@ -24,6 +28,14 @@ interface RemoteRepo {
             mode: DirectionsMode,
     ): Directions
 
-    suspend fun hFindNearybyPlaces(category: Category, location: Location, radius: Int): List<NearByPlaces>
+    suspend fun hFindNearybyPlaces(
+            category: Category,
+            location: Location,
+            radius: Int
+    ): List<NearByPlaces>
 
+
+    suspend fun hReverseGeoCode(
+            latLng: LatLng,
+    ): List<GeoCode>
 }
