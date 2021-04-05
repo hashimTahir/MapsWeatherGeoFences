@@ -32,13 +32,15 @@
         android:name="com.hashim.mapswithgeofencing.ui.weather.WeatherFragment"
         android:label="WeatherFragment"
         tools:layout="@layout/weather_fragment">
-        <argument
-            android:name="hCurrentLocation"
-            app:argType="com.hashim.mapswithgeofencing.prefrences.HlatLng"
-            app:nullable="true" />
+
         <action
             android:id="@+id/action_hWeatherFragment_to_hSettingsFragment"
             app:destination="@id/hSettingsFragment" />
+        <argument
+            android:name="hCurrentLocation"
+            app:argType="com.hashim.mapswithgeofencing.others.prefrences.HlatLng"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment

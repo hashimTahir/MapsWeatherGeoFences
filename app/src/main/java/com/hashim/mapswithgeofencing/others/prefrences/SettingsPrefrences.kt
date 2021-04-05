@@ -44,9 +44,6 @@ class SettingsPrefrences(context: Context) {
                     )
                 }
 
-                RADIUS_UNIT_PT -> {
-                    return null
-                }
                 TRACKING_PT,
                 EMERGENCY_PT,
                 -> {
@@ -57,6 +54,7 @@ class SettingsPrefrences(context: Context) {
                     )
                 }
                 LANGUAGE_PT,
+                RADIUS_UNIT_PT,
                 TEMPRATURE_UNIT_PT,
                 DISTANCE_UNIT_PT,
                 MAPS_TYPE_PT,

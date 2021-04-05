@@ -11,15 +11,15 @@
         android:layout_height="match_parent"
         android:background="@color/transparent">
 
+
         <androidx.cardview.widget.CardView
             android:id="@+id/hDetailCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_margin="@dimen/_8dp"
+            android:layout_marginBottom="@dimen/_56dp"
             android:elevation="@dimen/_8dp"
             android:padding="@dimen/_5dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:cardCornerRadius="@dimen/_8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -132,6 +132,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/hAutoCompleteCV" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/hProgressbar"
+                style="@style/Widget.App.CircularProgressIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/hAutoCompleteCV" />
 
         </FrameLayout>
 

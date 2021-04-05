@@ -8,7 +8,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -27,7 +26,10 @@ import com.hashim.mapswithgeofencing.ui.events.MainViewState.*
 import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.CategoriesAdapter
 import com.hashim.mapswithgeofencing.utils.PermissionsUtils.Companion.hRequestLocationPermission
 import com.hashim.mapswithgeofencing.utils.UiHelper
+import com.hashim.mapswithgeofencing.utils.UiHelper.Companion.hHideView
+import com.hashim.mapswithgeofencing.utils.UiHelper.Companion.hShowView
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -119,7 +121,19 @@ class MainFragment : Fragment() {
 
     private fun hSubscribeObservers() {
         hMainViewModel.hDataState.observe(viewLifecycleOwner) { dataState ->
+            dataState.hLoading.let {
+                when (it) {
+                    true -> {
+                        hShowView(hFragmentMainBinding.hProgressbar)
+                    }
+                    false -> {
+                        hHideView(hFragmentMainBinding.hProgressbar)
+                    }
+                }
+            }
+
             dataState.hData?.let { mainViewState ->
+
                 mainViewState.hMainFields.hCurrentLocationVS?.let { currentLocationVS ->
                     hMainViewModel.hSetCurrentLocationData(currentLocationVS)
                 }
@@ -148,7 +162,7 @@ class MainFragment : Fragment() {
     }
 
     private fun hSetBottomCard(onMarkerClickVS: OnMarkerClickVS) {
-        hFragmentMainBinding.hDetailCardView.visibility = VISIBLE
+        hShowView(hFragmentMainBinding.hDetailCardView)
     }
 
     private fun hCreateNearByMarker(nearByPlacesVS: NearByPlacesVS) {
@@ -171,6 +185,7 @@ class MainFragment : Fragment() {
 
 
     private fun hRequestPermissions() {
+        hShowView(hFragmentMainBinding.hProgressbar)
 
         hRequestLocationPermission(
                 requireContext(),

@@ -19,6 +19,18 @@
 
     </style>
 
+    <style name="Widget.App.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.CircularProgressIndicator</item>
+        <item name="trackThickness">@dimen/_20dp</item>
+        <item name="indicatorDirectionCircular">clockwise</item>
+        <item name="android:indeterminate">true</item>
+
+
+    </style>
+
+    <style name="ThemeOverlay.App.CircularProgressIndicator" parent="">
+        <item name="colorPrimary">@color/shine_pink</item>
+    </style>
 
     <style name="hBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
@@ -117,4 +129,6 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <color name="shine_pink">#ffc0cb</color>
 </resources>

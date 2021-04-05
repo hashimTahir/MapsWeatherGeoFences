@@ -25,5 +25,13 @@ class UiHelper {
                     }
                     .show()
         }
+
+        fun hShowView(view: View) {
+            view.visibility = View.VISIBLE
+        }
+
+        fun hHideView(view: View) {
+            view.visibility = View.GONE
+        }
     }
 }

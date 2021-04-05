@@ -24,6 +24,6 @@ interface RemoteRepo {
             mode: DirectionsMode,
     ): Directions
 
-    suspend fun hFindNearybyPlaces(category: Category, location: Location): List<NearByPlaces>
+    suspend fun hFindNearybyPlaces(category: Category, location: Location, radius: Int): List<NearByPlaces>
 
 }

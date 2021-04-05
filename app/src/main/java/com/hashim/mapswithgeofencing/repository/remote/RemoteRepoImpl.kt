@@ -63,11 +63,11 @@ class RemoteRepoImpl(
         return hDirectionDtoMapper.hMapToDomainModel(hGetDirections)
     }
 
-    override suspend fun hFindNearybyPlaces(category: Category, location: Location): List<NearByPlaces> {
+    override suspend fun hFindNearybyPlaces(category: Category, location: Location, hRadius: Int): List<NearByPlaces> {
 
         val hFindNearByPlaces = hRetroService.hFindNearByPlaces(
                 location = "${location.latitude},${location.longitude}",
-                radius = "1000",
+                radius = hRadius.toString(),
                 type = category.name,
                 key = hMapsKey
         )
