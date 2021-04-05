@@ -6,7 +6,6 @@ package com.hashim.mapswithgeofencing.repository.mappers
 
 import com.hashim.mapswithgeofencing.Domain.model.Weather
 import com.hashim.mapswithgeofencing.Domain.util.DomainMapper
-import com.hashim.mapswithgeofencing.network.response.geocode.Result
 import com.hashim.mapswithgeofencing.network.response.weather.WeatherDto
 
 class WeatherDtoMapper : DomainMapper<WeatherDto, Weather> {

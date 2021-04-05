@@ -9,6 +9,7 @@ import android.location.Location
 import androidx.lifecycle.*
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.hashim.mapswithgeofencing.Domain.model.GeoCode
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.others.prefrences.HlatLng
 import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
@@ -101,7 +102,7 @@ class MainViewModel @Inject constructor(
             is None -> {
             }
             is OnMarkerClicked -> {
-                hChangeBottomView(stateEvent.marker)
+                return hChangeBottomView(stateEvent.marker)
             }
             else -> {
             }
@@ -110,19 +111,39 @@ class MainViewModel @Inject constructor(
 
     }
 
-    private fun hChangeBottomView(marker: Marker) {
-        Timber.d("hChangeBottomView $marker")
+    private fun hChangeBottomView(marker: Marker): LiveData<DataState<MainViewState>> {
+
+        val hResult = MediatorLiveData<DataState<MainViewState>>()
+        hResult.value = DataState.hLoading(true)
+
+        viewModelScope.launch {
+            val hResponse = MutableLiveData<List<GeoCode>>()
+            hResult.value = DataState.hLoading(true)
 
 
-        marker.title
-        marker.position
+            viewModelScope.launch {
+                hCurrentLocation?.let {
+                    hResponse.value = hRemoteRepo.hReverseGeoCode(marker.position)
 
-        /*Geo code here to get the address*/
-        _hMainViewState.value = MainViewState(
-                hMainFields = MainFields(
-                        hOnMarkerClickVS = OnMarkerClickVS("test")
-                )
-        )
+                }
+                hResult.addSource(hResponse) {
+                    hResult.removeSource(hResponse)
+                    hResult.value = DataState(
+                            hData = MainViewState(
+                                    hMainFields = MainFields(
+                                            hOnMarkerClickVS = OnMarkerClickVS(
+                                                    hPlaceName = marker.title,
+                                                    hAddress = hResponse.value?.get(0)?.formattedAddress,
+                                            )
+                                    )
+                            )
+                    )
+
+                }
+            }
+        }
+        return hResult
+
     }
 
     private fun hSubmitNearByMarkerList(
@@ -137,6 +158,7 @@ class MainViewModel @Inject constructor(
                             hContext = hContext,
                             hLat = place.lat!!,
                             hLng = place.lng!!,
+                            hPlaceName = place.name,
                             hCategory = category,
                     )
             )

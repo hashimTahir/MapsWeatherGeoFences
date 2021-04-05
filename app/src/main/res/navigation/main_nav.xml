@@ -41,13 +41,35 @@
             app:argType="com.hashim.mapswithgeofencing.others.prefrences.HlatLng"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_hWeatherFragment_to_hMainFragment"
+            app:destination="@id/hMainFragment" />
+        <action
+            android:id="@+id/action_hWeatherFragment_to_hCalculateRouteFragment"
+            app:destination="@id/hCalculateRouteFragment" />
+        <action
+            android:id="@+id/action_hWeatherFragment_to_hCompassFragment"
+            app:destination="@id/hCompassFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/hSettingsFragment"
         android:name="com.hashim.mapswithgeofencing.ui.settings.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_hSettingsFragment_to_hWeatherFragment"
+            app:destination="@id/hWeatherFragment" />
+        <action
+            android:id="@+id/action_hSettingsFragment_to_hCompassFragment"
+            app:destination="@id/hCompassFragment" />
+        <action
+            android:id="@+id/action_hSettingsFragment_to_hCalculateRouteFragment"
+            app:destination="@id/hCalculateRouteFragment" />
+        <action
+            android:id="@+id/action_hSettingsFragment_to_hMainFragment"
+            app:destination="@id/hMainFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/hCalculateRouteFragment"

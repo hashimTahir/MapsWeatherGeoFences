@@ -95,11 +95,11 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun hSubmitSavedOrDefaultSettings() {
-        val hLanguage = hSettingsPrefrences.hGetSettings(LANGUAGE_PT) as Int
-        val hDistance = hSettingsPrefrences.hGetSettings(DISTANCE_UNIT_PT) as Int
-        val hTemprature = hSettingsPrefrences.hGetSettings(TEMPRATURE_UNIT_PT) as Int
-        val hEmergency = hSettingsPrefrences.hGetSettings(EMERGENCY_PT) as Boolean
-        val hTracking = hSettingsPrefrences.hGetSettings(TRACKING_PT) as Boolean
+        val hLanguage = hSettingsPrefrences.hGetSettings(LANGUAGE_PT) as Int?
+        val hDistance = hSettingsPrefrences.hGetSettings(DISTANCE_UNIT_PT) as Int?
+        val hTemprature = hSettingsPrefrences.hGetSettings(TEMPRATURE_UNIT_PT) as Int?
+        val hEmergency = hSettingsPrefrences.hGetSettings(EMERGENCY_PT) as Boolean?
+        val hTracking = hSettingsPrefrences.hGetSettings(TRACKING_PT) as Boolean?
 
         Timber.d("Language $hLanguage , Distance $hDistance , Emergency $hEmergency, Tracking $hTracking , Temperature $hTemprature")
 

@@ -29,7 +29,6 @@ import com.hashim.mapswithgeofencing.utils.UiHelper
 import com.hashim.mapswithgeofencing.utils.UiHelper.Companion.hHideView
 import com.hashim.mapswithgeofencing.utils.UiHelper.Companion.hShowView
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -163,6 +162,8 @@ class MainFragment : Fragment() {
 
     private fun hSetBottomCard(onMarkerClickVS: OnMarkerClickVS) {
         hShowView(hFragmentMainBinding.hDetailCardView)
+        hFragmentMainBinding.hAddressTv.text = onMarkerClickVS.hAddress
+        hFragmentMainBinding.hNameTv.text = onMarkerClickVS.hPlaceName
     }
 
     private fun hCreateNearByMarker(nearByPlacesVS: NearByPlacesVS) {

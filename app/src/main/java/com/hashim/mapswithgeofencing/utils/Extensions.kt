@@ -27,10 +27,12 @@ fun hCreateMarkerOptions(
         hLat: Double,
         hLng: Double,
         hType: MarkerUtils.MarkerType? = null,
+        hPlaceName: String? = null,
         hCategory: Category? = null,
 ): MarkerOptions {
 
     val hLatLng = LatLng(hLat, hLng)
+
 
     val hSmallMarkerBitmap = MarkerUtils.hGetCustomMapMarker(
             hContext = hContext,
@@ -40,9 +42,10 @@ fun hCreateMarkerOptions(
 
 
     val hMarkerOptions =
-            if (hCategory != null) {
+
+            if (hPlaceName != null && hCategory != null) {
                 MarkerOptions().position(hLatLng)
-                        .title(hCategory.name)
+                        .title(hPlaceName)
                         .snippet(hCategory.name)
                         .icon(BitmapDescriptorFactory.fromBitmap(hSmallMarkerBitmap))
             } else {
