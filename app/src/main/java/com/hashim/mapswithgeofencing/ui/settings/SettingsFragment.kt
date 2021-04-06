@@ -6,6 +6,7 @@ package com.hashim.mapswithgeofencing.ui.settings
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -26,8 +27,12 @@ import androidx.fragment.app.viewModels
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentSettingsBinding
 import com.hashim.mapswithgeofencing.ui.events.SettingsStateEvent.*
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.GeoFenceContactsTemplatesActivity
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.LaunchTypes
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.LaunchTypes.*
 import com.hashim.mapswithgeofencing.ui.settings.SettingsType.EMERGENCY
 import com.hashim.mapswithgeofencing.ui.settings.SettingsType.TRACK_ME
+import com.hashim.mapswithgeofencing.utils.Constants
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.CHANNEL_ID
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_NOTIFICATION_ID
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,11 +79,11 @@ class SettingsFragment : Fragment() {
     private fun hInitClickListerns() {
         hFragmentSettingsBinding.hAddRemoveContactsELayout
                 .hAddRemoveContactsELayout.setOnClickListener {
-//            startActivity(new Intent (SettingsActivity.this, TrackMeActivity.class));
+                    hLaunchGeoFencesContactsTemplatesActivity(CONTACTS)
                 }
         hFragmentSettingsBinding.hEditMessageELayout
                 .hEditMessageELayout.setOnClickListener {
-                    hEditEmergencyTrackeMeMessage(EMERGENCY)
+                    hLaunchGeoFencesContactsTemplatesActivity(TEMPLATES)
                 }
         hFragmentSettingsBinding.hTestNotificationELayout
                 .hTestNotificationELayout.setOnClickListener {
@@ -109,9 +114,16 @@ class SettingsFragment : Fragment() {
                 }
         hFragmentSettingsBinding.hAddRemoveLocationsTLayout
                 .hAddRemoveLocationsTV.setOnClickListener {
-//            startActivity(new Intent (this, EmergencyContactsActivity.class));
+                    hLaunchGeoFencesContactsTemplatesActivity(GEOFENCE)
+
                 }
 
+    }
+
+    private fun hLaunchGeoFencesContactsTemplatesActivity(hLaunchTypes: LaunchTypes) {
+        val hIntent = Intent(requireContext(), GeoFenceContactsTemplatesActivity::class.java)
+        hIntent.putExtra(Constants.H_GEOFENCE_CONTACTS_TEMPLATES_DATA, hLaunchTypes.toString())
+        startActivity(hIntent)
     }
 
     private fun hInitSwitchListeners() {

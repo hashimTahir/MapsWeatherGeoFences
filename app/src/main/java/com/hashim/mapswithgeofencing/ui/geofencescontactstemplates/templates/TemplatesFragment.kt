@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2021/  3/ 26.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 7.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.ui.templates
+package com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,11 +12,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentTemplatesBinding
-import com.hashim.mapswithgeofencing.others.dialogs.AddMessageTemplateDialog
 import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes
 import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
-import com.hashim.mapswithgeofencing.ui.templates.TemplatesAdapter.AdapterType.CUSTOM
-import com.hashim.mapswithgeofencing.ui.templates.TemplatesAdapter.AdapterType.DEFAULT
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.TemplatesAdapter.AdapterType.CUSTOM
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.TemplatesAdapter.AdapterType.DEFAULT
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.dialogs.AddMessageTemplateDialog
 import com.hashim.mapswithgeofencing.utils.Constants
 
 

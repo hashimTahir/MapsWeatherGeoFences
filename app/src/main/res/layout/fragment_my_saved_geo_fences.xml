@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
+  ~ Copyright (c) 2021/  4/ 7.  Created by Hashim Tahir
   -->
+
 
 <layout>
 
@@ -24,7 +26,7 @@
             app:layout_constraintVertical_bias="0.93" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/hContactsRV"
+            android:id="@+id/hSavedGeoFencesRv"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"

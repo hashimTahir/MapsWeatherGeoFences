@@ -2,7 +2,7 @@
  * Copyright (c) 2021/  4/ 1.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.ui.contacts.adapter
+package com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.contcats.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

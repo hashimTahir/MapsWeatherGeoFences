@@ -2,7 +2,7 @@
  * Copyright (c) 2021/  4/ 4.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.others.dialogs
+package com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.dialogs
 
 import android.os.Bundle
 import android.view.LayoutInflater

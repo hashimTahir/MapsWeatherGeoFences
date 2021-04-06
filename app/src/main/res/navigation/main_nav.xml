@@ -109,9 +109,4 @@
             app:destination="@id/hSettingsFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/hTemplatesFragment"
-        android:name="com.hashim.mapswithgeofencing.ui.templates.TemplatesFragment"
-        android:label="TemplatesFragment"
-        tools:layout="@layout/fragment_templates" />
 </navigation>

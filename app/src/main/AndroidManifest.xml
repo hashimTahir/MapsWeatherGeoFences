@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.contacts.ContactsActivity"
+            android:name=".ui.geofencescontactstemplates.GeoFenceContactsTemplatesActivity"
             android:label="@string/title_activity_contacts"
             android:theme="@style/AppTheme.NoActionBar" />
 

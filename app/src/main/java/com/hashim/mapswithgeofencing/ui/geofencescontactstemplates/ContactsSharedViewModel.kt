@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2021/  4/ 1.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 7.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.ui.contacts
+package com.hashim.mapswithgeofencing.ui.geofencescontactstemplates
 
 import android.content.Context
 import android.provider.ContactsContract

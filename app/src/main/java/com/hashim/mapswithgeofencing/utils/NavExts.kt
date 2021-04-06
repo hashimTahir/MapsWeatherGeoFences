@@ -33,7 +33,7 @@ fun hHandleNavigationToMainFragment(
     }
 }
 
- fun hHandleNavigationFromWeatherFragment(
+fun hHandleNavigationFromWeatherFragment(
         id: Int,
         hNavController: NavController
 ) {
@@ -54,7 +54,7 @@ fun hHandleNavigationToMainFragment(
 
 }
 
- fun hHandleNavigationFromSettingsFragment(
+fun hHandleNavigationFromSettingsFragment(
         id: Int,
         hNavController: NavController
 ) {
@@ -74,7 +74,7 @@ fun hHandleNavigationToMainFragment(
     }
 }
 
- fun hHandleNavigationFromCalculateRouteFragment(
+fun hHandleNavigationFromCalculateRouteFragment(
         id: Int,
         hNavController: NavController,
 ) {
@@ -94,7 +94,7 @@ fun hHandleNavigationToMainFragment(
     }
 }
 
- fun hHandleNavigationFromCompassFragment(
+fun hHandleNavigationFromCompassFragment(
         id: Int,
         hNavController: NavController
 ) {
@@ -114,7 +114,7 @@ fun hHandleNavigationToMainFragment(
     }
 }
 
- fun hHandleTemplatesNav(menuItem: Int) {
+fun hHandleTemplatesNav(menuItem: Int) {
     /*Todo: add later*/
 }
 

@@ -9,6 +9,7 @@ class Constants {
         val H_REQUEST_CODE = 38
         val H_BOTTOM_DIALOG = "hBottomDialog"
         val H_WORKER_DATA = "hWorkerData"
+        val H_GEOFENCE_CONTACTS_TEMPLATES_DATA = "hGeoFenceContactsTemplatesActivityData"
         val CHANNEL_ID: String = "channelIdHere"
         val H_NOTIFICATION_ID: Int = 1
         const val hTag = "hashimTimberTags %s"

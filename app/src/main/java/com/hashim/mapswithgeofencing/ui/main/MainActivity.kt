@@ -57,12 +57,7 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
 
         hActivityMainBinding.hBottomNav.setOnNavigationItemSelectedListener { menuItem ->
             when (hNavController.currentDestination?.id) {
-                R.id.hTemplatesFragment -> {
-                    hHandleNavigationToMainFragment(
-                            id = hNavController.currentDestination!!.id,
-                            hNavController = hNavController
-                    )
-                }
+
                 R.id.hCompassFragment -> {
                     hHandleNavigationFromCompassFragment(
                             id = hNavController.currentDestination!!.id,
@@ -89,7 +84,7 @@ class MainActivity : AppCompatActivity(), MaterialSearchBar.OnSearchActionListen
                 }
                 R.id.hMainFragment -> {
                     hHandleNavigationFromMainFragment(
-                            id = hNavController.currentDestination!!.id,
+                            id = menuItem.itemId,
                             hNavController = hNavController,
                             hContext = this
                     )

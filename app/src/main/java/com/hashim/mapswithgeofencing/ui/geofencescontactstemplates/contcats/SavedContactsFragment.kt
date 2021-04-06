@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2021/  4/ 4.  Created by Hashim Tahir
+ * Copyright (c) 2021/  4/ 7.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.ui.contacts.fragments
+package com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.contcats
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hashim.mapswithgeofencing.databinding.FragmentSavedContactsBinding
-import com.hashim.mapswithgeofencing.ui.contacts.ContactsSharedViewModel
-import com.hashim.mapswithgeofencing.ui.contacts.adapter.SwipeToDeleteCallback
-import com.hashim.mapswithgeofencing.ui.contacts.adapter.ViewContactsAdapter
 import com.hashim.mapswithgeofencing.ui.events.ContactsStateEvent.OnGetContacts
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.ContactsSharedViewModel
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.contcats.adapter.SwipeToDeleteCallback
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.contcats.adapter.ViewContactsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
