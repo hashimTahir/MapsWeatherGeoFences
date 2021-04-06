@@ -8,6 +8,7 @@ class Constants {
     companion object {
         val H_REQUEST_CODE = 38
         val H_BOTTOM_DIALOG = "hBottomDialog"
+        val H_WORKER_DATA = "hWorkerData"
         val CHANNEL_ID: String = "channelIdHere"
         val H_NOTIFICATION_ID: Int = 1
         const val hTag = "hashimTimberTags %s"
