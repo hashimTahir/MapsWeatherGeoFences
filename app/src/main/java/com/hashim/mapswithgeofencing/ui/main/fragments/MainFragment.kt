@@ -20,7 +20,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentMainBinding
-import com.hashim.mapswithgeofencing.others.location.LocationUtis
+import com.hashim.mapswithgeofencing.others.prefrences.HlatLng
+import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes
+import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.*
 import com.hashim.mapswithgeofencing.ui.events.MainViewState.*
 import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.CategoriesAdapter
@@ -28,7 +30,10 @@ import com.hashim.mapswithgeofencing.utils.PermissionsUtils.Companion.hRequestLo
 import com.hashim.mapswithgeofencing.utils.UiHelper
 import com.hashim.mapswithgeofencing.utils.UiHelper.Companion.hHideView
 import com.hashim.mapswithgeofencing.utils.UiHelper.Companion.hShowView
+import com.hashim.mapswithgeofencing.utils.geofencing.GeoFenceUtils
+import com.hashim.mapswithgeofencing.utils.location.LocationUtis
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -38,6 +43,9 @@ class MainFragment : Fragment() {
     private var hGoogleMap: GoogleMap? = null
     private lateinit var hCategoriesAdapter: CategoriesAdapter
 
+    @Inject
+    lateinit var hSettingsPrefrences: SettingsPrefrences
+
     @SuppressLint("MissingPermission")
     private val hMapCallBack = OnMapReadyCallback { googleMap ->
         hGoogleMap = googleMap
@@ -45,6 +53,18 @@ class MainFragment : Fragment() {
         hMainViewModel.hSetStateEvent(OnMapReady())
 
         hSetMapListerns()
+
+
+        /*Todo : Remove this. test purpose only*/
+        val hGeofencUtis = GeoFenceUtils(requireContext())
+
+        val hCurrentHlatLng: HlatLng = hSettingsPrefrences
+                .hGetSettings(PrefTypes.CURRENT_LAT_LNG_PT) as HlatLng
+        val hTest = mutableMapOf<String, LatLng>()
+        hTest.put("test", LatLng(hCurrentHlatLng.hLat!!, hCurrentHlatLng.hLng!!))
+        hGeofencUtis.hCreateAllGeoFences(hTest as HashMap<String, LatLng>)
+        hGeofencUtis.hStartService()
+        hGoogleMap?.addCircle(hGeofencUtis.hShowVisibleGeoFence())
     }
 
     @SuppressLint("PotentialBehaviorOverride")

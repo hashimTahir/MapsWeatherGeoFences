@@ -24,7 +24,7 @@
         <activity
             android:name=".ui.contacts.ContactsActivity"
             android:label="@string/title_activity_contacts"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
         <meta-data
@@ -43,6 +43,9 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3644811374692683~5877392619" />
 
+        <receiver
+            android:name=".utils.geofencing.GeofenceBroadcastReceiver"
+            android:enabled="true" />
     </application>
 
 </manifest>

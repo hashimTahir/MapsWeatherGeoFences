@@ -2,7 +2,7 @@
  * Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
  */
 
-package com.hashim.mapswithgeofencing.others.location
+package com.hashim.mapswithgeofencing.utils.location
 
 import android.annotation.SuppressLint
 import android.app.Activity

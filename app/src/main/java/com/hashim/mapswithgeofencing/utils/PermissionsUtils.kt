@@ -72,7 +72,6 @@ class PermissionsUtils {
             }
         }
 
-
         fun hRequestLocationPermission(
                 context: Context,
                 launcher: ActivityResultLauncher<String>,
@@ -93,6 +92,4 @@ class PermissionsUtils {
             }
         }
     }
-
-
 }

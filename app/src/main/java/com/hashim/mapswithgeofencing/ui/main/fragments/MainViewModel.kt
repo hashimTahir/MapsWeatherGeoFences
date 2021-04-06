@@ -61,6 +61,7 @@ class MainViewModel @Inject constructor(
     ): LiveData<DataState<MainViewState>>? {
         when (stateEvent) {
             is OnCurrentLocationFound -> {
+                Timber.d("OnCurrentLocationFound")
                 hCurrentLocation = stateEvent.location
                 hSubmitCurrentLocationData(hCurrentLocation)
                 hSettingsPrefrences.hSaveSettings(
