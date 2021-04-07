@@ -6,7 +6,7 @@ package com.hashim.mapswithgeofencing.di
 
 import android.content.Context
 import com.hashim.mapswithgeofencing.R
-import com.hashim.mapswithgeofencing.db.ContactsDb
+import com.hashim.mapswithgeofencing.db.Db
 import com.hashim.mapswithgeofencing.network.RetroService
 import com.hashim.mapswithgeofencing.repository.local.LocalRepo
 import com.hashim.mapswithgeofencing.repository.local.LocalRepoImpl
@@ -67,16 +67,17 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun hProvideshProvidesDatabase(@ApplicationContext context: Context): ContactsDb {
-        return ContactsDb.hGetInstance(context)
+    fun hProvideshProvidesDatabase(@ApplicationContext context: Context): Db {
+        return Db.hGetInstance(context)
     }
 
 
     @Singleton
     @Provides
-    fun hProvidesLocalRepo(contactsDb: ContactsDb): LocalRepo {
+    fun hProvidesLocalRepo(db: Db): LocalRepo {
         return LocalRepoImpl(
-                hContactsDao = contactsDb.hContactsDao
+                hContactsDao = db.hContactsDao,
+                hGeoFenceDao = db.hGeoFencesDao
         )
     }
 

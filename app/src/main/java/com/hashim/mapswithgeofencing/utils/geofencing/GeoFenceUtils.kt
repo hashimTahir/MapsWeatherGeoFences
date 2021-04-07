@@ -14,7 +14,9 @@ import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import timber.log.Timber
 
 
@@ -98,12 +100,21 @@ class GeoFenceUtils(
     }
 
     /*Visible circle is drawn on the map to show the fence perimeter*/
-    fun hShowVisibleGeoFence(marker: Marker, radius: Float): CircleOptions {
-        return CircleOptions()
-                .strokeColor(Color.argb(50, 70, 6, 70))
-                .fillColor(Color.argb(100, 150, 150, 150))
-                .center(marker.position)
-                .radius(radius.toDouble())
+    fun hShowVisibleGeoFence(
+            hMarkerOptions: MarkerOptions? = null,
+            hLatLng: LatLng? = null,
+            hRadius: Float
+    ): CircleOptions {
+        val hCircleOptions = CircleOptions().apply {
+            strokeColor(Color.argb(50, 70, 6, 70))
+            fillColor(Color.argb(100, 150, 150, 150))
+            radius(hRadius.toDouble())
+        }
+        return if (hMarkerOptions == null) {
+            hCircleOptions.center(hLatLng)
+        } else {
+            hCircleOptions.center(hMarkerOptions.position)
+        }
     }
 
 }

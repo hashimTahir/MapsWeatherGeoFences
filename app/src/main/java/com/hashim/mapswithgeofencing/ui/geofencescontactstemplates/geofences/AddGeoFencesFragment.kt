@@ -11,14 +11,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentAddGeoFencesBinding
 import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.geofences.GeoFenceStateEvent.*
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.geofences.GeoFenceViewState.CurrentLocationGeoFenceVS
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.geofences.GeoFenceViewState.MakerFenceVS
 import com.xw.repo.BubbleSeekBar
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class AddGeoFencesFragment : Fragment() {
@@ -33,10 +38,10 @@ class AddGeoFencesFragment : Fragment() {
         hGoogleMap = googleMap
         hGoogleMap?.isMyLocationEnabled = true
 
-        hGeoFenceViewModel.hSetStateEvent(OnMapReady())
+        hGeoFenceViewModel.hSetStateEvent(OnMapReady(hRadius))
 
         hGoogleMap?.setOnMapClickListener { clickedLatLng ->
-            hGeoFenceViewModel.hSetStateEvent(OnMapClicked(clickedLatLng))
+            hGeoFenceViewModel.hSetStateEvent(OnMapClicked(clickedLatLng, hRadius))
         }
     }
 
@@ -77,26 +82,72 @@ class AddGeoFencesFragment : Fragment() {
 
         }
         hGeoFenceViewModel.hGeoFenceViewState.observe(viewLifecycleOwner) { geoFenceViewState ->
-            geoFenceViewState.hGeoFenceFields.let {
-
+            geoFenceViewState.hGeoFenceFields.hCurrentLocationVS?.let { currentLocationGeoFenceVS ->
+                hSetMap(currentLocationGeoFenceVS)
+            }
+            geoFenceViewState.hGeoFenceFields.hMakerFenceVS?.let { markerFenceVS ->
+                hSetMapWithMarker(markerFenceVS)
+            }
+            geoFenceViewState.hGeoFenceFields.hAdjustRadiusVS?.let { adjustRadiusVS ->
+                hAdjustRadius(adjustRadiusVS)
             }
         }
     }
 
+    private fun hAdjustRadius(adjustRadiusVS: GeoFenceViewState.AdjustRadiusVS) {
+        hGoogleMap?.addCircle(adjustRadiusVS.hCircleOptions)
+    }
+
+    private fun hSetMapWithMarker(markerFenceVS: MakerFenceVS) {
+        hGoogleMap?.clear()
+        hGoogleMap?.addCircle(markerFenceVS.hCircleOptions)
+        hGoogleMap?.addMarker(markerFenceVS.hMarkerOptions)
+    }
+
+    private fun hSetMap(currentLocationGeoFenceVS: CurrentLocationGeoFenceVS) {
+        Timber.d("Setting the map")
+        hGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                        currentLocationGeoFenceVS.hLat!!,
+                        currentLocationGeoFenceVS.hLng!!
+                ),
+                currentLocationGeoFenceVS.hCameraZoom!!))
+        hGoogleMap?.addCircle(currentLocationGeoFenceVS.hCircleOptions)
+    }
+
+
     private fun hSetupListerns() {
         val hListener = object : BubbleSeekBar.OnProgressChangedListener {
-            override fun onProgressChanged(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) {
-                hGeoFenceViewModel.hSetStateEvent(OnRadiusChanged(progress, progressFloat))
+            override fun onProgressChanged(
+                    bubbleSeekBar: BubbleSeekBar?,
+                    progress: Int,
+                    progressFloat: Float
+            ) {
+                hRadius = progressFloat
+                hGeoFenceViewModel.hSetStateEvent(OnRadiusChanged(hRadius))
             }
 
-            override fun getProgressOnActionUp(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) {
+            override fun getProgressOnActionUp(
+                    bubbleSeekBar: BubbleSeekBar?,
+                    progress: Int,
+                    progressFloat: Float
+            ) {
             }
 
-            override fun getProgressOnFinally(bubbleSeekBar: BubbleSeekBar?, progress: Int, progressFloat: Float) {
+            override fun getProgressOnFinally(
+                    bubbleSeekBar: BubbleSeekBar?,
+                    progress: Int,
+                    progressFloat: Float) {
             }
 
         }
         hFragmentAddGeoFencesBinding.hRadiusSeekBar.onProgressChangedListener = hListener
+
+        hFragmentAddGeoFencesBinding.hSaveContactsB.setOnClickListener {
+            hGeoFenceViewModel.hSetStateEvent(OnSaveDisplayedFences(
+                    hFenceName = hFragmentAddGeoFencesBinding.hEditTv.text.toString()
+            ))
+        }
     }
 
     private fun hInitMap() {

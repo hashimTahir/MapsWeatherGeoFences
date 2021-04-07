@@ -5,6 +5,7 @@
 package com.hashim.mapswithgeofencing.repository.local
 
 import com.hashim.mapswithgeofencing.db.entities.Contact
+import com.hashim.mapswithgeofencing.db.entities.GeoFence
 
 interface LocalRepo {
 
@@ -12,5 +13,8 @@ interface LocalRepo {
 
     suspend fun hGetAllContacts(): List<Contact>
 
+    suspend fun hInsertGeoFence(geoFence: GeoFence): Long
+
+    suspend fun hGetAllGeoFences(): List<GeoFence>
 
 }

@@ -20,7 +20,7 @@ class Constants {
         const val H_CELCIUS_UNIT = "metric"
         const val H_FARENHEIT_UNIT = "imperial"
         const val H_KELVIL_UNIT = "kelvin"
-        const val H_DATABASE = "contacts_db"
+        const val H_DATABASE = "database"
         const val H_DEFAULT_RADIUS = 1000
 
 
