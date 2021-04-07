@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2021/  4/ 7.  Created by Hashim Tahir
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,21 +64,6 @@
             app:layout_constraintTop_toBottomOf="@id/hTitleLayout" />
 
 
-        <!--android:id="@+id/hRadiusSeekBar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="32dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="32dp"-->
-        <!--android:elevation="@dimen/_5dp"-->
-        <!--android:max="10"-->
-        <!--android:progressTint="@color/red"-->
-        <!--style="@style/Widget.AppCompat.SeekBar.Discrete"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/textView5" />-->
-
-
         <com.xw.repo.BubbleSeekBar
             android:id="@+id/hRadiusSeekBar"
             android:layout_width="match_parent"
@@ -88,8 +71,8 @@
             app:bsb_bubble_color="@color/red"
             app:bsb_bubble_text_color="@color/colorPrimaryDark"
             app:bsb_max="10.0"
-            app:bsb_min="0.0"
-            app:bsb_progress="0"
+            app:bsb_min="0.5"
+            app:bsb_progress="0.5"
             app:bsb_second_track_color="@color/info_color"
             app:bsb_section_count="5"
             app:bsb_section_text_position="bottom_sides"
@@ -98,7 +81,6 @@
             app:bsb_show_section_text="true"
             app:bsb_show_thumb_text="true"
             app:bsb_track_color="@color/overflow_icon_color"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -121,44 +103,18 @@
             app:layout_constraintTop_toBottomOf="@id/hRadiusSeekBar" />
 
         <fragment
-            android:id="@+id/map"
+            android:id="@+id/hGoogleMap"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="259dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="@dimen/_0dp"
+            android:layout_marginStart="@dimen/_8dp"
+            android:layout_marginTop="@dimen/_8dp"
+            android:layout_marginEnd="@dimen/_8dp"
+            app:layout_constraintBottom_toTopOf="@id/hSaveContactsB"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-        <TextView
-            android:id="@+id/hContactsTv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:padding="@dimen/_5dp"
-            android:text="@string/test_string"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@+id/hViewTv"
-            app:layout_constraintHorizontal_bias="0.3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/map" />
-
-        <TextView
-            android:id="@+id/hViewTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:padding="@dimen/_5dp"
-            android:textAllCaps="true"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/map" />
 
         <Button
             android:id="@+id/hSaveContactsB"
@@ -168,9 +124,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="@string/save_location"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hContactsTv" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

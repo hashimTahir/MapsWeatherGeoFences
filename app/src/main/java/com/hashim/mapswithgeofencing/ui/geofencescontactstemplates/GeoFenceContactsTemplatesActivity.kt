@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.ActivityGeofenceContactsTemplatesBinding
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.LaunchTypes.*
 import com.hashim.mapswithgeofencing.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -38,9 +39,10 @@ class GeoFenceContactsTemplatesActivity : AppCompatActivity() {
         val string = intent.extras?.getString(Constants.H_GEOFENCE_CONTACTS_TEMPLATES_DATA)
         Timber.d("Data is $string")
         string?.let {
-            return LaunchTypes.valueOf(string)
+            return valueOf(string)
         }
-        return null
+        /*Todo Remove this change to null*/
+        return GEOFENCE
     }
 
     private fun hInitNavView(launchTypes: LaunchTypes?) {
@@ -58,9 +60,9 @@ class GeoFenceContactsTemplatesActivity : AppCompatActivity() {
 
 
         val hDestinaiton = when (launchTypes) {
-            LaunchTypes.TEMPLATES -> R.id.hTemplatesFragment
-            LaunchTypes.CONTACTS -> R.id.hAllContactsFragment
-            LaunchTypes.GEOFENCE -> R.id.hMySavedGeoFences
+            TEMPLATES -> R.id.hTemplatesFragment
+            CONTACTS -> R.id.hAllContactsFragment
+            GEOFENCE -> R.id.hMySavedGeoFences
             else -> throw Exception()
         }
 

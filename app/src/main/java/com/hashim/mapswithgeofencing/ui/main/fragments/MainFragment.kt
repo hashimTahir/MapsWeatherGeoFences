@@ -55,7 +55,6 @@ class MainFragment : Fragment() {
     @SuppressLint("PotentialBehaviorOverride")
     private fun hSetMapListerns() {
         hGoogleMap?.setOnMarkerClickListener { marker ->
-            /* Todo: Show details */
             if (marker.isInfoWindowShown) {
                 marker.hideInfoWindow()
             } else {

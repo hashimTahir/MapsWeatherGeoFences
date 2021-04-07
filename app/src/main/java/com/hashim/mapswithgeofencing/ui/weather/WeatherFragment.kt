@@ -56,16 +56,16 @@ class WeatherFragment : Fragment() {
 
         hWeatherViewModel.hSetStateEvent(
                 OnFetchWeather(
-                        hLat = hArguments.hCurrentLocation.hLat,
-                        hLng = hArguments.hCurrentLocation.hLng
+                        hLat = hArguments.hCurrentLocation?.hLat,
+                        hLng = hArguments.hCurrentLocation?.hLng
                 )
         )
 
         Handler(Looper.myLooper()!!).postDelayed(Runnable {
             hWeatherViewModel.hSetStateEvent(
                     OnFetchForecast(
-                            hLat = hArguments.hCurrentLocation.hLat,
-                            hLng = hArguments.hCurrentLocation.hLng
+                            hLat = hArguments.hCurrentLocation?.hLat,
+                            hLng = hArguments.hCurrentLocation?.hLng
                     )
             )
         }, 500)

@@ -30,6 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/hAddGeoFencesFragment"
+        tools:layout="@layout/fragment_add_geo_fences"
         android:name="com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.geofences.AddGeoFencesFragment"
         android:label="AddGeoFencesFragment" >
         <action
@@ -38,7 +39,8 @@
     </fragment>
     <fragment
         android:id="@+id/hMySavedGeoFences"
-        android:name="com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.geofences.MySavedGeoFences"
+        android:name="com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.geofences.MySavedGeoFencesFragment"
+        tools:layout="@layout/fragment_my_saved_geo_fences"
         android:label="MySavedGeoFences" >
         <action
             android:id="@+id/action_mySavedGeoFences_to_addGeoFencesFragment"
@@ -46,6 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/hTemplatesFragment"
+        tools:layout="@layout/fragment_templates"
         android:name="com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.TemplatesFragment"
         android:label="TemplatesFragment" />
 </navigation>

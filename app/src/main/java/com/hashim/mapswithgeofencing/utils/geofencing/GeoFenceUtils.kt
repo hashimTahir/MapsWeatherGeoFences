@@ -14,28 +14,27 @@ import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import timber.log.Timber
 
 
 class GeoFenceUtils(
         private val hContext: Context,
-        private var hRadius: Int = 100,
 ) {
     private val hGeofencingClient: GeofencingClient = LocationServices.getGeofencingClient(hContext)
     private val hGeoList = mutableListOf<Geofence>()
     private var hGeofencePendingIntent: PendingIntent? = null
-    lateinit var hLatLan: LatLng
 
 
     /*For Locations added by user create geofences*/
-    fun hCreateAllGeoFences(hLocationMap: HashMap<String, LatLng>) {
+    fun hCreateAllGeoFences(hLocationMap: HashMap<String, GeoMapdata>) {
         hLocationMap.forEach {
-            hLatLan = it.value
             hGeoList.add(
                     hCreateGeoFence(
-                            hLatLan = it.value,
-                            hKey = it.key
+                            hLat = it.value.hLat!!,
+                            hLng = it.value.hLng!!,
+                            hRadius = it.value.hRadius!!,
+                            hKey = it.key,
                     )
             )
         }
@@ -77,16 +76,18 @@ class GeoFenceUtils(
 
     /*Builder that creates the fence and adds it to the list*/
     private fun hCreateGeoFence(
-            hLatLan: LatLng,
-            hKey: String
+            hLat: Double,
+            hLng: Double,
+            hRadius: Float,
+            hKey: String,
 
-    ): Geofence {
+            ): Geofence {
         return Geofence.Builder()
                 .setRequestId(hKey)
                 .setCircularRegion(
-                        hLatLan.latitude,
-                        hLatLan.longitude,
-                        hRadius.toFloat()
+                        hLat,
+                        hLng,
+                        hRadius,
                 )
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setTransitionTypes(
@@ -97,13 +98,12 @@ class GeoFenceUtils(
     }
 
     /*Visible circle is drawn on the map to show the fence perimeter*/
-    fun hShowVisibleGeoFence(): CircleOptions {
-        Timber.d("LatLng $hLatLan")
+    fun hShowVisibleGeoFence(marker: Marker, radius: Float): CircleOptions {
         return CircleOptions()
                 .strokeColor(Color.argb(50, 70, 6, 70))
                 .fillColor(Color.argb(100, 150, 150, 150))
-                .center(hLatLan)
-                .radius(hRadius.toDouble())
+                .center(marker.position)
+                .radius(radius.toDouble())
     }
 
 }
