@@ -30,8 +30,9 @@ class GeoFenceContactsTemplatesActivity : AppCompatActivity() {
                         layoutInflater
                 )
         setContentView(hActivityGeofenceContactsTemplatesBinding.root)
-
-        hInitNavView(hGetData())
+        val hData = hGetData()
+        hInitNavView(hData)
+        hSetUpToolbar(hData)
 
     }
 
@@ -41,16 +42,30 @@ class GeoFenceContactsTemplatesActivity : AppCompatActivity() {
         string?.let {
             return valueOf(string)
         }
-        /*Todo Remove this change to null*/
-        return TEMPLATES
+        return null
+    }
+
+    private fun hSetUpToolbar(hData: LaunchTypes?) {
+        setSupportActionBar(hActivityGeofenceContactsTemplatesBinding.toolbar)
+        supportActionBar.apply {
+            supportActionBar!!.setDisplayShowTitleEnabled(false)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            supportActionBar!!.setDisplayShowHomeEnabled(true)
+        }
+        when (hData) {
+            TEMPLATES -> {
+                hActivityGeofenceContactsTemplatesBinding.toolbar.title = "Templates"
+            }
+            GEOFENCE -> {
+                hActivityGeofenceContactsTemplatesBinding.toolbar.title = "Geo fences"
+            }
+            CONTACTS -> {
+                hActivityGeofenceContactsTemplatesBinding.toolbar.title = "Contacts"
+            }
+        }
     }
 
     private fun hInitNavView(launchTypes: LaunchTypes?) {
-
-        setSupportActionBar(hActivityGeofenceContactsTemplatesBinding.toolbar)
-
-
-
         hNavHostFragment = supportFragmentManager
                 .findFragmentById(R.id.hFragmentContainer) as NavHostFragment
         hNavController = hNavHostFragment.navController

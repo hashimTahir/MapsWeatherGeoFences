@@ -9,6 +9,9 @@ import androidx.lifecycle.*
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.db.entities.Templates
 import com.hashim.mapswithgeofencing.repository.local.LocalRepo
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.TemplatesStateEvent.OnSaveTemplate
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.TemplatesStateEvent.OnViewReady
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.TemplatesViewState.TemplatesFields
 import com.hashim.mapswithgeofencing.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -34,8 +37,11 @@ class TemplatesViewModel @Inject constructor(
 
     fun hSetStateEvent(templatesStateEvent: TemplatesStateEvent): LiveData<DataState<TemplatesViewState>>? {
         when (templatesStateEvent) {
-            is TemplatesStateEvent.OnViewReady -> {
+            is OnViewReady -> {
                 hGetDefaultnCustomTemplates()
+            }
+            is OnSaveTemplate -> {
+                hSaveTemplate(templatesStateEvent.message)
             }
         }
         return null
@@ -47,21 +53,32 @@ class TemplatesViewModel @Inject constructor(
 
         viewModelScope.launch {
             val hCustomTemplatesList = hLocalRepo.hGetTemplates()
-
-
-            val hData = TemplatesViewState.TemplatesFields(
-                    hSetStartDataVS = TemplatesViewState.SetStartDataVS(
-                            hDefaultTempList = hDefaultTemplatesList,
-                            hCustomTempList = hCustomTemplatesList
+            _hTemplatesViewState.value = TemplatesViewState(
+                    hTemplatesFields = TemplatesFields(
+                            hSetStartDataVS = TemplatesViewState.SetStartDataVS(
+                                    hDefaultTempList = hDefaultTemplatesList,
+                                    hCustomTempList = hCustomTemplatesList
+                            )
                     )
             )
         }
-
     }
 
-    private fun hSaveTemplate(template: Templates) {
+    private fun hSaveTemplate(template: String) {
+        val hTemplate = Templates(hMessage = template)
         viewModelScope.launch {
-            hLocalRepo.hInsertTemplate(template)
+            hLocalRepo.hInsertTemplate(hTemplate)
+
+
+            val hCustomTemplatesList = hLocalRepo.hGetTemplates()
+            _hTemplatesViewState.value = TemplatesViewState(
+                    hTemplatesFields = TemplatesFields(
+                            hSetStartDataVS = TemplatesViewState.SetStartDataVS(
+                                    hCustomTempList = hCustomTemplatesList
+                            )
+                    )
+            )
+
         }
     }
 
