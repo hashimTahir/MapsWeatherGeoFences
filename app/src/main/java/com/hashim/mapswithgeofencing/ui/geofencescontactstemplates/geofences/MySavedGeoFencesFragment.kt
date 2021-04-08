@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentMySavedGeoFencesBinding
 import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.geofences.GeoFenceStateEvent.OnDisplaySavedFences
@@ -20,7 +21,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MySavedGeoFencesFragment : Fragment() {
 
     lateinit var hMySavedGeoFencesBinding: FragmentMySavedGeoFencesBinding
-    val hGeoFenceViewModel: GeoFenceViewModel by viewModels()
+    private val hGeoFenceViewModel: GeoFenceViewModel by viewModels()
+    private lateinit var hGeofenceAdapter: GeofenceAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -36,10 +38,22 @@ class MySavedGeoFencesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         hSetupListeners()
 
+        hInitRecyclerView()
+
         hSubscribeObservers()
 
         hGeoFenceViewModel.hSetStateEvent(OnDisplaySavedFences())
 
+    }
+
+    private fun hInitRecyclerView() {
+
+        hGeofenceAdapter = GeofenceAdapter(requireContext())
+
+        hMySavedGeoFencesBinding.hSavedGeoFencesRv.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = hGeofenceAdapter
+        }
     }
 
     private fun hSubscribeObservers() {
@@ -60,10 +74,14 @@ class MySavedGeoFencesFragment : Fragment() {
 
         }
         hGeoFenceViewModel.hGeoFenceViewState.observe(viewLifecycleOwner) { geoFenceViewState ->
-            geoFenceViewState.hGeoFenceFields.let {
-
+            geoFenceViewState.hGeoFenceFields.hSavedGeoFencesVS?.let { savedGeoFencesVS ->
+                hSetAdapterData(savedGeoFencesVS)
             }
         }
+    }
+
+    private fun hSetAdapterData(savedGeoFencesVS: GeoFenceViewState.SavedGeoFencesVS) {
+        savedGeoFencesVS.hGeofenceList?.let { hGeofenceAdapter.hSetData(it) }
     }
 
     private fun hSetupListeners() {

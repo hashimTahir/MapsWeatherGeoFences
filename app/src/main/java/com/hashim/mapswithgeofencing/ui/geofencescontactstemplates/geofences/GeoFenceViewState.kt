@@ -6,6 +6,7 @@ package com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.geofences
 
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.hashim.mapswithgeofencing.db.entities.GeoFence
 
 data class GeoFenceViewState(
         val hGeoFenceFields: GeoFenceFields = GeoFenceFields(),
@@ -16,8 +17,8 @@ data class GeoFenceViewState(
             var hCurrentLocationVS: CurrentLocationGeoFenceVS? = null,
             val hMakerFenceVS: MakerFenceVS? = null,
             val hAdjustRadiusVS: AdjustRadiusVS? = null,
-
-            )
+            val hSavedGeoFencesVS: SavedGeoFencesVS? = null,
+    )
 
     data class CurrentLocationGeoFenceVS(
             val hCircleOptions: CircleOptions? = null,
@@ -34,5 +35,9 @@ data class GeoFenceViewState(
 
     data class AdjustRadiusVS(
             val hCircleOptions: CircleOptions? = null,
+    )
+
+    data class SavedGeoFencesVS(
+            val hGeofenceList: List<GeoFence>? = null,
     )
 }

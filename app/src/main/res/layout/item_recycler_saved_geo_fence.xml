@@ -3,8 +3,6 @@
   ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
   -->
 
-<layout>
-
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -19,7 +17,7 @@
 
 
             <TextView
-                android:id="@+id/hTitleTV"
+                android:id="@+id/hGeoFenceNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -34,7 +32,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/hDetailTV"
+                android:id="@+id/hGeoFenceDetailTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -44,23 +42,8 @@
                 android:text="@string/test_string"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hTitleTV" />
+                app:layout_constraintTop_toBottomOf="@+id/hGeoFenceNameTv" />
 
-            <TextView
-                android:id="@+id/hEditTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:clickable="true"
-                android:padding="@dimen/_5dp"
-                android:text="@string/test_string"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/hTitleTV"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-</layout>

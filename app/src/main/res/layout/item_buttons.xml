@@ -4,37 +4,34 @@
   ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:id="@+id/buttonLayou"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/buttonLayou"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/hFloatingActionButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="vertical"
-        tools:showIn="@layout/bottom_layout">
+        android:layout_gravity="center"
+        android:clickable="false"
+        android:tint="@color/white"
+        app:backgroundTint="@color/fab5" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/hFloatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="false"
-            android:tint="@color/white"
-            app:backgroundTint="@color/fab5" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/hButtonTexts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clickable="false"
+        android:lines="2"
+        android:padding="@dimen/_5dp"
+        android:text="@string/test_string"
+        android:textSize="10sp" />
+</LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/hButtonTexts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="false"
-            android:lines="2"
-            android:padding="@dimen/_5dp"
-            android:text="@string/test_string"
-            android:textSize="10sp" />
-    </LinearLayout>
-</layout>

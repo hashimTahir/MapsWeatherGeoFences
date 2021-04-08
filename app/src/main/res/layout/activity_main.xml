@@ -3,55 +3,50 @@
 <!--
   ~ Copyright (c) 2021/  3/ 20.  Created by Hashim Tahir
   -->
-
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/hMainFragmentContainer"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/transparent" />
 
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/hMainFragmentContainer"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent" />
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/hBottomAppBar"
+        app:contentInsetEnd="@dimen/_0dp"
+        app:contentInsetStart="@dimen/_0dp"
+        app:fabCradleMargin="@dimen/_8dp"
+        app:fabCradleRoundedCornerRadius="@dimen/_8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
 
-
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/hBottomNav"
+            app:itemIconTint="@color/blue"
+            app:itemTextColor="@color/blue"
+            app:menu="@menu/main_bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:contentInsetEnd="@dimen/_0dp"
-            app:contentInsetStart="@dimen/_0dp"
-            app:fabCradleMargin="@dimen/_8dp"
-            app:fabCradleRoundedCornerRadius="@dimen/_8dp">
+            android:background="@color/white" />
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/hBottomNav"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/white"
-                app:itemIconTint="@color/blue"
-                app:itemTextColor="@color/blue"
-                app:menu="@menu/main_bottom_nav" />
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
-        </com.google.android.material.bottomappbar.BottomAppBar>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/hHomeFab"
+        app:layout_anchor="@id/hBottomAppBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_home"
+        android:tint="@color/blue" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/hHomeFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/ic_home"
-            android:tint="@color/blue"
-            app:layout_anchor="@id/bottomAppBar" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</layout>

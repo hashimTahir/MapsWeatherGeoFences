@@ -63,10 +63,25 @@ class GeoFenceViewModel @Inject constructor(
             is OnMapReady -> {
                 hPrepareMap(hRadius = geoFenceStateEvent.hRadius)
             }
+            is OnDisplaySavedFences -> {
+                hGetSavedFences()
+            }
             is None -> {
             }
         }
         return null
+    }
+
+    private fun hGetSavedFences() {
+        viewModelScope.launch {
+            _hGeoFenceViewState.value = GeoFenceViewState(
+                    hGeoFenceFields = GeoFenceFields(
+                            hSavedGeoFencesVS = SavedGeoFencesVS(
+                                    hGeofenceList =  hLocalRepo.hGetAllGeoFences()
+                            )
+                    )
+            )
+        }
     }
 
     private fun hSaveGeoFence(hFenceName: String, hLastCreatedCircleOptions: CircleOptions?) {
@@ -84,13 +99,14 @@ class GeoFenceViewModel @Inject constructor(
         hGeoFenceUtils.hStartService()
 
         viewModelScope.launch {
-            hLocalRepo.hInsertGeoFence(
+            val htest = hLocalRepo.hInsertGeoFence(
                     GeoFence(
                             hFenceName = hFenceName,
                             hLng = hLastCreatedCircleOptions?.center?.longitude!!,
                             hLat = hLastCreatedCircleOptions.center?.latitude!!,
                     )
             )
+            Timber.d("Data Inserted $htest")
         }
 
     }
@@ -103,9 +119,8 @@ class GeoFenceViewModel @Inject constructor(
                 hGeoFenceFields = GeoFenceFields(
                         hAdjustRadiusVS = AdjustRadiusVS(
                                 hCircleOptions = hLastCreatedCircleOptions,
-                        )
+                        ),
                 )
-
         )
     }
 
