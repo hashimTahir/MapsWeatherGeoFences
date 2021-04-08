@@ -42,7 +42,7 @@ class GeoFenceContactsTemplatesActivity : AppCompatActivity() {
             return valueOf(string)
         }
         /*Todo Remove this change to null*/
-        return GEOFENCE
+        return TEMPLATES
     }
 
     private fun hInitNavView(launchTypes: LaunchTypes?) {

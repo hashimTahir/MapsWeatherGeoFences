@@ -9,13 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentTemplatesBinding
-import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes
-import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
-import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.TemplatesAdapter.AdapterType.CUSTOM
 import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.TemplatesAdapter.AdapterType.DEFAULT
+import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.TemplatesStateEvent.OnViewReady
 import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.dialogs.AddMessageTemplateDialog
 import com.hashim.mapswithgeofencing.utils.Constants
 
@@ -23,7 +22,9 @@ import com.hashim.mapswithgeofencing.utils.Constants
 class TemplatesFragment : Fragment() {
 
 
-    lateinit var hFragmentTempBinding: FragmentTemplatesBinding
+    private lateinit var hFragmentTempBinding: FragmentTemplatesBinding
+    private val hTemplatesViewModel: TemplatesViewModel by viewModels()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
@@ -35,32 +36,31 @@ class TemplatesFragment : Fragment() {
         return hFragmentTempBinding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        hSetupListeners()
+
+        hInitAdapters()
+
+        hSubscribeObservers()
+
+        hTemplatesViewModel.hSetStateEvent(OnViewReady())
+    }
+
+    private fun hSubscribeObservers() {
+//        hSetData(hDefaultTemplatesList)
+
+    }
+
     private fun hInitAdapters() {
-        val hSettingsPrefrences = SettingsPrefrences(requireContext())
-
-        val hDefaultTemplatesList = resources.getStringArray(R.array.default_templates_array).toMutableList()
-        val hCustomTemplatesList = mutableListOf<String>()
-        hSettingsPrefrences.hGetSettings(PrefTypes.ALL_PT)
-
         val hDefaultTemplatesAdapter = TemplatesAdapter(requireContext(), DEFAULT)
-        val hCustomTemplatesAdapter = TemplatesAdapter(requireContext(), CUSTOM)
 
-        hDefaultTemplatesAdapter.hSetData(hDefaultTemplatesList)
-        hCustomTemplatesAdapter.hSetData(hCustomTemplatesList)
-
-        hCustomTemplatesList.let {
-            hFragmentTempBinding.hCustomTemplateRv.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = hCustomTemplatesAdapter
-            }
-        }
-
-
-        hFragmentTempBinding.hDefaultTemplateRv.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = hDefaultTemplatesAdapter
-        }
-
+        hFragmentTempBinding.hDefaultTemplateRv
+                .apply {
+                    layoutManager = LinearLayoutManager(requireContext())
+                    adapter = hDefaultTemplatesAdapter
+                }
     }
 
     private fun hSetupListeners() {

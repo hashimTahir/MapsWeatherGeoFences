@@ -10,18 +10,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.hashim.mapswithgeofencing.db.entities.Contact
 import com.hashim.mapswithgeofencing.db.entities.GeoFence
+import com.hashim.mapswithgeofencing.db.entities.Templates
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_DATABASE
 
 @Database(
         entities = [
             Contact::class,
-            GeoFence::class
+            GeoFence::class,
+            Templates::class,
         ],
         version = 1
 )
 abstract class Db : RoomDatabase() {
     abstract val hContactsDao: ContactsDao
     abstract val hGeoFencesDao: GeoFencesDao
+    abstract val hTemplatesDao: TemplatesDao
 
     companion object {
         @Volatile

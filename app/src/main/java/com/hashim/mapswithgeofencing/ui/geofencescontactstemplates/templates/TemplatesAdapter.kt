@@ -14,7 +14,10 @@ import com.hashim.mapswithgeofencing.ui.geofencescontactstemplates.templates.Tem
 import com.hashim.mapswithgeofencing.ui.viewholders.CustomTemplatesVh
 import com.hashim.mapswithgeofencing.ui.viewholders.DefaultTemplatesVh
 
-class TemplatesAdapter(private val hContext: Context, private val adapterType: AdapterType) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+class TemplatesAdapter(
+        private val hContext: Context,
+        private val adapterType: AdapterType
+) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
     private var hList = mutableListOf<String>()
 
     enum class AdapterType {
