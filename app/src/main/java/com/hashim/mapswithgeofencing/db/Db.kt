@@ -9,6 +9,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.hashim.mapswithgeofencing.db.entities.Contact
+import com.hashim.mapswithgeofencing.db.entities.DbDao
 import com.hashim.mapswithgeofencing.db.entities.GeoFence
 import com.hashim.mapswithgeofencing.db.entities.Templates
 import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_DATABASE
@@ -22,9 +23,7 @@ import com.hashim.mapswithgeofencing.utils.Constants.Companion.H_DATABASE
         version = 1
 )
 abstract class Db : RoomDatabase() {
-    abstract val hContactsDao: ContactsDao
-    abstract val hGeoFencesDao: GeoFencesDao
-    abstract val hTemplatesDao: TemplatesDao
+    abstract val hDbDao: DbDao
 
     companion object {
         @Volatile

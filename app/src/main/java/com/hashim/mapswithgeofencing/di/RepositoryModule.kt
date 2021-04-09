@@ -76,9 +76,7 @@ object RepositoryModule {
     @Provides
     fun hProvidesLocalRepo(db: Db): LocalRepo {
         return LocalRepoImpl(
-                hContactsDao = db.hContactsDao,
-                hGeoFenceDao = db.hGeoFencesDao,
-                hTemplatesDao = db.hTemplatesDao,
+                hDbDao = db.hDbDao
         )
     }
 

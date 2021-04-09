@@ -77,7 +77,7 @@ class GeoFenceViewModel @Inject constructor(
             _hGeoFenceViewState.value = GeoFenceViewState(
                     hGeoFenceFields = GeoFenceFields(
                             hSavedGeoFencesVS = SavedGeoFencesVS(
-                                    hGeofenceList =  hLocalRepo.hGetAllGeoFences()
+                                    hGeofenceList = hLocalRepo.hGetAllGeoFences()
                             )
                     )
             )
