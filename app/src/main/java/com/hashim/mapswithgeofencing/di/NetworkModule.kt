@@ -37,6 +37,12 @@ object NetworkModule {
 
     @Singleton
     @Provides
+    fun hPlaceSuggestionDtoMapper(): PlaceSuggestionDtoMapper {
+        return PlaceSuggestionDtoMapper()
+    }
+
+    @Singleton
+    @Provides
     fun hProvidesForecastDtoMapper(): ForecastDtoMapper {
         return ForecastDtoMapper()
     }

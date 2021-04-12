@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hashim.mapswithgeofencing.Domain.model.GeoCode
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
+import com.hashim.mapswithgeofencing.Domain.model.PlaceSuggestions
 import com.hashim.mapswithgeofencing.others.prefrences.HlatLng
 import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
 import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.RADIUS_UNIT_PT
@@ -39,6 +40,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     private val _hMainStateEvent = MutableLiveData<MainStateEvent>()
     private var hCurrentLocation: Location? = null
+    private var hLastSuggestionsList: List<PlaceSuggestions>? = null
 
     @Inject
     lateinit var hSettingsPrefrences: SettingsPrefrences
@@ -102,11 +104,31 @@ class MainViewModel @Inject constructor(
                 return hResult
             }
             is OnFindAutoCompleteSuggestions -> {
+                val hResult = MediatorLiveData<DataState<MainViewState>>()
+                val hResponse = MutableLiveData<List<PlaceSuggestions>>()
+                hResult.value = DataState.hLoading(true)
+
+
                 viewModelScope.launch {
-                    hRemoteRepo.hGetPlacesAutoComplete(
+
+                    hResponse.value = hRemoteRepo.hGetPlacesAutoComplete(
                             query = stateEvent.suggestion,
+                            radius = hSettingsPrefrences
+                                    .hGetSettings(RADIUS_UNIT_PT) as Int?
+                                    ?: Constants.H_DEFAULT_RADIUS
                     )
+
+                    hResult.addSource(hResponse) {
+                        hResult.removeSource(hResponse)
+                        hLastSuggestionsList = it
+                        hSubmitPlaceSuggetstions(hResult)
+
+                    }
                 }
+                return hResult
+            }
+            is OnSuggestionSelected -> {
+                hSetPlaceSelected(stateEvent.postion)
             }
             is None -> {
             }
@@ -118,6 +140,32 @@ class MainViewModel @Inject constructor(
         }
         return null
 
+    }
+
+    private fun hSetPlaceSelected(postion: Int) {
+        hLastSuggestionsList?.let {
+            var value = it.get(postion)
+            Timber.d("value $value")
+        }
+    }
+
+    private fun hSubmitPlaceSuggetstions(
+            hResult: MutableLiveData<DataState<MainViewState>>
+    ) {
+        val hSuggestionsList = mutableListOf<String>()
+        hLastSuggestionsList?.map {
+            hSuggestionsList.add(it.description)
+        }
+
+        hResult.value = DataState(
+                hData = MainViewState(
+                        hMainFields = MainFields(
+                                hPlaceSuggestionsVS = PlaceSuggestionsVS(
+                                        hPlaceSuggestionsList = hSuggestionsList
+                                )
+                        )
+                )
+        )
     }
 
     private fun hChangeBottomView(marker: Marker): LiveData<DataState<MainViewState>> {
@@ -144,7 +192,7 @@ class MainViewModel @Inject constructor(
                                                     hPlaceName = marker.title,
                                                     hAddress = hResponse.value?.get(0)?.formattedAddress,
                                             )
-                                    )
+                                    ),
                             )
                     )
 
@@ -179,7 +227,7 @@ class MainViewModel @Inject constructor(
                                 hNearByPlacesVS = NearByPlacesVS(
                                         hMarkerList = hMarkerList
                                 )
-                        )
+                        ),
                 )
         )
     }
@@ -203,7 +251,7 @@ class MainViewModel @Inject constructor(
                                             ),
                                             cameraZoom = 12.0F,
                                     ),
-                            )
+                            ),
                     )
             )
             return hCurrentLocationDataState
@@ -238,6 +286,13 @@ class MainViewModel @Inject constructor(
         Timber.d("hSetMarkerClickData")
         val hUpdate = hGetCurrentViewStateOrNew()
         hUpdate.hMainFields.hOnMarkerClickVS = onMarkerClickVS
+        _hMainViewState.value = hUpdate
+    }
+
+    fun hSetPlaceSuggestionsData(placeSuggestionsVS: PlaceSuggestionsVS) {
+        Timber.d("hSetPlaceSuggestionsData")
+        val hUpdate = hGetCurrentViewStateOrNew()
+        hUpdate.hMainFields.hPlaceSuggestionsVS = placeSuggestionsVS
         _hMainViewState.value = hUpdate
     }
 }

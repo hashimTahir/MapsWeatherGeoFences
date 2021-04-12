@@ -9,17 +9,20 @@ import android.os.Parcelable
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.parcel.Parcelize
 
-@Parcelize
 data class MainViewState(
         val hMainFields: MainFields = MainFields(),
-) : Parcelable {
+) {
 
-    @Parcelize
     data class MainFields(
             var hCurrentLocationVS: CurrentLocationVS? = null,
             var hNearByPlacesVS: NearByPlacesVS? = null,
             var hOnMarkerClickVS: OnMarkerClickVS? = null,
-    ) : Parcelable
+            var hPlaceSuggestionsVS: PlaceSuggestionsVS? = null,
+    )
+
+    data class PlaceSuggestionsVS(
+            val hPlaceSuggestionsList: List<String>? = null,
+    )
 
 
     @Parcelize

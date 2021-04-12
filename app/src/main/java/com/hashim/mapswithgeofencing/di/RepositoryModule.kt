@@ -38,6 +38,7 @@ object RepositoryModule {
             weatherDtoMapper: WeatherDtoMapper,
             directionDtoMapper: DirectionDtoMapper,
             geoCodeDtoMapper: GeoCodeDtoMapper,
+            placeSuggestionDtoMapper: PlaceSuggestionDtoMapper,
     ): RemoteRepo {
         return RemoteRepoImpl(
                 hRetroService = retrofitService,
@@ -47,7 +48,8 @@ object RepositoryModule {
                 hDirectionDtoMapper = directionDtoMapper,
                 hMapsKey = mapsKey,
                 hWeatherKey = weatherKey,
-                hGeoCodeDtoMapper = geoCodeDtoMapper
+                hGeoCodeDtoMapper = geoCodeDtoMapper,
+                hPlaceSuggestionDtoMapper = placeSuggestionDtoMapper,
         )
     }
 

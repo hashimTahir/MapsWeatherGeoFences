@@ -7,7 +7,6 @@ package com.hashim.mapswithgeofencing.repository.remote
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.hashim.mapswithgeofencing.Domain.model.*
-import com.hashim.mapswithgeofencing.network.response.placesuggestions.PlaceSuggestionsDto
 import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode
 import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
 
@@ -43,6 +42,6 @@ interface RemoteRepo {
 
     suspend fun hGetPlacesAutoComplete(
             query: String,
-            radius: String? = null
-    ): PlaceSuggestionsDto
+            radius: Int? = null
+    ): List<PlaceSuggestions>
 }

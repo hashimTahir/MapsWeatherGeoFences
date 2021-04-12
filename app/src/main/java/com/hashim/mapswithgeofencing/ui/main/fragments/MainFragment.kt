@@ -6,6 +6,8 @@ package com.hashim.mapswithgeofencing.ui.main.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +32,7 @@ import com.hashim.mapswithgeofencing.utils.UiHelper.Companion.hHideView
 import com.hashim.mapswithgeofencing.utils.UiHelper.Companion.hShowView
 import com.hashim.mapswithgeofencing.utils.location.LocationUtis
 import com.mancj.materialsearchbar.MaterialSearchBar
+import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
@@ -116,22 +119,50 @@ class MainFragment : Fragment() {
 
         hFragmentMainBinding.hSearchBar.setHint("Search here")
         hFragmentMainBinding.hSearchBar.setSpeechMode(true)
-        val hActionSearchListener = object : MaterialSearchBar.OnSearchActionListener {
-            override fun onSearchStateChanged(enabled: Boolean) {
-                Timber.d("onSearchStateChanged $enabled")
-            }
+        hFragmentMainBinding.hSearchBar.addTextChangeListener(
+                object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    }
 
-            override fun onSearchConfirmed(text: CharSequence?) {
-                Timber.d("Search Confirmed $text")
-                hMainViewModel.hSetStateEvent(OnFindAutoCompleteSuggestions(suggestion = text.toString()))
-            }
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    }
 
-            override fun onButtonClicked(buttonCode: Int) {
-                Timber.d("onButtonClicked $buttonCode")
-            }
+                    override fun afterTextChanged(s: Editable?) {
+                        hMainViewModel.hSetStateEvent(OnFindAutoCompleteSuggestions(suggestion = s.toString()))
+                    }
 
-        }
-        hFragmentMainBinding.hSearchBar.setOnSearchActionListener(hActionSearchListener)
+                }
+        )
+
+        hFragmentMainBinding.hSearchBar.setSuggestionsClickListener(
+                object : SuggestionsAdapter.OnItemViewClickListener {
+                    override fun OnItemClickListener(position: Int, v: View?) {
+                        hMainViewModel.hSetStateEvent(OnSuggestionSelected(postion = position))
+
+                    }
+
+                    override fun OnItemDeleteListener(position: Int, v: View?) {
+                        TODO("Not yet implemented")
+                    }
+
+                }
+        )
+        hFragmentMainBinding.hSearchBar.setOnSearchActionListener(
+                object : MaterialSearchBar.OnSearchActionListener {
+                    override fun onSearchStateChanged(enabled: Boolean) {
+                        Timber.d("onSearchStateChanged $enabled")
+                    }
+
+                    override fun onSearchConfirmed(text: CharSequence?) {
+                        Timber.d("Search Confirmed $text")
+                    }
+
+                    override fun onButtonClicked(buttonCode: Int) {
+                        Timber.d("onButtonClicked $buttonCode")
+                    }
+
+                }
+        )
         hFragmentMainBinding.hDetailCardView.setOnClickListener {
             /*Todo Execute route*/
 
@@ -163,6 +194,9 @@ class MainFragment : Fragment() {
                 mainViewState.hMainFields.hOnMarkerClickVS?.let { onMarkerClickVS ->
                     hMainViewModel.hSetMarkerClickData(onMarkerClickVS)
                 }
+                mainViewState.hMainFields.hPlaceSuggestionsVS?.let { placeSuggestionsVS ->
+                    hMainViewModel.hSetPlaceSuggestionsData(placeSuggestionsVS)
+                }
             }
         }
 
@@ -179,7 +213,18 @@ class MainFragment : Fragment() {
 
             }
 
+            mainviewstate.hMainFields.hPlaceSuggestionsVS?.let { placeSuggestionsVS ->
+                hSetSetAdapterSuggestions(placeSuggestionsVS)
+
+            }
+
         }
+    }
+
+    private fun hSetSetAdapterSuggestions(placeSuggestionsVS: PlaceSuggestionsVS) {
+        Timber.d("Setting Suggestions Adapter")
+        hFragmentMainBinding.hSearchBar.lastSuggestions = placeSuggestionsVS.hPlaceSuggestionsList
+        hFragmentMainBinding.hSearchBar.showSuggestionsList()
     }
 
     private fun hSetBottomCard(onMarkerClickVS: OnMarkerClickVS) {

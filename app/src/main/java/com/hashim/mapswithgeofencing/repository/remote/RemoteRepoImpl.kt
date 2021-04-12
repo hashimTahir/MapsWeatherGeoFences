@@ -8,7 +8,6 @@ import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.hashim.mapswithgeofencing.Domain.model.*
 import com.hashim.mapswithgeofencing.network.RetroService
-import com.hashim.mapswithgeofencing.network.response.placesuggestions.PlaceSuggestionsDto
 import com.hashim.mapswithgeofencing.repository.mappers.*
 import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode
 import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
@@ -21,6 +20,7 @@ class RemoteRepoImpl(
         private val hForecastDtoMapper: ForecastDtoMapper,
         private val hDirectionDtoMapper: DirectionDtoMapper,
         private val hGeoCodeDtoMapper: GeoCodeDtoMapper,
+        private val hPlaceSuggestionDtoMapper: PlaceSuggestionDtoMapper,
         private val hMapsKey: String,
         private val hWeatherKey: String
 ) : RemoteRepo {
@@ -93,14 +93,14 @@ class RemoteRepoImpl(
 
     override suspend fun hGetPlacesAutoComplete(
             query: String,
-            radius: String?
-    ): PlaceSuggestionsDto {
+            radius: Int?
+    ): List<PlaceSuggestions> {
         val hPlaceSuggestions = hRetroService.hGetPlacesAutoComplete(
                 inputText = query,
                 key = hMapsKey,
-                radius = radius
+                radius = radius.toString()
         )
 
-        return hPlaceSuggestions
+        return hPlaceSuggestionDtoMapper.hToDomainList(hPlaceSuggestions.predictions)
     }
 }

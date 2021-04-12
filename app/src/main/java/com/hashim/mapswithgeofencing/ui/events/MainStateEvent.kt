@@ -16,6 +16,8 @@ sealed class MainStateEvent {
 
     class OnFindAutoCompleteSuggestions(val suggestion: String) : MainStateEvent()
 
+    class OnSuggestionSelected(val postion: Int) : MainStateEvent()
+
     class OnMapReady : MainStateEvent()
 
     class OnMarkerClicked(val marker: Marker) : MainStateEvent()
