@@ -9,10 +9,12 @@ import com.hashim.mapswithgeofencing.network.RetroConstants.Companion.H_GEO_CODE
 import com.hashim.mapswithgeofencing.network.RetroConstants.Companion.H_GET_FORECAST_URL
 import com.hashim.mapswithgeofencing.network.RetroConstants.Companion.H_GET_WEATHER_URL
 import com.hashim.mapswithgeofencing.network.RetroConstants.Companion.H_NEARBY_PLACES_URL
+import com.hashim.mapswithgeofencing.network.RetroConstants.Companion.H_PLACES_AUTOCOMPLETE_URL
 import com.hashim.mapswithgeofencing.network.response.directions.DirectionsDto
 import com.hashim.mapswithgeofencing.network.response.forecast.ForecastDto
 import com.hashim.mapswithgeofencing.network.response.geocode.GeocodeDto
 import com.hashim.mapswithgeofencing.network.response.nearybyplaces.NearByPlacesDto
+import com.hashim.mapswithgeofencing.network.response.placesuggestions.PlaceSuggestionsDto
 import com.hashim.mapswithgeofencing.network.response.weather.WeatherDto
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -58,4 +60,13 @@ interface RetroService {
             @Query("latlng") latLng: String,
             @Query("key") key: String,
     ): GeocodeDto
+
+
+    @GET(H_PLACES_AUTOCOMPLETE_URL)
+    suspend fun hGetPlacesAutoComplete(
+            @Query("input") inputText: String,
+            @Query("key") key: String,
+            @Query("origin") origin: String? = null, // pass lat,lng
+            @Query("radius") radius: String? = null, // in meters
+    ): PlaceSuggestionsDto
 }

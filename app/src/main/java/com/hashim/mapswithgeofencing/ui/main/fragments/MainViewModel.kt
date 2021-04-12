@@ -59,6 +59,7 @@ class MainViewModel @Inject constructor(
     private fun hHandleStateEvent(
             stateEvent: MainStateEvent
     ): LiveData<DataState<MainViewState>>? {
+        Timber.d("Handle State Event $stateEvent")
         when (stateEvent) {
             is OnCurrentLocationFound -> {
                 Timber.d("OnCurrentLocationFound")
@@ -99,6 +100,13 @@ class MainViewModel @Inject constructor(
                     }
                 }
                 return hResult
+            }
+            is OnFindAutoCompleteSuggestions -> {
+                viewModelScope.launch {
+                    hRemoteRepo.hGetPlacesAutoComplete(
+                            query = stateEvent.suggestion,
+                    )
+                }
             }
             is None -> {
             }

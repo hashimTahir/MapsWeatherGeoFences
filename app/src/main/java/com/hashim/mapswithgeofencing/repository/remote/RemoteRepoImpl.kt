@@ -8,6 +8,7 @@ import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.hashim.mapswithgeofencing.Domain.model.*
 import com.hashim.mapswithgeofencing.network.RetroService
+import com.hashim.mapswithgeofencing.network.response.placesuggestions.PlaceSuggestionsDto
 import com.hashim.mapswithgeofencing.repository.mappers.*
 import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode
 import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
@@ -24,7 +25,10 @@ class RemoteRepoImpl(
         private val hWeatherKey: String
 ) : RemoteRepo {
 
-    override suspend fun hGetWeather(location: Location, unitType: String): Weather {
+    override suspend fun hGetWeather(
+            location: Location,
+            unitType: String
+    ): Weather {
         val hGetWeather = hRetroService.hGetWeather(
                 lat = location.latitude.toString(),
                 lng = location.longitude.toString(),
@@ -34,7 +38,10 @@ class RemoteRepoImpl(
         return hWeatherDtoMapper.hMapToDomainModel(hGetWeather)
     }
 
-    override suspend fun hGetForecast(location: Location, unitType: String): Forecast {
+    override suspend fun hGetForecast(
+            location: Location,
+            unitType: String
+    ): Forecast {
         val hGetForecast = hRetroService.hGetForecast(
                 lat = location.latitude.toString(),
                 lng = location.longitude.toString(),
@@ -59,7 +66,11 @@ class RemoteRepoImpl(
         return hDirectionDtoMapper.hMapToDomainModel(hGetDirections)
     }
 
-    override suspend fun hFindNearybyPlaces(category: Category, location: Location, hRadius: Int): List<NearByPlaces> {
+    override suspend fun hFindNearybyPlaces(
+            category: Category,
+            location: Location,
+            hRadius: Int
+    ): List<NearByPlaces> {
 
         val hFindNearByPlaces = hRetroService.hFindNearByPlaces(
                 location = "${location.latitude},${location.longitude}",
@@ -78,5 +89,18 @@ class RemoteRepoImpl(
         )
 
         return hGeoCodeDtoMapper.hToDomainList(hReverseGeoCode.results)
+    }
+
+    override suspend fun hGetPlacesAutoComplete(
+            query: String,
+            radius: String?
+    ): PlaceSuggestionsDto {
+        val hPlaceSuggestions = hRetroService.hGetPlacesAutoComplete(
+                inputText = query,
+                key = hMapsKey,
+                radius = radius
+        )
+
+        return hPlaceSuggestions
     }
 }

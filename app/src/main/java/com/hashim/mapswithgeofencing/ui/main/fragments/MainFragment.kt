@@ -29,7 +29,9 @@ import com.hashim.mapswithgeofencing.utils.UiHelper
 import com.hashim.mapswithgeofencing.utils.UiHelper.Companion.hHideView
 import com.hashim.mapswithgeofencing.utils.UiHelper.Companion.hShowView
 import com.hashim.mapswithgeofencing.utils.location.LocationUtis
+import com.mancj.materialsearchbar.MaterialSearchBar
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -111,10 +113,25 @@ class MainFragment : Fragment() {
     }
 
     private fun hSetupListeners() {
+
         hFragmentMainBinding.hSearchBar.setHint("Search here")
         hFragmentMainBinding.hSearchBar.setSpeechMode(true)
-//        hFragmentMainBinding.hSearchBar.setOnSearchActionListener(this)
+        val hActionSearchListener = object : MaterialSearchBar.OnSearchActionListener {
+            override fun onSearchStateChanged(enabled: Boolean) {
+                Timber.d("onSearchStateChanged $enabled")
+            }
 
+            override fun onSearchConfirmed(text: CharSequence?) {
+                Timber.d("Search Confirmed $text")
+                hMainViewModel.hSetStateEvent(OnFindAutoCompleteSuggestions(suggestion = text.toString()))
+            }
+
+            override fun onButtonClicked(buttonCode: Int) {
+                Timber.d("onButtonClicked $buttonCode")
+            }
+
+        }
+        hFragmentMainBinding.hSearchBar.setOnSearchActionListener(hActionSearchListener)
         hFragmentMainBinding.hDetailCardView.setOnClickListener {
             /*Todo Execute route*/
 
@@ -150,6 +167,7 @@ class MainFragment : Fragment() {
         }
 
         hMainViewModel.hMainViewState.observe(viewLifecycleOwner) { mainviewstate ->
+            Timber.d("MainView State $mainviewstate")
             mainviewstate.hMainFields.hNearByPlacesVS?.let { nearByPlacesVS ->
                 hCreateNearByMarker(nearByPlacesVS)
             }
@@ -196,16 +214,20 @@ class MainFragment : Fragment() {
                 requireContext(),
                 hRequestLocationPermissionLauncher) {
             hInitMap()
-            var hLocationUtis = LocationUtis(
-                    context = requireContext(),
-                    onLocationRetrieved = { location ->
-                        hMainViewModel.hSetStateEvent(
-                                OnCurrentLocationFound(location)
-                        )
-                    },
-                    onLocationUpdated = {}
-            )
+            hGetLocationUpdates()
         }
+    }
+
+    private fun hGetLocationUpdates() {
+        var hLocationUtis = LocationUtis(
+                context = requireContext(),
+                onLocationRetrieved = { location ->
+                    hMainViewModel.hSetStateEvent(
+                            OnCurrentLocationFound(location)
+                    )
+                },
+                onLocationUpdated = {}
+        )
     }
 
     private fun hInitMap() {
@@ -219,6 +241,7 @@ class MainFragment : Fragment() {
             { isGranted: Boolean ->
                 if (isGranted) {
                     hInitMap()
+                    hGetLocationUpdates()
                 } else {
                     UiHelper.hShowSnackBar(
                             view = hFragmentMainBinding.hSnackBarCL,
