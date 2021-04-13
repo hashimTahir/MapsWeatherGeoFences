@@ -4,28 +4,31 @@
 
 package com.hashim.mapswithgeofencing.ui.main.fragments
 
+import PlaceUtils
 import android.content.Context
 import android.location.Location
 import androidx.lifecycle.*
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.model.Place
+import com.hashim.mapswithgeofencing.Domain.model.Directions
 import com.hashim.mapswithgeofencing.Domain.model.GeoCode
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
 import com.hashim.mapswithgeofencing.Domain.model.PlaceSuggestions
+import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.others.prefrences.HlatLng
+import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes
 import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.CURRENT_LAT_LNG_PT
 import com.hashim.mapswithgeofencing.others.prefrences.PrefTypes.RADIUS_UNIT_PT
 import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
 import com.hashim.mapswithgeofencing.repository.remote.RemoteRepo
+import com.hashim.mapswithgeofencing.ui.calculateroute.DirectionsMode.DRIVING
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent
 import com.hashim.mapswithgeofencing.ui.events.MainStateEvent.*
 import com.hashim.mapswithgeofencing.ui.events.MainViewState
 import com.hashim.mapswithgeofencing.ui.events.MainViewState.*
 import com.hashim.mapswithgeofencing.ui.main.fragments.adapter.Category
-import com.hashim.mapswithgeofencing.utils.Constants
-import com.hashim.mapswithgeofencing.utils.DataState
-import com.hashim.mapswithgeofencing.utils.MarkerUtils
-import com.hashim.mapswithgeofencing.utils.hCreateMarkerOptions
+import com.hashim.mapswithgeofencing.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -38,6 +41,7 @@ class MainViewModel @Inject constructor(
         private val hRemoteRepo: RemoteRepo,
         @ApplicationContext private val hContext: Context,
 ) : ViewModel() {
+
     private val _hMainStateEvent = MutableLiveData<MainStateEvent>()
     private var hCurrentLocation: Location? = null
     private var hLastSuggestionsList: List<PlaceSuggestions>? = null
@@ -56,7 +60,6 @@ class MainViewModel @Inject constructor(
                     hHandleStateEvent(mainStateEvent)
                 }
             }
-
 
     private fun hHandleStateEvent(
             stateEvent: MainStateEvent
@@ -122,13 +125,12 @@ class MainViewModel @Inject constructor(
                         hResult.removeSource(hResponse)
                         hLastSuggestionsList = it
                         hSubmitPlaceSuggetstions(hResult)
-
                     }
                 }
                 return hResult
             }
             is OnSuggestionSelected -> {
-                hSetPlaceSelected(stateEvent.postion)
+                return hSetPlaceSelected(stateEvent.postion)
             }
             is None -> {
             }
@@ -142,12 +144,89 @@ class MainViewModel @Inject constructor(
 
     }
 
-    private fun hSetPlaceSelected(postion: Int) {
+    private fun hSetPlaceSelected(postion: Int): LiveData<DataState<MainViewState>> {
+        val hResult = MediatorLiveData<DataState<MainViewState>>()
+        hResult.value = DataState.hLoading(true)
+
+
         hLastSuggestionsList?.let {
-            var value = it.get(postion)
-            Timber.d("value $value")
+            val value = it.get(postion)
+            val hPlaceUtils = PlaceUtils(hContext)
+            hPlaceUtils.hFetchAPlaceById(value.placeId) { hPlace, errorMessage ->
+                Timber.d("Place Found ${hPlace.toString()}")
+                if (hPlace != null) {
+                    hFindDirections(hPlace, hResult)
+                }
+            }
+        }
+        return hResult
+    }
+
+
+    fun hFindDirections(place: Place, hResult: MediatorLiveData<DataState<MainViewState>>) {
+        viewModelScope.launch {
+            val hCurrentLocation: Location
+
+            val hCurrentHlatLng: HlatLng = hSettingsPrefrences
+                    .hGetSettings(CURRENT_LAT_LNG_PT) as HlatLng
+            hCurrentLocation = hLatLngToLocation(
+                    hLat = hCurrentHlatLng.hLat!!,
+                    hLng = hCurrentHlatLng.hLng!!,
+            )
+
+
+            val hDirections = hRemoteRepo.hGetDirections(
+                    startLocation = hCurrentLocation,
+                    endLocation = hLatLngToLocation(
+                            hLat = place.latLng?.latitude!!,
+                            hLng = place.latLng?.longitude!!
+                    ),
+                    mode = DRIVING
+            )
+            hDrawPath(hDirections, hResult)
         }
     }
+
+    private fun hDrawPath(hDirections: Directions, hResult: MediatorLiveData<DataState<MainViewState>>) {
+
+        val hDistance: String
+
+        val hUnit = hSettingsPrefrences.hGetSettings(PrefTypes.DISTANCE_UNIT_PT) as Int?
+        hDistance = when (hUnit) {
+            1 -> {
+                hDirections.distance?.value?.div(1600).toString()
+            }
+            else -> {
+                hDirections.distance?.text.toString()
+            }
+        }
+        hResult.value = DataState(
+                hData = MainViewState(
+                        hMainFields = MainFields(
+                                hPlaceSelectedVs = PlaceSelectedVS(
+                                        hDistance = hDirections.distance,
+                                        hOverviewPolyline = hDirections.overviewPolyline,
+                                        hSteps = hDirections.steps,
+                                        hDistanceUnit = hDistance,
+                                        hEta = String.format(hContext.getString(R.string.time), " ${hDirections.duration?.text}"),
+                                        hStartMarker = hCreateMarkerOptions(
+                                                hContext = hContext,
+                                                hLat = hDirections.startLocation?.lat!!,
+                                                hLng = hDirections.startLocation.lng,
+                                                hType = MarkerUtils.MarkerType.CURRENT,
+                                        ),
+                                        hEndMarker = hCreateMarkerOptions(
+                                                hContext = hContext,
+                                                hLat = hDirections.endLocation?.lat!!,
+                                                hLng = hDirections.endLocation.lng,
+                                                hType = MarkerUtils.MarkerType.DESTINATION,
+                                        )
+                                )
+                        )
+                )
+        )
+    }
+
 
     private fun hSubmitPlaceSuggetstions(
             hResult: MutableLiveData<DataState<MainViewState>>
@@ -177,7 +256,6 @@ class MainViewModel @Inject constructor(
             val hResponse = MutableLiveData<List<GeoCode>>()
             hResult.value = DataState.hLoading(true)
 
-
             viewModelScope.launch {
                 hCurrentLocation?.let {
                     hResponse.value = hRemoteRepo.hReverseGeoCode(marker.position)
@@ -200,7 +278,6 @@ class MainViewModel @Inject constructor(
             }
         }
         return hResult
-
     }
 
     private fun hSubmitNearByMarkerList(
@@ -220,7 +297,6 @@ class MainViewModel @Inject constructor(
                     )
             )
         }
-
         hResult.value = DataState(
                 hData = MainViewState(
                         hMainFields = MainFields(
@@ -231,7 +307,6 @@ class MainViewModel @Inject constructor(
                 )
         )
     }
-
 
     private fun hSubmitCurrentLocationData(location: Location?): LiveData<DataState<MainViewState>>? {
         location?.let { hCurrentLocation ->
@@ -293,6 +368,13 @@ class MainViewModel @Inject constructor(
         Timber.d("hSetPlaceSuggestionsData")
         val hUpdate = hGetCurrentViewStateOrNew()
         hUpdate.hMainFields.hPlaceSuggestionsVS = placeSuggestionsVS
+        _hMainViewState.value = hUpdate
+    }
+
+    fun hSetSelectedPlaceData(hPlaceSelectedVs: PlaceSelectedVS) {
+        Timber.d("hSetSelectedPlaceData")
+        val hUpdate = hGetCurrentViewStateOrNew()
+        hUpdate.hMainFields.hPlaceSelectedVs = hPlaceSelectedVs
         _hMainViewState.value = hUpdate
     }
 }

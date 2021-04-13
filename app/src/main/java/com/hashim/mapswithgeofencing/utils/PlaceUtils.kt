@@ -31,7 +31,7 @@ class PlaceUtils(
         hPlacesClient = Places.createClient(hContext)
     }
 
-    private fun hFetchAPlaceById(placeId: String, hOnPlaceFound: (hPlace: Place?, errorMessage: String?) -> Unit) {
+    public fun hFetchAPlaceById(placeId: String, hOnPlaceFound: (hPlace: Place?, errorMessage: String?) -> Unit) {
         // INSERT_PLACE_ID_HERE
         val hPlaceId = placeId
 

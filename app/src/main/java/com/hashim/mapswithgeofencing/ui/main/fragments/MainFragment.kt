@@ -53,7 +53,6 @@ class MainFragment : Fragment() {
         hGoogleMap = googleMap
         hGoogleMap?.isMyLocationEnabled = true
         hMainViewModel.hSetStateEvent(OnMapReady())
-
         hSetMapListerns()
     }
 
@@ -197,6 +196,10 @@ class MainFragment : Fragment() {
                 mainViewState.hMainFields.hPlaceSuggestionsVS?.let { placeSuggestionsVS ->
                     hMainViewModel.hSetPlaceSuggestionsData(placeSuggestionsVS)
                 }
+
+                mainViewState.hMainFields.hPlaceSelectedVs?.let { placeSelectedVs ->
+                    hMainViewModel.hSetSelectedPlaceData(placeSelectedVs)
+                }
             }
         }
 
@@ -218,8 +221,17 @@ class MainFragment : Fragment() {
 
             }
 
+
+            mainviewstate.hMainFields.hPlaceSelectedVs?.let { placeSelectedVs ->
+                hSetSelectedPlace(placeSelectedVs)
+            }
         }
     }
+
+    private fun hSetSelectedPlace(placeSelectedVs: PlaceSelectedVS) {
+        Timber.d("Setsdlkfjsdlgjsdlkgj")
+    }
+
 
     private fun hSetSetAdapterSuggestions(placeSuggestionsVS: PlaceSuggestionsVS) {
         Timber.d("Setting Suggestions Adapter")
