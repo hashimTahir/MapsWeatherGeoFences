@@ -25,7 +25,6 @@ data class MainViewState(
     )
 
     data class PlaceSelectedVS(
-            val hPlaceSuggestionsList: List<String>? = null,
             val hDistance: Distance? = null,
             val hOverviewPolyline: OverviewPolyline? = null,
             val hSteps: List<Step>? = null,

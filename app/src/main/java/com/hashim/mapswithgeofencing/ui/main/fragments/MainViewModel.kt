@@ -144,7 +144,7 @@ class MainViewModel @Inject constructor(
 
     }
 
-    private fun hSetPlaceSelected(postion: Int): LiveData<DataState<MainViewState>> {
+    private fun hSetPlaceSelected(postion: Int): LiveData<DataState<MainViewState>>? {
         val hResult = MediatorLiveData<DataState<MainViewState>>()
         hResult.value = DataState.hLoading(true)
 
@@ -188,7 +188,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun hDrawPath(hDirections: Directions, hResult: MediatorLiveData<DataState<MainViewState>>) {
-
+        Timber.d("Draw Path")
         val hDistance: String
 
         val hUnit = hSettingsPrefrences.hGetSettings(PrefTypes.DISTANCE_UNIT_PT) as Int?
@@ -220,10 +220,11 @@ class MainViewModel @Inject constructor(
                                                 hLat = hDirections.endLocation?.lat!!,
                                                 hLng = hDirections.endLocation.lng,
                                                 hType = MarkerUtils.MarkerType.DESTINATION,
-                                        )
-                                )
+                                        ),
+                                ),
                         )
-                )
+                ),
+                hLoading = false
         )
     }
 
@@ -340,7 +341,6 @@ class MainViewModel @Inject constructor(
     }
 
     fun hSetCurrentLocationData(currentLocationVS: CurrentLocationVS) {
-        Timber.d("hSetCurrentLocationData")
         val hUpdate = hGetCurrentViewStateOrNew()
         hUpdate.hMainFields.hCurrentLocationVS = currentLocationVS
         _hMainViewState.value = hUpdate
@@ -351,28 +351,24 @@ class MainViewModel @Inject constructor(
     }
 
     fun hSetNearByPlacesData(nearByPlacesVS: NearByPlacesVS) {
-        Timber.d("hSetNearByPlacesData")
         val hUpdate = hGetCurrentViewStateOrNew()
         hUpdate.hMainFields.hNearByPlacesVS = nearByPlacesVS
         _hMainViewState.value = hUpdate
     }
 
     fun hSetMarkerClickData(onMarkerClickVS: OnMarkerClickVS) {
-        Timber.d("hSetMarkerClickData")
         val hUpdate = hGetCurrentViewStateOrNew()
         hUpdate.hMainFields.hOnMarkerClickVS = onMarkerClickVS
         _hMainViewState.value = hUpdate
     }
 
     fun hSetPlaceSuggestionsData(placeSuggestionsVS: PlaceSuggestionsVS) {
-        Timber.d("hSetPlaceSuggestionsData")
         val hUpdate = hGetCurrentViewStateOrNew()
         hUpdate.hMainFields.hPlaceSuggestionsVS = placeSuggestionsVS
         _hMainViewState.value = hUpdate
     }
 
     fun hSetSelectedPlaceData(hPlaceSelectedVs: PlaceSelectedVS) {
-        Timber.d("hSetSelectedPlaceData")
         val hUpdate = hGetCurrentViewStateOrNew()
         hUpdate.hMainFields.hPlaceSelectedVs = hPlaceSelectedVs
         _hMainViewState.value = hUpdate

@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.PolylineOptions
+import com.google.maps.android.PolyUtil
 import com.hashim.mapswithgeofencing.R
 import com.hashim.mapswithgeofencing.databinding.FragmentMainBinding
 import com.hashim.mapswithgeofencing.others.prefrences.SettingsPrefrences
@@ -127,6 +130,7 @@ class MainFragment : Fragment() {
                     }
 
                     override fun afterTextChanged(s: Editable?) {
+                        Timber.d("After Text Changed")
                         hMainViewModel.hSetStateEvent(OnFindAutoCompleteSuggestions(suggestion = s.toString()))
                     }
 
@@ -136,6 +140,8 @@ class MainFragment : Fragment() {
         hFragmentMainBinding.hSearchBar.setSuggestionsClickListener(
                 object : SuggestionsAdapter.OnItemViewClickListener {
                     override fun OnItemClickListener(position: Int, v: View?) {
+                        hFragmentMainBinding.hSearchBar.clearSuggestions()
+                        hFragmentMainBinding.hSearchBar.closeSearch()
                         hMainViewModel.hSetStateEvent(OnSuggestionSelected(postion = position))
 
                     }
@@ -229,7 +235,24 @@ class MainFragment : Fragment() {
     }
 
     private fun hSetSelectedPlace(placeSelectedVs: PlaceSelectedVS) {
-        Timber.d("Setsdlkfjsdlgjsdlkgj")
+        Timber.d("hSetSelectedPlace")
+        hGoogleMap?.clear()
+        val hPolylineOptions = PolylineOptions().apply {
+            color(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+            geodesic(true)
+            width(10F)
+        }
+
+        val hPolyline = PolyUtil.decode(placeSelectedVs.hOverviewPolyline?.points)
+
+        hPolyline.forEach {
+            hPolylineOptions.add(it)
+        }
+
+        hGoogleMap?.addPolyline(hPolylineOptions)
+
+        hGoogleMap?.addMarker(placeSelectedVs.hStartMarker)
+        hGoogleMap?.addMarker(placeSelectedVs.hEndMarker)
     }
 
 
