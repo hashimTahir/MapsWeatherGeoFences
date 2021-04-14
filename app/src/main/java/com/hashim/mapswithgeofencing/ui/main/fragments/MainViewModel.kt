@@ -130,7 +130,7 @@ class MainViewModel @Inject constructor(
                 return hResult
             }
             is OnSuggestionSelected -> {
-                return hSetPlaceSelected(stateEvent.postion)
+                hSetPlaceSelected(stateEvent.postion)
             }
             is None -> {
             }
@@ -144,10 +144,7 @@ class MainViewModel @Inject constructor(
 
     }
 
-    private fun hSetPlaceSelected(postion: Int): LiveData<DataState<MainViewState>>? {
-        val hResult = MediatorLiveData<DataState<MainViewState>>()
-        hResult.value = DataState.hLoading(true)
-
+    private fun hSetPlaceSelected(postion: Int) {
 
         hLastSuggestionsList?.let {
             val value = it.get(postion)
@@ -155,15 +152,14 @@ class MainViewModel @Inject constructor(
             hPlaceUtils.hFetchAPlaceById(value.placeId) { hPlace, errorMessage ->
                 Timber.d("Place Found ${hPlace.toString()}")
                 if (hPlace != null) {
-                    hFindDirections(hPlace, hResult)
+                    hFindDirections(hPlace)
                 }
             }
         }
-        return hResult
     }
 
 
-    fun hFindDirections(place: Place, hResult: MediatorLiveData<DataState<MainViewState>>) {
+    fun hFindDirections(place: Place) {
         viewModelScope.launch {
             val hCurrentLocation: Location
 
@@ -183,11 +179,11 @@ class MainViewModel @Inject constructor(
                     ),
                     mode = DRIVING
             )
-            hDrawPath(hDirections, hResult)
+            hDrawPath(hDirections)
         }
     }
 
-    private fun hDrawPath(hDirections: Directions, hResult: MediatorLiveData<DataState<MainViewState>>) {
+    private fun hDrawPath(hDirections: Directions) {
         Timber.d("Draw Path")
         val hDistance: String
 
@@ -200,32 +196,34 @@ class MainViewModel @Inject constructor(
                 hDirections.distance?.text.toString()
             }
         }
-        hResult.value = DataState(
-                hData = MainViewState(
-                        hMainFields = MainFields(
-                                hPlaceSelectedVs = PlaceSelectedVS(
-                                        hDistance = hDirections.distance,
-                                        hOverviewPolyline = hDirections.overviewPolyline,
-                                        hSteps = hDirections.steps,
-                                        hDistanceUnit = hDistance,
-                                        hEta = String.format(hContext.getString(R.string.time), " ${hDirections.duration?.text}"),
-                                        hStartMarker = hCreateMarkerOptions(
-                                                hContext = hContext,
-                                                hLat = hDirections.startLocation?.lat!!,
-                                                hLng = hDirections.startLocation.lng,
-                                                hType = MarkerUtils.MarkerType.CURRENT,
-                                        ),
-                                        hEndMarker = hCreateMarkerOptions(
-                                                hContext = hContext,
-                                                hLat = hDirections.endLocation?.lat!!,
-                                                hLng = hDirections.endLocation.lng,
-                                                hType = MarkerUtils.MarkerType.DESTINATION,
-                                        ),
+
+        _hMainViewState.value = MainViewState(
+                hMainFields = MainFields(
+                        hPlaceSelectedVs = PlaceSelectedVS(
+                                hDistance = hDirections.distance,
+                                hOverviewPolyline = hDirections.overviewPolyline,
+                                hSteps = hDirections.steps,
+                                hDistanceUnit = hDistance,
+                                hEta = String.format(hContext.getString(R.string.time), " ${hDirections.duration?.text}"),
+                                hStartMarker = hCreateMarkerOptions(
+                                        hContext = hContext,
+                                        hLat = hDirections.startLocation?.lat!!,
+                                        hLng = hDirections.startLocation.lng,
+                                        hType = MarkerUtils.MarkerType.CURRENT,
                                 ),
-                        )
-                ),
-                hLoading = false
+                                hEndMarker = hCreateMarkerOptions(
+                                        hContext = hContext,
+                                        hLat = hDirections.endLocation?.lat!!,
+                                        hLng = hDirections.endLocation.lng,
+                                        hType = MarkerUtils.MarkerType.DESTINATION,
+                                ),
+                        ),
+                )
         )
+//        hResult.value = DataState(
+//                hData =
+//                hLoading = false
+//        )
     }
 
 
@@ -260,7 +258,6 @@ class MainViewModel @Inject constructor(
             viewModelScope.launch {
                 hCurrentLocation?.let {
                     hResponse.value = hRemoteRepo.hReverseGeoCode(marker.position)
-
                 }
                 hResult.addSource(hResponse) {
                     hResult.removeSource(hResponse)
@@ -274,7 +271,6 @@ class MainViewModel @Inject constructor(
                                     ),
                             )
                     )
-
                 }
             }
         }
@@ -352,6 +348,7 @@ class MainViewModel @Inject constructor(
 
     fun hSetNearByPlacesData(nearByPlacesVS: NearByPlacesVS) {
         val hUpdate = hGetCurrentViewStateOrNew()
+        hUpdate.hMainFields.hPlaceSelectedVs = null
         hUpdate.hMainFields.hNearByPlacesVS = nearByPlacesVS
         _hMainViewState.value = hUpdate
     }
