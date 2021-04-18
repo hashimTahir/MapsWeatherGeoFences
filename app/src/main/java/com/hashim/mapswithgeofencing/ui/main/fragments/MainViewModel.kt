@@ -8,9 +8,9 @@ import PlaceUtils
 import android.content.Context
 import android.location.Location
 import androidx.lifecycle.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.libraries.places.api.model.Place
 import com.hashim.mapswithgeofencing.Domain.model.Directions
 import com.hashim.mapswithgeofencing.Domain.model.GeoCode
 import com.hashim.mapswithgeofencing.Domain.model.NearByPlaces
@@ -152,14 +152,16 @@ class MainViewModel @Inject constructor(
             hPlaceUtils.hFetchAPlaceById(value.placeId) { hPlace, errorMessage ->
                 Timber.d("Place Found ${hPlace.toString()}")
                 if (hPlace != null) {
-                    hFindDirections(hPlace)
+                    hPlace.latLng?.let { latLng ->
+                        hFindDirections(latLng)
+                    }
                 }
             }
         }
     }
 
 
-    fun hFindDirections(place: Place) {
+    fun hFindDirections(hLatLng: LatLng) {
         viewModelScope.launch {
             val hCurrentLocation: Location
 
@@ -174,8 +176,8 @@ class MainViewModel @Inject constructor(
             val hDirections = hRemoteRepo.hGetDirections(
                     startLocation = hCurrentLocation,
                     endLocation = hLatLngToLocation(
-                            hLat = place.latLng?.latitude!!,
-                            hLng = place.latLng?.longitude!!
+                            hLat = hLatLng.latitude,
+                            hLng = hLatLng.longitude,
                     ),
                     mode = DRIVING
             )
@@ -220,10 +222,6 @@ class MainViewModel @Inject constructor(
                         ),
                 )
         )
-//        hResult.value = DataState(
-//                hData =
-//                hLoading = false
-//        )
     }
 
 
@@ -261,16 +259,57 @@ class MainViewModel @Inject constructor(
                 }
                 hResult.addSource(hResponse) {
                     hResult.removeSource(hResponse)
-                    hResult.value = DataState(
-                            hData = MainViewState(
-                                    hMainFields = MainFields(
-                                            hOnMarkerClickVS = OnMarkerClickVS(
-                                                    hPlaceName = marker.title,
-                                                    hAddress = hResponse.value?.get(0)?.formattedAddress,
-                                            )
-                                    ),
-                            )
-                    )
+
+
+                    viewModelScope.launch {
+                        val hDirections = hRemoteRepo.hGetDirections(
+                                startLocation = hCurrentLocation!!,
+                                endLocation = hLatLngToLocation(
+                                        hLat = marker.position.latitude,
+                                        hLng = marker.position.longitude,
+                                ),
+                                mode = DRIVING
+                        )
+                        val hDistance: String
+
+                        val hUnit = hSettingsPrefrences.hGetSettings(PrefTypes.DISTANCE_UNIT_PT) as Int?
+                        hDistance = when (hUnit) {
+                            1 -> {
+                                hDirections.distance?.value?.div(1600).toString()
+                            }
+                            else -> {
+                                hDirections.distance?.text.toString()
+                            }
+                        }
+
+                        hResult.value = DataState(
+                                hData = MainViewState(
+                                        hMainFields = MainFields(
+                                                hOnMarkerClickVS = OnMarkerClickVS(
+                                                        hPlaceName = marker.title,
+                                                        hAddress = hResponse.value?.get(0)?.formattedAddress,
+                                                        hDistance = hDirections.distance,
+                                                        hOverviewPolyline = hDirections.overviewPolyline,
+                                                        hSteps = hDirections.steps,
+                                                        hDistanceUnit = hDistance,
+                                                        hEta = String.format(hContext.getString(R.string.time), " ${hDirections.duration?.text}"),
+                                                        hStartMarker = hCreateMarkerOptions(
+                                                                hContext = hContext,
+                                                                hLat = hDirections.startLocation?.lat!!,
+                                                                hLng = hDirections.startLocation.lng,
+                                                                hType = MarkerUtils.MarkerType.CURRENT,
+                                                        ),
+                                                        hEndMarker = hCreateMarkerOptions(
+                                                                hContext = hContext,
+                                                                hLat = hDirections.endLocation?.lat!!,
+                                                                hLng = hDirections.endLocation.lng,
+                                                                hType = MarkerUtils.MarkerType.DESTINATION,
+                                                        ),
+                                                )
+                                        ),
+                                )
+                        )
+                    }
                 }
             }
         }
@@ -348,26 +387,38 @@ class MainViewModel @Inject constructor(
 
     fun hSetNearByPlacesData(nearByPlacesVS: NearByPlacesVS) {
         val hUpdate = hGetCurrentViewStateOrNew()
-        hUpdate.hMainFields.hPlaceSelectedVs = null
+        hClearOtherVS(hUpdate)
         hUpdate.hMainFields.hNearByPlacesVS = nearByPlacesVS
         _hMainViewState.value = hUpdate
     }
 
     fun hSetMarkerClickData(onMarkerClickVS: OnMarkerClickVS) {
         val hUpdate = hGetCurrentViewStateOrNew()
+        hClearOtherVS(hUpdate)
         hUpdate.hMainFields.hOnMarkerClickVS = onMarkerClickVS
         _hMainViewState.value = hUpdate
     }
 
     fun hSetPlaceSuggestionsData(placeSuggestionsVS: PlaceSuggestionsVS) {
         val hUpdate = hGetCurrentViewStateOrNew()
+        hClearOtherVS(hUpdate)
         hUpdate.hMainFields.hPlaceSuggestionsVS = placeSuggestionsVS
         _hMainViewState.value = hUpdate
     }
 
     fun hSetSelectedPlaceData(hPlaceSelectedVs: PlaceSelectedVS) {
         val hUpdate = hGetCurrentViewStateOrNew()
+        hClearOtherVS(hUpdate)
         hUpdate.hMainFields.hPlaceSelectedVs = hPlaceSelectedVs
         _hMainViewState.value = hUpdate
+    }
+
+    private fun hClearOtherVS(hUpdate: MainViewState) {
+        hUpdate.hMainFields.hPlaceSelectedVs = null
+        hUpdate.hMainFields.hNearByPlacesVS =null
+        hUpdate.hMainFields.hPlaceSuggestionsVS =null
+        hUpdate.hMainFields.hOnMarkerClickVS=null
+
+
     }
 }

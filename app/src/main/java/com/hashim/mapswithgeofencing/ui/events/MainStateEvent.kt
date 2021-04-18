@@ -22,6 +22,8 @@ sealed class MainStateEvent {
 
     class OnMarkerClicked(val marker: Marker) : MainStateEvent()
 
+    class OnFindRoute() : MainStateEvent()
+
     class None : MainStateEvent()
 
 }

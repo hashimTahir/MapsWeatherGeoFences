@@ -170,8 +170,12 @@ class MainFragment : Fragment() {
         )
         hFragmentMainBinding.hDetailCardView.setOnClickListener {
             /*Todo Execute route*/
-
         }
+
+        hFragmentMainBinding.hClearAllFab.setOnClickListener {
+            hClearMapnResetBottomView()
+        }
+
 
     }
 
@@ -189,6 +193,11 @@ class MainFragment : Fragment() {
             }
 
             dataState.hData?.let { mainViewState ->
+                Timber.d("Data hCurrentLocationVS ${mainViewState.hMainFields.hCurrentLocationVS}")
+                Timber.d("Data hNearByPlacesVS ${mainViewState.hMainFields.hNearByPlacesVS}")
+                Timber.d("Data hOnMarkerClickVS ${mainViewState.hMainFields.hOnMarkerClickVS}")
+                Timber.d("Data hPlaceSuggestionsVS ${mainViewState.hMainFields.hPlaceSuggestionsVS}")
+                Timber.d("Data hPlaceSelectedVs ${mainViewState.hMainFields.hPlaceSelectedVs}")
 
                 mainViewState.hMainFields.hCurrentLocationVS?.let { currentLocationVS ->
                     hMainViewModel.hSetCurrentLocationData(currentLocationVS)
@@ -210,7 +219,11 @@ class MainFragment : Fragment() {
         }
 
         hMainViewModel.hMainViewState.observe(viewLifecycleOwner) { mainviewstate ->
-            Timber.d("MainView State $mainviewstate")
+            Timber.d("View hNearByPlacesVS ${mainviewstate.hMainFields.hNearByPlacesVS}")
+            Timber.d("View hCurrentLocationVS ${mainviewstate.hMainFields.hCurrentLocationVS}")
+            Timber.d("View hOnMarkerClickVS ${mainviewstate.hMainFields.hOnMarkerClickVS}")
+            Timber.d("View hPlaceSuggestionsVS ${mainviewstate.hMainFields.hPlaceSuggestionsVS}")
+            Timber.d("View hPlaceSelectedVs ${mainviewstate.hMainFields.hPlaceSelectedVs}")
             mainviewstate.hMainFields.hNearByPlacesVS?.let { nearByPlacesVS ->
                 hCreateNearByMarker(nearByPlacesVS)
             }
@@ -218,7 +231,7 @@ class MainFragment : Fragment() {
                 hSetCurrentMarker(currentLocationVS)
             }
             mainviewstate.hMainFields.hOnMarkerClickVS?.let { onMarkerClickVS ->
-                hSetBottomCard(onMarkerClickVS)
+                hSetBottomCardnDrawPath(onMarkerClickVS)
 
             }
 
@@ -235,8 +248,7 @@ class MainFragment : Fragment() {
     }
 
     private fun hSetSelectedPlace(placeSelectedVs: PlaceSelectedVS) {
-        Timber.d("hSetSelectedPlace")
-        hGoogleMap?.clear()
+        hClearMapnResetBottomView()
         val hPolylineOptions = PolylineOptions().apply {
             color(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
             geodesic(true)
@@ -262,14 +274,33 @@ class MainFragment : Fragment() {
         hFragmentMainBinding.hSearchBar.showSuggestionsList()
     }
 
-    private fun hSetBottomCard(onMarkerClickVS: OnMarkerClickVS) {
+    private fun hSetBottomCardnDrawPath(onMarkerClickVS: OnMarkerClickVS) {
+        hClearMapnResetBottomView()
         hShowView(hFragmentMainBinding.hDetailCardView)
         hFragmentMainBinding.hAddressTv.text = onMarkerClickVS.hAddress
         hFragmentMainBinding.hNameTv.text = onMarkerClickVS.hPlaceName
+
+        /*Todo: Code Duplication refactor later.*/
+        val hPolylineOptions = PolylineOptions().apply {
+            color(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+            geodesic(true)
+            width(10F)
+        }
+
+        val hPolyline = PolyUtil.decode(onMarkerClickVS.hOverviewPolyline?.points)
+
+        hPolyline.forEach {
+            hPolylineOptions.add(it)
+        }
+
+        hGoogleMap?.addPolyline(hPolylineOptions)
+
+        hGoogleMap?.addMarker(onMarkerClickVS.hStartMarker)
+        hGoogleMap?.addMarker(onMarkerClickVS.hEndMarker)
     }
 
     private fun hCreateNearByMarker(nearByPlacesVS: NearByPlacesVS) {
-        hGoogleMap?.clear()
+        hClearMapnResetBottomView()
         nearByPlacesVS.hMarkerList?.forEach {
             hGoogleMap?.addMarker(it)
         }
@@ -286,6 +317,11 @@ class MainFragment : Fragment() {
 
     }
 
+    private fun hClearMapnResetBottomView() {
+        Timber.d("Clearing.............")
+        hGoogleMap?.clear()
+        hHideView(hFragmentMainBinding.hDetailCardView)
+    }
 
     private fun hRequestPermissions() {
         hShowView(hFragmentMainBinding.hProgressbar)

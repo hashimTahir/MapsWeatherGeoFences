@@ -52,10 +52,16 @@ data class MainViewState(
     ) : Parcelable
 
 
-    @Parcelize
     data class OnMarkerClickVS(
             val hPlaceName: String? = null,
             val hAddress: String? = null,
-    ) : Parcelable
+            val hDistance: Distance?,
+            val hOverviewPolyline: OverviewPolyline?,
+            val hSteps: List<Step>?,
+            val hDistanceUnit: String,
+            val hEta: String,
+            val hStartMarker: MarkerOptions,
+            val hEndMarker: MarkerOptions,
+    )
 }
 
