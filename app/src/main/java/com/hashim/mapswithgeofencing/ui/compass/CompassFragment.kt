@@ -14,8 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.hashim.mapswithgeofencing.databinding.FragmentCompassBinding
 
 
@@ -47,9 +49,12 @@ class CompassFragment : Fragment(), SensorEventListener2 {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         hAccelerometerSensor = hSensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
         hMagnetometerSensor = hSensorManager?.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)!!
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
