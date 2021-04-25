@@ -193,12 +193,6 @@ class MainFragment : Fragment() {
             }
 
             dataState.hData?.let { mainViewState ->
-                Timber.d("Data hCurrentLocationVS ${mainViewState.hMainFields.hCurrentLocationVS}")
-                Timber.d("Data hNearByPlacesVS ${mainViewState.hMainFields.hNearByPlacesVS}")
-                Timber.d("Data hOnMarkerClickVS ${mainViewState.hMainFields.hOnMarkerClickVS}")
-                Timber.d("Data hPlaceSuggestionsVS ${mainViewState.hMainFields.hPlaceSuggestionsVS}")
-                Timber.d("Data hPlaceSelectedVs ${mainViewState.hMainFields.hPlaceSelectedVs}")
-
                 mainViewState.hMainFields.hCurrentLocationVS?.let { currentLocationVS ->
                     hMainViewModel.hSetCurrentLocationData(currentLocationVS)
                 }

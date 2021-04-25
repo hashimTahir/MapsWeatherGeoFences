@@ -19,7 +19,6 @@ import com.hashim.mapswithgeofencing.utils.DateFormatter
 import com.hashim.mapswithgeofencing.utils.DateFormatter.FormatterType.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -45,30 +44,50 @@ class WeatherViewModel @Inject constructor(
             }
 
     private fun hHandleStateEvent(weatherStateEvent: WeatherStateEvent): LiveData<DataState<WeatherViewState>>? {
-        Timber.d("hHandleStateEvent ${weatherStateEvent.javaClass}")
         // TODO: 25-Mar-21  Get temprature unit from the settings
         when (weatherStateEvent) {
             is WeatherStateEvent.OnFetchForecast -> {
+
+                val hResult = MediatorLiveData<DataState<WeatherViewState>>()
+                val hResponse = MutableLiveData<Forecast>()
+                hResult.value = DataState.hLoading(true)
+
+
                 val hLocation = hCreateLocationObject(weatherStateEvent.hLat, weatherStateEvent.hLng)
                 viewModelScope.launch {
-                    val hForecast = hRemoteRepo.hGetForecast(
+                    hResponse.value = hRemoteRepo.hGetForecast(
                             location = hLocation,
                             Constants.H_CELCIUS_UNIT,
                     )
-                    hFormatForecastData(hForecast)
 
+                    hResult.addSource(hResponse) {
+                        hResult.removeSource(hResponse)
+                        hFormatForecastData(it, hResult)
+
+                    }
                 }
+                return hResult
             }
             is WeatherStateEvent.OnFetchWeather -> {
+
+                val hResult = MediatorLiveData<DataState<WeatherViewState>>()
+                val hResponse = MutableLiveData<Weather>()
+                hResult.value = DataState.hLoading(true)
+
+
                 val hLocation = hCreateLocationObject(weatherStateEvent.hLat, weatherStateEvent.hLng)
                 viewModelScope.launch {
-                    val hWeather = hRemoteRepo.hGetWeather(
+                    hResponse.value = hRemoteRepo.hGetWeather(
                             location = hLocation,
                             Constants.H_CELCIUS_UNIT,
                     )
-                    hFormatWeatherData(hWeather)
-                }
+                    hResult.addSource(hResponse) {
+                        hResult.removeSource(hResponse)
+                        hFormatWeatherData(it, hResult)
 
+                    }
+                }
+                return hResult
             }
             is WeatherStateEvent.None -> {
             }
@@ -77,29 +96,33 @@ class WeatherViewModel @Inject constructor(
 
     }
 
-    private fun hFormatWeatherData(weather: Weather) {
+    private fun hFormatWeatherData(weather: Weather, hResult: MutableLiveData<DataState<WeatherViewState>>) {
         val hCalendar = Calendar.getInstance()
         val hIcon: String = weather.icon!!
 
-        _hWeatherViewState.value = WeatherViewState(
-                hWeatherFields = WeatherFields(
-                        hWeatherVS = WeatherVS(
-                                hDay = DateFormatter.hGetSimpleFormatter(DAYNAME_MONTH_DATE).format(hCalendar.time),
-                                hTime = DateFormatter.hGetSimpleFormatter(HRS_MINS).format(hCalendar.time),
-                                hPressure = weather.pressure.toString(),
-                                hHumidity = weather.humidity.toString(),
-                                hDescription = weather.description,
-                                hCountry = weather.country,
-                                hIconUrl = String.format(Constants.H_ICON_URL, hIcon),
-                                hTemperature = weather.tempMax.toString()
-                        ),
-                        hForecastVS = null
 
+        hResult.value = DataState(
+                hLoading = false,
+                hData = WeatherViewState(
+                        hWeatherFields = WeatherFields(
+                                hWeatherVS = WeatherVS(
+                                        hDay = DateFormatter.hGetSimpleFormatter(DAYNAME_MONTH_DATE).format(hCalendar.time),
+                                        hTime = DateFormatter.hGetSimpleFormatter(HRS_MINS).format(hCalendar.time),
+                                        hPressure = weather.pressure.toString(),
+                                        hHumidity = weather.humidity.toString(),
+                                        hDescription = weather.description,
+                                        hCountry = weather.country,
+                                        hIconUrl = String.format(Constants.H_ICON_URL, hIcon),
+                                        hTemperature = weather.tempMax.toString()
+                                ),
+                                hForecastVS = null
+
+                        )
                 )
         )
     }
 
-    private fun hFormatForecastData(hForecast: Forecast) {
+    private fun hFormatForecastData(hForecast: Forecast, hResult: MutableLiveData<DataState<WeatherViewState>>) {
         val hTodaysList = mutableListOf<TodaysForeCast>()
         val hWeeklyList = mutableListOf<WeekForecast>()
         val hCalendar = Calendar.getInstance()
@@ -141,17 +164,19 @@ class WeatherViewModel @Inject constructor(
                 hLastDayName = hNameOfDay
             }
         }
-        _hWeatherViewState.value = WeatherViewState(
-                hWeatherFields = WeatherFields(
-                        hWeatherVS = null,
-                        hForecastVS = ForecastVS(
-                                hWeeksList = hWeeklyList,
-                                hTodaysList = hTodaysList
+
+        hResult.value = DataState(
+                hLoading = false,
+                hData = WeatherViewState(
+                        hWeatherFields = WeatherFields(
+                                hWeatherVS = null,
+                                hForecastVS = ForecastVS(
+                                        hWeeksList = hWeeklyList,
+                                        hTodaysList = hTodaysList
+                                )
                         )
                 )
         )
-
-
     }
 
     private fun hCreateLocationObject(lat: Double?, hLng: Double?): Location {

@@ -25,6 +25,7 @@ import com.hashim.mapswithgeofencing.ui.events.WeatherViewState.*
 import com.hashim.mapswithgeofencing.ui.weather.WeatherAdapter.Companion.H_TODAYS_RECYCLER
 import com.hashim.mapswithgeofencing.ui.weather.WeatherAdapter.Companion.H_WEEKLY_RECYCLER
 import com.hashim.mapswithgeofencing.utils.GlideUtils
+import com.hashim.mapswithgeofencing.utils.UiHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,6 +44,7 @@ class WeatherFragment : Fragment() {
             findNavController().popBackStack()
         }
     }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         hWeatherFragmentBinding = WeatherFragmentBinding.inflate(
@@ -119,23 +121,36 @@ class WeatherFragment : Fragment() {
     }
 
     private fun hSubscribeObservers() {
-        hWeatherViewModel.hDataState.observe(viewLifecycleOwner) {
-            it.hData?.let {
-                it.hWeatherFields.let {
-                    it.hWeatherVS.let {
-                        hWeatherViewModel.hSetWeatherData(it)
+        hWeatherViewModel.hDataState.observe(viewLifecycleOwner) { weatherDataState ->
 
+            weatherDataState.hLoading.let {
+                when (it) {
+                    true -> {
+                        UiHelper.hShowView(hWeatherFragmentBinding.hTodaysProgressbar)
+                        UiHelper.hShowView(hWeatherFragmentBinding.hWeeklyProgressbar)
                     }
-                    it.hForecastVS.let {
-                        if (it != null) {
-                            hWeatherViewModel.hSetForecastData(it)
-                        }
+                    false -> {
+                        UiHelper.hHideView(hWeatherFragmentBinding.hTodaysProgressbar)
+                        UiHelper.hHideView(hWeatherFragmentBinding.hWeeklyProgressbar)
                     }
                 }
+
             }
+            weatherDataState.hData?.let {
+                it.hWeatherFields.hWeatherVS?.let {
+                    hWeatherViewModel.hSetWeatherData(it)
+                }
+
+                it.hWeatherFields.hForecastVS?.let {
+                    hWeatherViewModel.hSetForecastData(it)
+
+                }
+            }
+
         }
 
         hWeatherViewModel.hWeatherViewState.observe(viewLifecycleOwner) { weatherViewState ->
+
 
             weatherViewState.hWeatherFields.hWeatherVS?.let {
                 hSetNowWeather(it)
