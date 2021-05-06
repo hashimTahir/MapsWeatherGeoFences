@@ -60,7 +60,7 @@ class RemoteRepoImpl(
                 startLocation = "${startLocation.latitude},${startLocation.longitude}",
                 endLocation = "${endLocation.latitude},${endLocation.longitude}",
                 key = hMapsKey,
-                mode = mode.name.toLowerCase(Locale.getDefault()),
+                mode = mode.name.lowercase(Locale.getDefault()),
         )
 
         return hDirectionDtoMapper.hMapToDomainModel(hGetDirections)

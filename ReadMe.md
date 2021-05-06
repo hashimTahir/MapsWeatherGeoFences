@@ -21,3 +21,17 @@
  * Database caching
  * Navigation Components
  * Room
+
+
+
+![ScreenShot](/images/main_page.png)
+
+![ScreenShot](/images/nearyby_page.png)
+
+![ScreenShot](/images/path_page.png)
+
+![ScreenShot](/images/route_page.png)
+
+![ScreenShot](/images/settings_page.png)
+
+![ScreenShot](/images/weather_page.png)
